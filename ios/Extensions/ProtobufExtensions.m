@@ -16,6 +16,7 @@
 
 #import "ProtobufExtensions.h"
 #import "Tsurukame-Swift.h"
+#import "Settings.h"
 
 static const int kGuruStage = 5;
 

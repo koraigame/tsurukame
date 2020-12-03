@@ -16,6 +16,7 @@
 #import "Client.h"
 #import "LocalCachingClient.h"
 #import "LoginViewController.h"
+#import "Settings.h"
 #import "Tsurukame-Swift.h"
 
 #import <UserNotifications/UserNotifications.h>
@@ -33,6 +34,8 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Uncomment to slow the animation speed on a real device.
   // [self.window.layer setSpeed:.1f];
+
+  [Settings initializeDefaultsOnStartup];
 
   [TKMScreenshotter setUp];
 

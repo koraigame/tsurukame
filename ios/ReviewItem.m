@@ -14,6 +14,7 @@
 
 #import "ReviewItem.h"
 #import "Extensions/ProtobufExtensions.h"
+#import "Settings.h"
 #import "Tsurukame-Swift.h"
 
 @implementation ReviewItem

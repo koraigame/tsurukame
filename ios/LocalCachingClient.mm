@@ -17,6 +17,7 @@
 
 #import "Client.h"
 #import "LocalCachingClient.h"
+#import "Settings.h"
 
 #import "Extensions/ProtobufExtensions.h"
 

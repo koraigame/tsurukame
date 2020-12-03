@@ -615,8 +615,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
       answerField.backgroundColor = TKMStyle.Color.background
       answerField.placeholder = taskTypePlaceholder
       if let firstReading = activeSubject.primaryReadings.first {
-        kanaInput.alphabet = (firstReading.hasType && firstReading.type == .onyomi &&
-          Settings.useKatakanaForOnyomi) ? .katakana : .hiragana
+        kanaInput.alphabet = (
+          firstReading.hasType && firstReading.type == .onyomi && Settings.useKatakanaForOnyomi) ?
+          .katakana : .hiragana
       } else {
         kanaInput.alphabet = .hiragana
       }
@@ -874,7 +875,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
                      self.previousSubjectLabel?.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
                      self.previousSubjectLabel?.alpha = 0.01
-                   }) { (_: Bool) in
+    }) { (_: Bool) in
       self.previousSubjectLabel?.removeFromSuperview()
       self.previousSubjectLabel = label
     }
@@ -960,7 +961,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
         .transition(with: submitButton, duration: 0.1,
                     options: .transitionCrossDissolve, animations: {
                       self.submitButton.setImage(newImage, for: .normal)
-                    }, completion: nil)
+      }, completion: nil)
     } else {
       submitButton.isEnabled = !text.isEmpty
     }
@@ -1179,7 +1180,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
                        self.answerField.isEnabled = false
                        self.revealAnswerButton.alpha = 1.0
                        self.submitButton.setImage(self.forwardArrowImage, for: .normal)
-                     })
+      })
     } else {
       revealAnswerButtonPressed(revealAnswerButton!)
     }
@@ -1308,7 +1309,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
                                       numericKeyPadEnter])
     }
 
-    if Settings.selectedFonts.count > 0 {
+    if let customFonts = Settings.selectedFonts, customFonts.count > 0 {
       keyCommands.append(UIKeyCommand(input: "\t",
                                       modifierFlags: [],
                                       action: #selector(toggleFont),

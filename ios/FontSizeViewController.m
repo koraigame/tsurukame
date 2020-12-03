@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #import "FontSizeViewController.h"
-#import "Tsurukame-Swift.h"
+#import "Settings.h"
 
 @interface FontSizeViewController ()
 @end

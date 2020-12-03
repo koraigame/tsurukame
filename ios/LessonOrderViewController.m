@@ -15,6 +15,7 @@
 #import "LessonOrderViewController.h"
 #import "Extensions/ProtobufExtensions.h"
 #import "Tsurukame-Swift.h"
+#import "Settings.h"
 
 @interface TKMLessonOrderCell : UITableViewCell
 

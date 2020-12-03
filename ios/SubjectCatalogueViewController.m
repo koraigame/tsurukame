@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import "SubjectCatalogueViewController.h"
+#import "Settings.h"
 #import "SubjectsByLevelViewController.h"
 #import "Tsurukame-Swift.h"
 

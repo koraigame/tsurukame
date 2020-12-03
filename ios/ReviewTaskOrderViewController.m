@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #import "ReviewTaskOrderViewController.h"
-#import "Tsurukame-Swift.h"
+#import "Settings.h"
 
 @interface ReviewTaskOrderViewController ()
 @end

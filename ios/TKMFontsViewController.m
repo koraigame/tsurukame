@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import "TKMFontsViewController.h"
+#import "Settings.h"
 #import "TKMFontLoader.h"
 #import "Tables/TKMBasicModelItem.h"
 #import "Tables/TKMDownloadModelItem.h"
