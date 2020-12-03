@@ -90,7 +90,7 @@ class CurrentLevelChartCell: TKMModelCell {
   var vocabularyChart: PieChartView!
   var strongDelegate: Delegate
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     strongDelegate = Delegate()
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     selectionStyle = .none

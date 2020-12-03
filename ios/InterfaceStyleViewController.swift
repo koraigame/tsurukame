@@ -18,7 +18,7 @@ class InterfaceStyleViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    var selectedRow = Int(Settings.interfaceStyle - 1)
+    var selectedRow = Int(Settings.interfaceStyle.rawValue) - 1
     if selectedRow < 0 || selectedRow >= tableView.numberOfRows(inSection: 0) {
       selectedRow = 0
     }

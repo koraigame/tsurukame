@@ -35,7 +35,7 @@ class AttributedModelCell: TKMModelCell {
   var textView: UITextView!
   var rightButton: UIButton?
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     selectionStyle = .none

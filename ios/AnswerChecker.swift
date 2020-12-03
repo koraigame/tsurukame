@@ -40,15 +40,15 @@ import Foundation
         Unicode.Scalar(UInt32(0xFFA0))!))
 
   private class func containsAscii(_ s: String) -> Bool {
-    s.rangeOfCharacter(from: kAsciiCharacterSet) != nil
+    return s.rangeOfCharacter(from: kAsciiCharacterSet) != nil
   }
 
   private class func isKana(_ s: String) -> Bool {
-    s.rangeOfCharacter(from: kAllKanaCharacterSet.inverted) == nil
+    return s.rangeOfCharacter(from: kAllKanaCharacterSet.inverted) == nil
   }
 
   private class func isJapanese(_ s: String) -> Bool {
-    s.rangeOfCharacter(from: kJapaneseCharacterSet.inverted) == nil
+    return s.rangeOfCharacter(from: kJapaneseCharacterSet.inverted) == nil
   }
 
   private class func distanceTolerance(_ answer: String) -> Int {
@@ -95,13 +95,19 @@ import Foundation
   public class func convertKatakanaToHiragana(_ text: String) -> String {
     // StringTransform.hiraganaToKatakana munges long-dashes so we need to special case strings that
     // contain those.
-    if let dash = text.firstIndex(of: "ー") {
+    if let dash = text.index(of: "ー") {
       return convertKatakanaToHiragana(String(text[..<dash])) +
         "ー" +
         convertKatakanaToHiragana(String(text[text.index(after: dash)...]))
     }
 
-    return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+    if #available(iOS 9.0, *) {
+        return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+    } else {
+        let t = (text as NSString).mutableCopy() as! CFMutableString
+        CFStringTransform(t, nil, kCFStringTransformHiraganaKatakana, true)
+        return String(t)
+    }
   }
 
   @objc class func normalizedString(_ text: String, taskType: TKMTaskType,
@@ -206,7 +212,7 @@ import Foundation
 
     case ._Max:
       fallthrough
-    @unknown default:
+    default:
       fatalError()
     }
 

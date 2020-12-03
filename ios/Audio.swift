@@ -39,7 +39,7 @@ class Audio: NSObject {
   private let services: TKMServices
   private var player: AVPlayer?
   private var waitingToPlay = false
-  private weak var delegate: AudioDelegate?
+  private var delegate: AudioDelegate?
 
   init(services: TKMServices) {
     self.services = services

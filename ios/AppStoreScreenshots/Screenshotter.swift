@@ -85,7 +85,7 @@ import Foundation
     }
 
     override func getStudyMaterial(forID _: Int32) -> TKMStudyMaterials? {
-      nil
+      return nil
     }
 
     override func getUserInfo() -> TKMUser? {
@@ -97,11 +97,11 @@ import Foundation
     }
 
     override func getAllPendingProgress() -> [TKMProgress] {
-      []
+      return []
     }
 
     override func getAssignmentForID(_: Int32) -> TKMAssignment? {
-      nil
+      return nil
     }
 
     override func getAssignmentsAtLevel(_: Int32) -> [TKMAssignment] {
@@ -142,7 +142,7 @@ import Foundation
       case .master: return 485
       case .enlightened: return 786
       case .burned: return 2056
-      @unknown default:
+      default:
         fatalError()
       }
     }

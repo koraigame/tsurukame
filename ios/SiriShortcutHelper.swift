@@ -34,28 +34,34 @@ import MobileCoreServices
   @available(iOS 12.0, *)
   func newShortcutActivity(type: String) -> NSUserActivity {
     let activity = NSUserActivity(activityType: type)
+    #if swift(>=5)
     activity.persistentIdentifier = NSUserActivityPersistentIdentifier(type)
     activity.isEligibleForSearch = true
     activity.isEligibleForPrediction = true
-
+    #endif
     configureType(type, activity: activity)
 
     return activity
   }
 
-  func configureType(_ type: String, activity: NSUserActivity) {
+    @available(iOS 9.0, *)
+    func configureType(_ type: String, activity: NSUserActivity) {
     let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
     switch type {
     case SiriShortcutHelper.ShortcutTypeReviews:
       activity.title = "Start Wanikani Reviews"
       if #available(iOS 12.0, *) {
+        #if swift(>=5)
         activity.suggestedInvocationPhrase = "Start Wanikani Reviews"
+        #endif
       }
       attributes.contentDescription = "Keep it up and burn every one"
     case SiriShortcutHelper.ShortcutTypeLessons:
       activity.title = "Start Wanikani Lessons"
       if #available(iOS 12.0, *) {
+        #if swift(>=5)
         activity.suggestedInvocationPhrase = "Start Wanikani Lessons"
+        #endif
       }
       attributes.contentDescription = "Learn something new"
     default:

@@ -25,10 +25,10 @@ class ContextSentenceModelItem: AttributedModelItem {
 
   init(_ sentence: TKMVocabulary_Sentence,
        highlightSubject: TKMSubject,
-       defaultAttributes: [NSAttributedString.Key: Any],
+       defaultAttributes: [NSAttributedStringKey: Any],
        fontSize: CGFloat) {
     func attr(_ text: String) -> NSAttributedString {
-      NSAttributedString(string: text, attributes: defaultAttributes)
+      return NSAttributedString(string: text, attributes: defaultAttributes)
     }
 
     // Build the attributed string normally.
@@ -56,14 +56,14 @@ class ContextSentenceModelItem: AttributedModelItem {
   }
 
   override func cellClass() -> AnyClass! {
-    ContextSentenceModelCell.self
+    return ContextSentenceModelCell.self
   }
 }
 
 private class ContextSentenceModelCell: AttributedModelCell {
   var blurredOverlay: UIView!
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     blurredOverlay = UIView()
