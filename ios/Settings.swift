@@ -30,6 +30,7 @@ import Foundation
   case dark = 3
 }
 
+// Swift 5!
 @propertyWrapper struct Setting<T: Codable> {
   private let defaultValue: T
   private let key: String
