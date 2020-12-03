@@ -15,12 +15,34 @@
 import ClockKit
 import os
 
+fileprivate extension CLKTextProvider {
+    convenience init(format: String, _: CVarArg, _: CVarArg, _: CVarArg, _: CVarArg) {
+        self.init()
+    }
+    convenience init(format: String, _: CVarArg, _: CVarArg, _: CVarArg) {
+        self.init()
+    }
+    convenience init(format: String, _: CVarArg, _: CVarArg) {
+        self.init()
+    }
+    convenience init(format: String, _: CVarArg) {
+        self.init()
+    }
+    convenience init(format: String) {
+        self.init()
+    }
+}
+
 class ComplicationController: NSObject, CLKComplicationDataSource {
   let tsurukameHighlightColor = UIColor.red
   // Ignore next review dates father in the future. We show the durations in
   // hours and these large values look incorrect.
   let farFutureReviewDate = TimeInterval(60 * 60 * 24)
 
+    func relativeDateProvider(date: Date) -> CLKTextProvider! {
+        return nil
+    }
+    
   // MARK: - Timeline Configuration
 
   func getSupportedTimeTravelDirections(for _: CLKComplication,
@@ -104,13 +126,17 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         }
       }
       handler(entries)
-    } else if let staleDate = DataManager.sharedInstance.dataStaleAfter(),
+    }
+    #if swift(>=5)
+    else if let staleDate = DataManager.sharedInstance.dataStaleAfter(),
       after.distance(to: staleDate) >= 0,
       let staleEntry = staleTimelineEntry(complication: complication) {
       handler([staleEntry])
-    } else {
+    }
+    else {
       handler(nil)
     }
+    #endif
   }
 
   func staleTimelineEntry(complication: CLKComplication) -> CLKComplicationTimelineEntry? {
@@ -153,10 +179,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     switch dataSource {
     case .ReviewCounts:
       return templateForReviewCount(complication, userData: userData)
-    case .Level:
-      return templateForLevel(complication, userData: userData)
+    case .Level: fallthrough
     case .Character:
-      return templateForCharacter(complication, userData: userData)
+      return templateForLevel(complication, userData: userData)
     }
   }
 
@@ -247,6 +272,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         template.textProvider = CLKTextProvider(format: "%d REVIEWS", reviewsPending)
       }
       return template
+       #if swift(>=5)
     case .graphicCorner:
       let template = CLKComplicationTemplateGraphicCornerStackText()
       template.outerTextProvider = CLKTextProvider(format: "%d NOW", reviewsPending)
@@ -312,7 +338,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
       }
       return template
-    @unknown default:
+        #endif
+    default:
       return nil
     }
     return nil
@@ -388,6 +415,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
           .textProvider = CLKTextProvider(format: "%@ • %d/%d", levelTextProvider, learned, total)
       }
       return template
+        #if swift(>=5)
     case .graphicCorner:
       let template = CLKComplicationTemplateGraphicCornerGaugeText()
       template.outerTextProvider = levelShortTextProvider
@@ -430,6 +458,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         .gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: tsurukameHighlightColor,
                                                 fillFraction: fillFraction)
       return template
+        #endif
     default:
       return nil
     }
@@ -476,6 +505,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       let template = CLKComplicationTemplateUtilitarianLargeFlat()
       template.textProvider = CLKSimpleTextProvider(text: "data stale")
       return template
+        #if swift(>=5)
     case .graphicCorner:
       let template = CLKComplicationTemplateGraphicCornerStackText()
       template.outerTextProvider = CLKSimpleTextProvider(text: "stale")
@@ -509,7 +539,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
       }
       return template
-    @unknown default:
+        #endif
+    default:
       return nil
     }
     return nil
@@ -518,6 +549,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   /**
    Currently in testing: Is it useful to see a random character?
    */
+    /*
   func templateForCharacter(_ complication: CLKComplication,
                             userData _: UserData?) -> CLKComplicationTemplate? {
     // TODO: Get the list of characters to pick from
@@ -562,6 +594,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     // to vary this unit.
     CLKRelativeDateTextProvider(date: date, style: .offsetShort, units: .hour)
   }
+ */
 
   /**
    Create a UIImage with a kanji character centered in it. Used to display larger
@@ -576,12 +609,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 
     let textStyle = NSMutableParagraphStyle()
     textStyle.alignment = .center
-
+    #if swift(>=5)
     let textFontAttributes = [
       NSAttributedString.Key.font: textFont,
       NSAttributedString.Key.foregroundColor: textColor,
       NSAttributedString.Key.paragraphStyle: textStyle,
     ] as [NSAttributedString.Key: Any]
+    #else
+    let textFontAttributes: [NSAttributedStringKey: Any] = [:]
+    #endif
 
     let textHeight = textFont.lineHeight
     let textY = (size.height - textHeight) / 2
