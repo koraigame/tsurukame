@@ -17,10 +17,14 @@ import Foundation
 private func readUInt32(_ fh: FileHandle, _ offset: UInt64) -> UInt32 {
   fh.seek(toFileOffset: offset)
   let data = fh.readData(ofLength: 4)
+  #if swift(>=5)
   return data.withUnsafeBytes {
     (p: UnsafeRawBufferPointer) in
     p.bindMemory(to: UInt32.self).first!
   }
+  #else
+  return NSMutableData(data: data).mutableBytes.load(as: UInt32.self)
+  #endif
 }
 
 @objcMembers
@@ -86,13 +90,13 @@ class DataLoader: NSObject {
   }
 
   var maxSubjectLevel: Int {
-    header.subjectsByLevelArray.count
+    return header.subjectsByLevelArray.count
   }
 
   private var _maxLevelGrantedBySubscription = 60
   var maxLevelGrantedBySubscription: Int {
     get {
-      min(_maxLevelGrantedBySubscription, maxSubjectLevel)
+      return min(_maxLevelGrantedBySubscription, maxSubjectLevel)
     }
     set {
       _maxLevelGrantedBySubscription = newValue
@@ -118,6 +122,6 @@ class DataLoader: NSObject {
   }
 
   var deletedSubjectIDs: GPBInt32Array {
-    header.deletedSubjectIdsArray
+    return header.deletedSubjectIdsArray
   }
 }

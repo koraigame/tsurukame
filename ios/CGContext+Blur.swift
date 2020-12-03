@@ -51,7 +51,7 @@ extension CGContext {
   }
 
   private class func makeVImageBuffer(_ ctx: CGContext) -> vImage_Buffer {
-    vImage_Buffer(data: ctx.data, height: vImagePixelCount(ctx.height),
+    return vImage_Buffer(data: ctx.data, height: vImagePixelCount(ctx.height),
                   width: vImagePixelCount(ctx.width),
                   rowBytes: ctx.bytesPerRow)
   }

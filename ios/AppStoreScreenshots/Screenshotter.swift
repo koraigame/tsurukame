@@ -60,14 +60,14 @@ import Foundation
 
   @objc
   class FakeLocalCachingClient: LocalCachingClient {
-    override var availableReviewCount: Int32 { 4 }
-    override var availableLessonCount: Int32 { 10 }
+    override var availableReviewCount: Int32 { return 4 }
+    override var availableLessonCount: Int32 { return 10 }
     override var upcomingReviews: [NSNumber] {
-      [14, 8, 2, 1, 12, 42, 17, 9, 2, 0, 2, 17, 0, 0, 6, 0, 0, 0, 0, 4, 11, 0, 8, 6]
+      return [14, 8, 2, 1, 12, 42, 17, 9, 2, 0, 2, 17, 0, 0, 6, 0, 0, 0, 0, 4, 11, 0, 8, 6]
     }
 
-    override var pendingProgress: Int32 { 0 }
-    override var pendingStudyMaterials: Int32 { 0 }
+    override var pendingProgress: Int32 { return 0 }
+    override var pendingStudyMaterials: Int32 { return 0 }
 
     override func sync(progressHandler syncProgressHandler: @escaping SyncProgressHandler,
                        quick _: Bool) {
@@ -130,7 +130,7 @@ import Foundation
     }
 
     override func getAssignmentsAtUsersCurrentLevel() -> [TKMAssignment] {
-      makePieSlices(.radical, locked: 0, lesson: 2, apprentice: 4, guru: 1) +
+      return makePieSlices(.radical, locked: 0, lesson: 2, apprentice: 4, guru: 1) +
         makePieSlices(.kanji, locked: 8, lesson: 4, apprentice: 12, guru: 1) +
         makePieSlices(.vocabulary, locked: 50, lesson: 8, apprentice: 4, guru: 0)
     }
@@ -148,11 +148,11 @@ import Foundation
     }
 
     override func getGuruKanjiCount() -> Int32 {
-      864
+      return 864
     }
 
     override func getAverageRemainingLevelTime() -> TimeInterval {
-      (4 * 24 + 9) * 60 * 60
+      return (4 * 24 + 9) * 60 * 60
     }
 
     override func sendProgress(_: [TKMProgress]) {}
@@ -177,7 +177,7 @@ import Foundation
                                lesson: Int,
                                apprentice: Int,
                                guru: Int) -> [TKMAssignment] {
-      Array(repeating: makeAssignment(type, srsStage: -1), count: locked) +
+      return Array(repeating: makeAssignment(type, srsStage: -1), count: locked) +
         Array(repeating: makeAssignment(type, srsStage: 0), count: lesson) +
         Array(repeating: makeAssignment(type, srsStage: 1), count: apprentice) +
         Array(repeating: makeAssignment(type, srsStage: 6), count: guru)

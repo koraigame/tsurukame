@@ -44,6 +44,7 @@
 #import "UIView+SafeAreaInsets.h"
 
 #import "proto/Wanikani.pbobjc.h"
+#import "Extensions/NSString+MD5.h"
 
 #import <Haneke/Haneke.h>
 #import <WatchConnectivity/WatchConnectivity.h>

@@ -22,8 +22,8 @@ private let kUpcomingReviewsSection = 1
 
 private func userProfileImageURL(emailAddress: String) -> URL {
   let address = emailAddress.trimmingCharacters(in: .whitespaces)
-    .lowercased()
-  let hash = address.MD5()
+    .lowercased() as NSString
+  let hash = address.md5()!
 
   let size = kProfileImageSize * UIScreen.main.scale
 
@@ -95,9 +95,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     searchBar.tintColor = .white // Make the button white.
 
     if #available(iOS 13, *) {
+      #if swift(>=5)
       let searchTextField = searchBar.searchTextField
       searchTextField.backgroundColor = .systemBackground
       searchTextField.tintColor = originalSearchBarTintColor
+        #endif
     } else {
       for view in searchBar.subviews[0].subviews {
         if view.isKind(of: UITextField.self) {
@@ -129,11 +131,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                    object: services.localCachingClient)
     nc.addObserver(self,
                    selector: #selector(applicationDidEnterBackground),
-                   name: UIApplication.didEnterBackgroundNotification,
+                   name: NSNotification.Name.UIApplicationDidEnterBackground,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationWillEnterForeground),
-                   name: UIApplication.willEnterForegroundNotification,
+                   name: NSNotification.Name.UIApplicationWillEnterForeground,
                    object: nil)
   }
 
@@ -144,7 +146,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updatingTableModel = true
 
     DispatchQueue.main.async {
-      WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+        if #available(iOS 9.3, *) {
+            WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+        }
       self.updatingTableModel = false
       self.recreateTableModel()
     }
@@ -236,14 +240,14 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    .lightContent
+    return .lightContent
   }
 
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
 
     // Bring the refresh control above the gradient.
-    refreshControl?.superview?.bringSubviewToFront(refreshControl!)
+    refreshControl?.superview?.bringSubview(toFront: refreshControl!)
 
     let headerSize = headerView.sizeThatFits(CGSize(width: view.bounds.size.width, height: 0))
     headerView.frame = CGRect(origin: headerView.frame.origin, size: headerSize)
@@ -328,12 +332,14 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let date = calendar
       .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
 
-    hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
-                                              repeats: false,
-                                              block: { [weak self] _ in
-                                                guard let self = self else { return }
-                                                self.hourlyTimerExpired()
+    if #available(iOS 10.0, *) {
+      hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
+                                                repeats: false,
+                                                block: { [weak self] _ in
+                                                  if self == nil { return }
+                                                  self!.hourlyTimerExpired()
       })
+    }
   }
 
   func cancelHourlyTimer() {
@@ -485,29 +491,25 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     if hasLessons, !hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Continue lessons"))
+                              action: #selector(startLessons)))
     } else if hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Continue reviews"))
+                              action: #selector(startReviews)))
     }
 
     // Command L to start lessons, if any
     if hasLessons {
       ret.append(UIKeyCommand(input: "l",
                               modifierFlags: [.command],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Start lessons"))
+                              action: #selector(startLessons)))
     }
 
     // Command R to start reviews, if any
     if hasReviews {
       ret.append(UIKeyCommand(input: "r",
                               modifierFlags: [.command],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Start reviews"))
+                              action: #selector(startReviews)))
     }
 
     return ret

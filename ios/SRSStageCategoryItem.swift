@@ -28,10 +28,13 @@ import Foundation
 
     var color = TKMStyle.color(forSRSStageCategory: stageCategory)
 
+    #if swift(>=5.0)
     if #available(iOS 13.0, *), stageCategory == .burned,
       UITraitCollection.current.userInterfaceStyle == .dark {
       color = UIColor.label
     }
+    #endif
+    
     textColor = color
     imageTintColor = color
     image = UIImage(named: TKMSRSStageCategoryName(stageCategory))!

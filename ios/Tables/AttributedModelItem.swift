@@ -17,6 +17,14 @@ import Foundation
 private let kEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
 private let kMinimumHeight: CGFloat = 44
 
+#if swift(>=4.1)
+extension CGRect {
+  func inset(by insets: UIEdgeInsets) -> CGRect {
+    return UIEdgeInsetsInsetRect(self, insets)
+  }
+}
+#endif
+
 @objc(TKMAttributedModelItem)
 class AttributedModelItem: NSObject, TKMModelItem {
   let text: NSAttributedString
@@ -27,7 +35,7 @@ class AttributedModelItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    AttributedModelCell.self
+    return AttributedModelCell.self
   }
 }
 

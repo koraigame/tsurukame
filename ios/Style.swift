@@ -23,6 +23,7 @@ private func UIColorFromHex(_ hexColor: Int32) -> UIColor {
 
 private func AdaptiveColor(light: UIColor, dark: UIColor) -> UIColor {
   if #available(iOS 13, *) {
+    #if swift(>=5)
     return UIColor { (tc: UITraitCollection) -> UIColor in
       if tc.userInterfaceStyle == .dark {
         return dark
@@ -30,13 +31,16 @@ private func AdaptiveColor(light: UIColor, dark: UIColor) -> UIColor {
         return light
       }
     }
+    #else
+    return light
+    #endif
   } else {
     return light
   }
 }
 
 private func AdaptiveColorHex(light: Int32, dark: Int32) -> UIColor {
-  AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
+  return AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
 }
 
 @objc
@@ -73,12 +77,12 @@ class TKMStyle: NSObject {
                                            dark: UIColor(white: 0.682, alpha: 1))
 
   // The [Any] types force these to be exposed to objective-C as an untyped NSArray*.
-  static var radicalGradient: [Any] { [radicalColor1.cgColor, radicalColor2.cgColor] }
-  static var kanjiGradient: [Any] { [kanjiColor1.cgColor, kanjiColor2.cgColor] }
-  static var vocabularyGradient: [Any] { [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
-  static var lockedGradient: [Any] { [lockedColor1.cgColor, lockedColor2.cgColor] }
-  static var readingGradient: [Any] { [readingColor1.cgColor, readingColor2.cgColor] }
-  static var meaningGradient: [Any] { [meaningColor1.cgColor, meaningColor2.cgColor] }
+  static var radicalGradient: [Any] { return [radicalColor1.cgColor, radicalColor2.cgColor] }
+  static var kanjiGradient: [Any] { return [kanjiColor1.cgColor, kanjiColor2.cgColor] }
+  static var vocabularyGradient: [Any] { return [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
+  static var lockedGradient: [Any] { return [lockedColor1.cgColor, lockedColor2.cgColor] }
+  static var readingGradient: [Any] { return [readingColor1.cgColor, readingColor2.cgColor] }
+  static var meaningGradient: [Any] { return [meaningColor1.cgColor, meaningColor2.cgColor] }
 
   class func color(forSRSStageCategory srsStageCategory: TKMSRSStageCategory) -> UIColor {
     switch srsStageCategory {
@@ -107,7 +111,7 @@ class TKMStyle: NSObject {
       return vocabularyColor2
     case .unknown: fallthrough
     case .gpbUnrecognizedEnumeratorValue: fallthrough
-    @unknown default:
+    default:
       fatalError()
     }
   }
@@ -122,7 +126,7 @@ class TKMStyle: NSObject {
       return vocabularyGradient
     case .unknown: fallthrough
     case .gpbUnrecognizedEnumeratorValue: fallthrough
-    @unknown default:
+    default:
       fatalError()
     }
   }
@@ -153,11 +157,11 @@ class TKMStyle: NSObject {
   }
 
   class func japaneseFont(size: CGFloat) -> UIFont {
-    UIFont(name: japaneseFontName, size: size)!
+    return UIFont(name: japaneseFontName, size: size)!
   }
 
   class func japaneseFontLight(size: CGFloat) -> UIFont {
-    loadFont(["HiraginoSans-W3",
+    return loadFont(["HiraginoSans-W3",
               "HiraginoSans-W2",
               "HiraginoSans-W1",
               "HiraginoSans-W4",
@@ -165,7 +169,7 @@ class TKMStyle: NSObject {
   }
 
   class func japaneseFontBold(size: CGFloat) -> UIFont {
-    loadFont(["HiraginoSans-W8",
+    return loadFont(["HiraginoSans-W8",
               "HiraginoSans-W7",
               "HiraginoSans-W6",
               "HiraginoSans-W5"], size: size)
@@ -197,9 +201,11 @@ class TKMStyle: NSObject {
   // on iOS < 13.
   class func withTraitCollection(_ tc: UITraitCollection, f: () -> Void) {
     if #available(iOS 13.0, *) {
+      #if swift(>=5.0)
       tc.performAsCurrent {
         f()
       }
+      #endif
     } else {
       f()
     }
