@@ -28,9 +28,9 @@ open class ChartHighlighter : NSObject, IHighlighter
         return getHighlight(xValue: xVal, x: x, y: y)
     }
     
-    /// - Parameters:
-    ///   - x:
-    /// - Returns: The corresponding x-pos for a given touch-position in pixels.
+    /// - returns: The corresponding x-pos for a given touch-position in pixels.
+    /// - parameter x:
+    /// - returns:
     @objc open func getValsForTouch(x: CGFloat, y: CGFloat) -> CGPoint
     {
         guard let chart = self.chart as? BarLineScatterCandleBubbleChartDataProvider else { return .zero }
@@ -39,11 +39,11 @@ open class ChartHighlighter : NSObject, IHighlighter
         return chart.getTransformer(forAxis: .left).valueForTouchPoint(x: x, y: y)
     }
     
-    /// - Parameters:
-    ///   - xValue:
-    ///   - x:
-    ///   - y:
-    /// - Returns: The corresponding ChartHighlight for a given x-value and xy-touch position in pixels.
+    /// - returns: The corresponding ChartHighlight for a given x-value and xy-touch position in pixels.
+    /// - parameter xValue:
+    /// - parameter x:
+    /// - parameter y:
+    /// - returns:
     @objc open func getHighlight(xValue xVal: Double, x: CGFloat, y: CGFloat) -> Highlight?
     {
         guard let chart = chart else { return nil }
@@ -61,12 +61,12 @@ open class ChartHighlighter : NSObject, IHighlighter
         return detail
     }
     
-    /// - Parameters:
-    ///   - xValue: the transformed x-value of the x-touch position
-    ///   - x: touch position
-    ///   - y: touch position
-    /// - Returns: A list of Highlight objects representing the entries closest to the given xVal.
+    /// - returns: A list of Highlight objects representing the entries closest to the given xVal.
     /// The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
+    /// - parameter xValue: the transformed x-value of the x-touch position
+    /// - parameter x: touch position
+    /// - parameter y: touch position
+    /// - returns:
     @objc open func getHighlights(xValue: Double, x: CGFloat, y: CGFloat) -> [Highlight]
     {
         var vals = [Highlight]()
@@ -89,14 +89,16 @@ open class ChartHighlighter : NSObject, IHighlighter
         return vals
     }
     
-    /// - Returns: An array of `Highlight` objects corresponding to the selected xValue and dataSetIndex.
+    /// - returns: An array of `Highlight` objects corresponding to the selected xValue and dataSetIndex.
     internal func buildHighlights(
         dataSet set: IChartDataSet,
         dataSetIndex: Int,
         xValue: Double,
         rounding: ChartDataSetRounding) -> [Highlight]
     {
-        guard let chart = self.chart as? BarLineScatterCandleBubbleChartDataProvider else { return [] }
+        var highlights = [Highlight]()
+        
+        guard let chart = self.chart as? BarLineScatterCandleBubbleChartDataProvider else { return highlights }
         
         var entries = set.entriesForXValue(xValue)
         if entries.count == 0, let closest = set.entryForXValue(xValue, closestToY: .nan, rounding: rounding)
@@ -104,18 +106,21 @@ open class ChartHighlighter : NSObject, IHighlighter
             // Try to find closest x-value and take all entries for that x-value
             entries = set.entriesForXValue(closest.x)
         }
+        
+        for e in entries
+        {
+            let px = chart.getTransformer(forAxis: set.axisDependency).pixelForValues(x: e.x, y: e.y)
 
-        return entries.map { e in
-            let px = chart.getTransformer(forAxis: set.axisDependency)
-                .pixelForValues(x: e.x, y: e.y)
-            
-            return Highlight(x: e.x, y: e.y, xPx: px.x, yPx: px.y, dataSetIndex: dataSetIndex, axis: set.axisDependency)
+            let highlight = Highlight(x: e.x, y: e.y, xPx: px.x, yPx: px.y, dataSetIndex: dataSetIndex, axis: set.axisDependency)
+            highlights.append(highlight)
         }
+        
+        return highlights
     }
 
     // - MARK: - Utilities
     
-    /// - Returns: The `ChartHighlight` of the closest value on the x-y cartesian axes
+    /// - returns: The `ChartHighlight` of the closest value on the x-y cartesian axes
     internal func closestSelectionDetailByPixel(
         closestValues: [Highlight],
         x: CGFloat,
@@ -143,20 +148,23 @@ open class ChartHighlighter : NSObject, IHighlighter
         return closest
     }
     
-    /// - Returns: The minimum distance from a touch-y-value (in pixels) to the closest y-value (in pixels) that is displayed in the chart.
+    /// - returns: The minimum distance from a touch-y-value (in pixels) to the closest y-value (in pixels) that is displayed in the chart.
     internal func getMinimumDistance(
         closestValues: [Highlight],
         y: CGFloat,
-        axis: YAxis.AxisDependency
-    ) -> CGFloat {
+        axis: YAxis.AxisDependency) -> CGFloat
+    {
         var distance = CGFloat.greatestFiniteMagnitude
         
-        for high in closestValues where high.axis == axis
+        for high in closestValues
         {
-            let tempDistance = abs(getHighlightPos(high: high) - y)
-            if tempDistance < distance
+            if high.axis == axis
             {
-                distance = tempDistance
+                let tempDistance = abs(getHighlightPos(high: high) - y)
+                if tempDistance < distance
+                {
+                    distance = tempDistance
+                }
             }
         }
         

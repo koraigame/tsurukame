@@ -49,13 +49,11 @@ open class BarHighlighter: ChartHighlighter
     }
     
     /// This method creates the Highlight object that also indicates which value of a stacked BarEntry has been selected.
-    ///
-    /// - Parameters:
-    ///   - high: the Highlight to work with looking for stacked values
-    ///   - set:
-    ///   - xIndex:
-    ///   - yValue:
-    /// - Returns:
+    /// - parameter high: the Highlight to work with looking for stacked values
+    /// - parameter set:
+    /// - parameter xIndex:
+    /// - parameter yValue:
+    /// - returns:
     @objc open func getStackedHighlight(high: Highlight,
                                   set: IBarChartDataSet,
                                   xValue: Double,
@@ -91,18 +89,30 @@ open class BarHighlighter: ChartHighlighter
                          axis: high.axis)
     }
     
-    /// - Parameters:
-    ///   - entry:
-    ///   - value:
-    /// - Returns: The index of the closest value inside the values array / ranges (stacked barchart) to the value given as a parameter.
+    /// - returns: The index of the closest value inside the values array / ranges (stacked barchart) to the value given as a parameter.
+    /// - parameter entry:
+    /// - parameter value:
+    /// - returns:
     @objc open func getClosestStackIndex(ranges: [Range]?, value: Double) -> Int
     {
         guard let ranges = ranges else { return 0 }
-        if let stackIndex = ranges.firstIndex(where: { $0.contains(value) }) {
-            return stackIndex
-        } else {
-            let length = max(ranges.count - 1, 0)
-            return (value > ranges[length].to) ? length : 0
+
+        var stackIndex = 0
+        
+        for range in ranges
+        {
+            if range.contains(value)
+            {
+                return stackIndex
+            }
+            else
+            {
+                stackIndex += 1
+            }
         }
+        
+        let length = max(ranges.count - 1, 0)
+        
+        return (value > ranges[length].to) ? length : 0
     }
 }
