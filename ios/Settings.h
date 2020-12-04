@@ -15,7 +15,6 @@
 #import "TKMFontLoader.h"
 
 #import <Foundation/Foundation.h>
-#import <Protobuf-umbrella.h>
 
 #define DECLARE_OBJECT(type, name) @property(class, nonatomic, copy) type *name;
 
@@ -78,6 +77,7 @@ DECLARE_BOOL(showAllReadings);
 DECLARE_BOOL(autoSwitchKeyboard);
 DECLARE_ENUM(InterfaceStyle, interfaceStyle);
 DECLARE_FLOAT(fontSize);
+DECLARE_BOOL(minimizeReviewPenalty);
 
 // Offline audio.
 DECLARE_BOOL(playAudioAutomatically);

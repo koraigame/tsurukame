@@ -274,7 +274,7 @@ typedef void (^NotificationPermissionHandler)(BOOL granted);
                                  accessoryType:UITableViewCellAccessoryNone
                                         target:self
                                         action:@selector(didTapLogOut:)];
-  logOutItem.textColor = [UIColor systemRedColor];
+  logOutItem.textColor = [UIColor redColor];
   [model addItem:logOutItem];
 
   _model = model;
