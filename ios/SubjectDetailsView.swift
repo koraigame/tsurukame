@@ -51,12 +51,12 @@ private func renderMeanings(subject: TKMSubject,
   for meaning in subject.meaningsArray as! [TKMMeaning] {
     if meaning.type != .primary, meaning.type != .blacklist,
       meaning.type != .auxiliaryWhitelist || !subject.hasRadical || Settings.showOldMnemonic {
-        var font: UIFont
-        if #available(iOS 8.2, *) {
-          font = UIFont.systemFont(ofSize: kFontSize, weight: .light)
-        } else {
-          font = UIFont.systemFont(ofSize: kFontSize)
-        }
+      var font: UIFont
+      if #available(iOS 8.2, *) {
+        font = UIFont.systemFont(ofSize: kFontSize, weight: .light)
+      } else {
+        font = UIFont.systemFont(ofSize: kFontSize)
+      }
       strings.append(attrString(meaning.meaning, attrs: [.font: font]))
     }
   }

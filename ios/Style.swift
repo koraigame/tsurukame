@@ -24,15 +24,15 @@ private func UIColorFromHex(_ hexColor: Int32) -> UIColor {
 private func AdaptiveColor(light: UIColor, dark: UIColor) -> UIColor {
   if #available(iOS 13, *) {
     #if swift(>=5)
-    return UIColor { (tc: UITraitCollection) -> UIColor in
-      if tc.userInterfaceStyle == .dark {
-        return dark
-      } else {
-        return light
+      return UIColor { (tc: UITraitCollection) -> UIColor in
+        if tc.userInterfaceStyle == .dark {
+          return dark
+        } else {
+          return light
+        }
       }
-    }
     #else
-    return light
+      return light
     #endif
   } else {
     return light
@@ -202,9 +202,9 @@ class TKMStyle: NSObject {
   class func withTraitCollection(_ tc: UITraitCollection, f: () -> Void) {
     if #available(iOS 13.0, *) {
       #if swift(>=5.0)
-      tc.performAsCurrent {
-        f()
-      }
+        tc.performAsCurrent {
+          f()
+        }
       #endif
     } else {
       f()

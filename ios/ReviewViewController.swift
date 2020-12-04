@@ -15,17 +15,17 @@
 import Foundation
 
 #if swift(>=4.1)
-extension MutableCollection {
-  mutating func shuffle() {
-    let c = count
-    guard c > 1 else { return }
-    for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-      let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
-      let i = index(firstUnshuffled, offsetBy: d)
-      swapAt(firstUnshuffled, i)
+  extension MutableCollection {
+    mutating func shuffle() {
+      let c = count
+      guard c > 1 else { return }
+      for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+        let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+        let i = index(firstUnshuffled, offsetBy: d)
+        swapAt(firstUnshuffled, i)
+      }
     }
   }
-}
 #endif
 
 private let kDefaultAnimationDuration: TimeInterval = 0.25
@@ -426,7 +426,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    return UIStatusBarStyle.lightContent
+    UIStatusBarStyle.lightContent
   }
 
   // MARK: - Event handlers
@@ -630,8 +630,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
       answerField.backgroundColor = TKMStyle.Color.background
       answerField.placeholder = taskTypePlaceholder
       if let firstReading = activeSubject.primaryReadings.first {
-        kanaInput.alphabet = (
-          firstReading.hasType && firstReading.type == .onyomi && Settings.useKatakanaForOnyomi) ?
+        kanaInput
+          .alphabet = (firstReading.hasType && firstReading.type == .onyomi && Settings
+            .useKatakanaForOnyomi) ?
           .katakana : .hiragana
       } else {
         kanaInput.alphabet = .hiragana
@@ -890,7 +891,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
                      self.previousSubjectLabel?.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
                      self.previousSubjectLabel?.alpha = 0.01
-    }) { (_: Bool) in
+                   }) { (_: Bool) in
       self.previousSubjectLabel?.removeFromSuperview()
       self.previousSubjectLabel = label
     }
@@ -956,7 +957,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   private var _isWrappingUp = false
   @objc public var wrappingUp: Bool {
     get {
-      return _isWrappingUp
+      _isWrappingUp
     }
     set {
       _isWrappingUp = newValue
@@ -976,7 +977,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
         .transition(with: submitButton, duration: 0.1,
                     options: .transitionCrossDissolve, animations: {
                       self.submitButton.setImage(newImage, for: .normal)
-      }, completion: nil)
+                    }, completion: nil)
     } else {
       submitButton.isEnabled = !text.isEmpty
     }
@@ -1082,8 +1083,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
     if correct {
       #if swift(>=5)
-      hapticGenerator.impactOccurred()
-      hapticGenerator.prepare()
+        hapticGenerator.impactOccurred()
+        hapticGenerator.prepare()
       #endif
     }
 
@@ -1198,7 +1199,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
                        self.answerField.isEnabled = false
                        self.revealAnswerButton.alpha = 1.0
                        self.submitButton.setImage(self.forwardArrowImage, for: .normal)
-      })
+                     })
     } else {
       revealAnswerButtonPressed(revealAnswerButton!)
     }
@@ -1269,7 +1270,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   // means that holding down the command key after (say) pressing ⌘C does not
   // repeat the action continuously on all subsequent reviews
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    return super.canPerformAction(action, withSender: sender)
+    super.canPerformAction(action, withSender: sender)
   }
 
   // MARK: - TKMSubjectDelegate
@@ -1281,7 +1282,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   // MARK: - Keyboard navigation
 
   override var canBecomeFirstResponder: Bool {
-    return true
+    true
   }
 
   override var keyCommands: [UIKeyCommand]? {

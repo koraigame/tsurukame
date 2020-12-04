@@ -41,7 +41,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
   }
 
   func rerender() {
-    let model: TKMMutableTableModel = TKMMutableTableModel(tableView: tableView)
+    let model = TKMMutableTableModel(tableView: tableView)
 
     // MARK: - UI Appearance
 
@@ -130,22 +130,22 @@ typealias NotificationPermissionHandler = (Bool) -> Void
                                  subtitle: "Primary reading(s) will be shown in bold",
                                  on: Settings.showAllReadings, target: self,
                                  action: #selector(showAllReadingsChanged(switchView:))))
-    let keyboardSwitchItem: TKMSwitchModelItem = TKMSwitchModelItem(style: .subtitle,
-                                                                    title: "Switch to Japanese keyboard",
-                                                                    subtitle: "Automatically switch to a Japanese keyboard to type reading answers",
-                                                                    on: Settings.autoSwitchKeyboard,
-                                                                    target: self,
-                                                                    action: #selector(autoSwitchKeyboardChanged(switchView:)))
+    let keyboardSwitchItem = TKMSwitchModelItem(style: .subtitle,
+                                                title: "Switch to Japanese keyboard",
+                                                subtitle: "Automatically switch to a Japanese keyboard to type reading answers",
+                                                on: Settings.autoSwitchKeyboard,
+                                                target: self,
+                                                action: #selector(autoSwitchKeyboardChanged(switchView:)))!
     keyboardSwitchItem.numberOfSubtitleLines = 0
     model.add(keyboardSwitchItem)
     model.add(TKMSwitchModelItem(style: .default, title: "Allow skipping reviews",
                                  subtitle: nil, on: Settings.allowSkippingReviews, target: self,
                                  action: #selector(allowSkippingReviewsChanged(switchView:))))
-    let minimizePenaltyItem: TKMSwitchModelItem = TKMSwitchModelItem(style: .subtitle,
-                                                                     title: "Minimize review penalty",
-                                                                     subtitle: "Treat reviews answered incorrect multiple times as if answered incorrect once",
-                                                                     on: Settings.minimizeReviewPenalty, target: self,
-                                                                     action: #selector(minimizeReviewPenaltyChanged(switchView:)))
+    let minimizePenaltyItem = TKMSwitchModelItem(style: .subtitle,
+                                                 title: "Minimize review penalty",
+                                                 subtitle: "Treat reviews answered incorrect multiple times as if answered incorrect once",
+                                                 on: Settings.minimizeReviewPenalty, target: self,
+                                                 action: #selector(minimizeReviewPenaltyChanged(switchView:)))!
     minimizePenaltyItem.numberOfSubtitleLines = 0
     model.add(minimizePenaltyItem)
 
@@ -180,12 +180,12 @@ typealias NotificationPermissionHandler = (Bool) -> Void
                                 subtitle: "To attach to bug reports or email to the developer",
                                 accessoryType: disclosureIndicator, target: self,
                                 action: #selector(didTapExportDatabase(sender:))))
-    let logOutItem: TKMBasicModelItem = TKMBasicModelItem(style: .default,
-                                                          title: "Log out", subtitle: nil,
-                                                          accessoryType: UITableViewCell
-                                                            .AccessoryType.none,
-                                                          target: self,
-                                                          action: #selector(didTapLogOut(sender:)))
+    let logOutItem = TKMBasicModelItem(style: .default,
+                                       title: "Log out", subtitle: nil,
+                                       accessoryType: UITableViewCell
+                                         .AccessoryType.none,
+                                       target: self,
+                                       action: #selector(didTapLogOut(sender:)))
     logOutItem.textColor = UIColor.systemRed
     model.add(logOutItem)
 
@@ -264,7 +264,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
 
   func applicationDidBecomeActive(notification _: Notification) {
     if let notificationHandler = self.notificationHandler {
-      let center: UNUserNotificationCenter = UNUserNotificationCenter.current()
+      let center = UNUserNotificationCenter.current()
       center.getNotificationSettings { (settings: UNNotificationSettings) in
         var granted: Bool = settings.authorizationStatus == UNAuthorizationStatus.authorized
         if #available(iOS 12.0, *) {
@@ -297,7 +297,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
     self.notificationHandler = __handler(granted:)
 
     let notificationHandler: NotificationPermissionHandler = self.notificationHandler!
-    let center: UNUserNotificationCenter = UNUserNotificationCenter.current()
+    let center = UNUserNotificationCenter.current()
     let options: UNAuthorizationOptions = [.badge, .alert]
 
     center.getNotificationSettings { (settings: UNNotificationSettings) in
@@ -316,7 +316,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
           UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
                                     options: Dictionary(), completionHandler: nil)
         }
-          @unknown default:
+      @unknown default:
         fatalError()
       }
     }

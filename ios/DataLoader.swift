@@ -18,12 +18,12 @@ private func readUInt32(_ fh: FileHandle, _ offset: UInt64) -> UInt32 {
   fh.seek(toFileOffset: offset)
   let data = fh.readData(ofLength: 4)
   #if swift(>=5)
-  return data.withUnsafeBytes {
-    (p: UnsafeRawBufferPointer) in
-    p.bindMemory(to: UInt32.self).first!
-  }
+    return data.withUnsafeBytes {
+      (p: UnsafeRawBufferPointer) in
+      p.bindMemory(to: UInt32.self).first!
+    }
   #else
-  return NSMutableData(data: data).mutableBytes.load(as: UInt32.self)
+    return NSMutableData(data: data).mutableBytes.load(as: UInt32.self)
   #endif
 }
 

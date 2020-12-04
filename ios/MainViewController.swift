@@ -96,10 +96,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
     if #available(iOS 13, *) {
       #if swift(>=5)
-      let searchTextField = searchBar.searchTextField
-      searchTextField.backgroundColor = .systemBackground
-      searchTextField.tintColor = originalSearchBarTintColor
-        #endif
+        let searchTextField = searchBar.searchTextField
+        searchTextField.backgroundColor = .systemBackground
+        searchTextField.tintColor = originalSearchBarTintColor
+      #endif
     } else {
       for view in searchBar.subviews[0].subviews {
         if view.isKind(of: UITextField.self) {
@@ -146,9 +146,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updatingTableModel = true
 
     DispatchQueue.main.async {
-        if #available(iOS 9.3, *) {
-            WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
-        }
+      if #available(iOS 9.3, *) {
+        WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      }
       self.updatingTableModel = false
       self.recreateTableModel()
     }
@@ -338,7 +338,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                                                 block: { [weak self] _ in
                                                   if self == nil { return }
                                                   self!.hourlyTimerExpired()
-      })
+                                                })
     }
   }
 

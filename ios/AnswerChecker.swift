@@ -102,11 +102,11 @@ import Foundation
     }
 
     if #available(iOS 9.0, *) {
-        return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+      return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
     } else {
-        let t = (text as NSString).mutableCopy() as! CFMutableString
-        CFStringTransform(t, nil, kCFStringTransformHiraganaKatakana, true)
-        return String(t)
+      let t = (text as NSString).mutableCopy() as! CFMutableString
+      CFStringTransform(t, nil, kCFStringTransformHiraganaKatakana, true)
+      return String(t)
     }
   }
 

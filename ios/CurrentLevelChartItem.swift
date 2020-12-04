@@ -193,7 +193,7 @@ class CurrentLevelChartCell: TKMModelCell {
       if sliceSizes[i] <= 0 {
         continue
       }
-        values.append(PieChartDataEntry(value: Double(sliceSizes[i]), data: i as AnyObject))
+      values.append(PieChartDataEntry(value: Double(sliceSizes[i]), data: i as AnyObject))
       colors.append(PieSlice(rawValue: i)!.color(baseColor: baseColor))
     }
 

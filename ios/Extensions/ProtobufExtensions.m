@@ -15,8 +15,8 @@
 #import <UIKit/UIKit.h>
 
 #import "ProtobufExtensions.h"
-#import "Tsurukame-Swift.h"
 #import "Settings.h"
+#import "Tsurukame-Swift.h"
 
 static const int kGuruStage = 5;
 

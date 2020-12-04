@@ -126,25 +126,25 @@ struct AudioPackage {
       fatalError("Error reading data: \(url(forFilename: filename).absoluteString)")
     }
     if #available(iOS 9.0, *) {
-    guard let tarData = OfflineAudioViewController.decompressLZFSE(compressedData: data) else {
-      fatalError("Error decompressing data: \(url(forFilename: filename).absoluteString)")
-    }
-    do {
-      try fileManager.untar(at: Audio.cacheDirectoryPath, tarData: tarData,
-                            progressBlock: { (progress: Float) in
-                              self.updateProgress(onMainThread: filename) {
-                                $0.state = TKMDownloadModelItemInstalling
-                                $0.installingProgress = progress
-                              }
-                            })
-    } catch {
-      fatalError("Error extracting data: \(url(forFilename: filename).absoluteString)")
-    }
+      guard let tarData = OfflineAudioViewController.decompressLZFSE(compressedData: data) else {
+        fatalError("Error decompressing data: \(url(forFilename: filename).absoluteString)")
+      }
+      do {
+        try fileManager.untar(at: Audio.cacheDirectoryPath, tarData: tarData,
+                              progressBlock: { (progress: Float) in
+                                self.updateProgress(onMainThread: filename) {
+                                  $0.state = TKMDownloadModelItemInstalling
+                                  $0.installingProgress = progress
+                                }
+                              })
+      } catch {
+        fatalError("Error extracting data: \(url(forFilename: filename).absoluteString)")
+      }
 
-    DispatchQueue.main.async {
-      Settings.installedAudioPackages.insert(filename)
-      self.markDownloadComplete(filename)
-    }
+      DispatchQueue.main.async {
+        Settings.installedAudioPackages.insert(filename)
+        self.markDownloadComplete(filename)
+      }
     }
   }
 
