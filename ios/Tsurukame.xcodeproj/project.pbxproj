@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		32A4A0FD85D9F44608460373 /* Pods_Tsurukame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0FB8F6AE66ACCEFE37ADDB2 /* Pods_Tsurukame.framework */; };
 		3DA8BAFC224C9580009E925B /* LessonOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DA8BAFB224C9580009E925B /* LessonOrderViewController.m */; };
-		480B243123D6830300FC2A82 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		480B243123D6830300FC2A82 /* (null) in Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (Weak, ); }; };
 		4811E39224D9CAE2003B5089 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4811E39124D9CAE2003B5089 /* NSDate+TimeAgo.m */; };
 		481B2FED23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */; };
 		48BAFB2C257878D000358419 /* CFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAFB27257878CE00358419 /* CFlags.swift */; };
@@ -61,7 +61,7 @@
 		636A63E7238A607A00902269 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636A63E6238A607A00902269 /* MainHeaderView.swift */; };
 		637C12D8203847BE009E92DB /* LessonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 637C12D7203847BE009E92DB /* LessonsViewController.m */; };
 		637C12DE203D779D009E92DB /* LessonsPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 637C12DD203D779D009E92DB /* LessonsPageControl.m */; };
-		637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6364A10A242DFB6F000ABF32 /* Intents.framework */; };
+		637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6364A10A242DFB6F000ABF32 /* Intents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		6392DBA220D130F0003019EB /* TKMSubjectModelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392DBA120D130F0003019EB /* TKMSubjectModelItem.m */; };
 		6392DBA420D130FB003019EB /* TKMSubjectModelItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6392DBA320D130FB003019EB /* TKMSubjectModelItem.xib */; };
 		6392DBA720D14915003019EB /* TKMSubjectChip.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392DBA620D14915003019EB /* TKMSubjectChip.m */; };

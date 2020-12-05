@@ -14,7 +14,9 @@
 
 import CoreSpotlight
 import Foundation
+#if canImport(Intents)
 import Intents
+#endif
 import MobileCoreServices
 
 @objc class SiriShortcutHelper: NSObject {
