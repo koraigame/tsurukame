@@ -127,6 +127,7 @@ DEFINE_BOOL(showAllReadings, setShowAllReadings, NO);
 DEFINE_BOOL(autoSwitchKeyboard, setAutoSwitchKeyboard, NO);
 DEFINE_ENUM(InterfaceStyle, interfaceStyle, setInterfaceStyle, InterfaceStyle_System);
 DEFINE_FLOAT(fontSize, setFontSize, 1.0);
+DEFINE_BOOL(exactMatch, setExactMatch, NO);
 DEFINE_BOOL(minimizeReviewPenalty, setMinimizeReviewPenalty, YES);
 
 DEFINE_BOOL(playAudioAutomatically, setPlayAudioAutomatically, NO);

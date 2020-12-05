@@ -77,6 +77,7 @@ DECLARE_BOOL(showAllReadings);
 DECLARE_BOOL(autoSwitchKeyboard);
 DECLARE_ENUM(InterfaceStyle, interfaceStyle);
 DECLARE_FLOAT(fontSize);
+DECLARE_BOOL(exactMatch);
 DECLARE_BOOL(minimizeReviewPenalty);
 
 // Offline audio.

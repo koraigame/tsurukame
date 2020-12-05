@@ -426,7 +426,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    UIStatusBarStyle.lightContent
+    return UIStatusBarStyle.lightContent
   }
 
   // MARK: - Event handlers
@@ -957,7 +957,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   private var _isWrappingUp = false
   @objc public var wrappingUp: Bool {
     get {
-      _isWrappingUp
+      return _isWrappingUp
     }
     set {
       _isWrappingUp = newValue
@@ -1270,7 +1270,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   // means that holding down the command key after (say) pressing ⌘C does not
   // repeat the action continuously on all subsequent reviews
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    super.canPerformAction(action, withSender: sender)
+    return super.canPerformAction(action, withSender: sender)
   }
 
   // MARK: - TKMSubjectDelegate
@@ -1282,7 +1282,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   // MARK: - Keyboard navigation
 
   override var canBecomeFirstResponder: Bool {
-    true
+    return true
   }
 
   override var keyCommands: [UIKeyCommand]? {

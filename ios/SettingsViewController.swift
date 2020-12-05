@@ -22,7 +22,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
   var model: TKMTableModel!
   var groupMeaningReadingIndexPath: IndexPath!
   var notificationHandler: NotificationPermissionHandler?
-  let disclosureIndicator = UITableViewCell.AccessoryType.disclosureIndicator
+  let disclosureIndicator = UITableViewCellAccessoryType.disclosureIndicator
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
@@ -182,11 +182,10 @@ typealias NotificationPermissionHandler = (Bool) -> Void
                                 action: #selector(didTapExportDatabase(sender:))))
     let logOutItem = TKMBasicModelItem(style: .default,
                                        title: "Log out", subtitle: nil,
-                                       accessoryType: UITableViewCell
-                                         .AccessoryType.none,
+                                       accessoryType: UITableViewCellAccessoryType.none,
                                        target: self,
                                        action: #selector(didTapLogOut(sender:)))
-    logOutItem.textColor = UIColor.systemRed
+    logOutItem.textColor = UIColor.red
     model.add(logOutItem)
 
     self.model = model
@@ -196,7 +195,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
   // MARK: - Essential Methods
 
   func interfaceStyleValueText() -> String {
-    switch InterfaceStyle(rawValue: Settings.interfaceStyle)! {
+    switch Settings.interfaceStyle {
     case .system:
       return "System"
     case .light:
@@ -209,17 +208,17 @@ typealias NotificationPermissionHandler = (Bool) -> Void
   func lessonItemOrderValueText() -> String {
     var lessonItemOrderText: [String] = []
     for i in Settings.lessonOrder {
-      if i == TKMSubject_Type.unknown.rawValue { continue }
-      lessonItemOrderText.append(TKMSubjectTypeName(TKMSubject_Type(rawValue: i)!))
+      if Int32(i) == TKMSubject_Type.unknown.rawValue { continue }
+      lessonItemOrderText.append(TKMSubjectTypeName(TKMSubject_Type(rawValue: Int32(i))!))
     }
     if lessonItemOrderText.count < 3 { lessonItemOrderText.append("Random") }
     return lessonItemOrderText.joined(separator: ", ")
   }
 
-  func lessonBatchSizeText() -> String { String(Settings.lessonBatchSize) }
+  func lessonBatchSizeText() -> String { return String(Settings.lessonBatchSize) }
 
   func reviewOrderValueText() -> String {
-    switch ReviewOrder(rawValue: Settings.reviewOrder)! {
+    switch Settings.reviewOrder {
     case .random:
       return "Random"
     case .ascendingSRSStage:
@@ -237,7 +236,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
     }
   }
 
-  func reviewBatchSizeText() -> String { String(Settings.reviewBatchSize) }
+  func reviewBatchSizeText() -> String { return String(Settings.reviewBatchSize) }
 
   func taskOrderValueText() -> String {
     if Settings.meaningFirst {
@@ -247,7 +246,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
     }
   }
 
-  func fontSizeValueText() -> String { "\(Int(Settings.fontSize * 100))%" }
+  func fontSizeValueText() -> String { return "\(Int(Settings.fontSize * 100))%" }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -264,13 +263,17 @@ typealias NotificationPermissionHandler = (Bool) -> Void
 
   func applicationDidBecomeActive(notification _: Notification) {
     if let notificationHandler = self.notificationHandler {
-      let center = UNUserNotificationCenter.current()
-      center.getNotificationSettings { (settings: UNNotificationSettings) in
-        var granted: Bool = settings.authorizationStatus == UNAuthorizationStatus.authorized
-        if #available(iOS 12.0, *) {
-          granted = granted || settings.authorizationStatus == UNAuthorizationStatus.provisional
+      if #available(iOS 10.0, *) {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { (settings: UNNotificationSettings) in
+          var granted: Bool = settings.authorizationStatus == UNAuthorizationStatus.authorized
+          if #available(iOS 12.0, *) {
+            #if swift(>=5)
+            granted = granted || settings.authorizationStatus == UNAuthorizationStatus.provisional
+            #endif
+          }
+          notificationHandler(granted)
         }
-        notificationHandler(granted)
       }
     }
   }
@@ -297,9 +300,10 @@ typealias NotificationPermissionHandler = (Bool) -> Void
     self.notificationHandler = __handler(granted:)
 
     let notificationHandler: NotificationPermissionHandler = self.notificationHandler!
+    if #available(iOS 10.0, *) {
     let center = UNUserNotificationCenter.current()
     let options: UNAuthorizationOptions = [.badge, .alert]
-
+      #if swift(>=5)
     center.getNotificationSettings { (settings: UNNotificationSettings) in
       switch settings.authorizationStatus {
       case .authorized:
@@ -316,9 +320,11 @@ typealias NotificationPermissionHandler = (Bool) -> Void
           UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
                                     options: Dictionary(), completionHandler: nil)
         }
-      @unknown default:
+      default:
         fatalError()
       }
+    }
+      #endif
     }
   }
 
@@ -473,15 +479,15 @@ typealias NotificationPermissionHandler = (Bool) -> Void
 
   func didTapLogOut(sender _: Any?) {
     let c = UIAlertController(title: "Are you sure?", message: nil,
-                              preferredStyle: UIAlertController.Style.alert)
-    c.addAction(UIAlertAction(title: "Log out", style: UIAlertAction.Style.destructive,
+                              preferredStyle: UIAlertControllerStyle.alert)
+    c.addAction(UIAlertAction(title: "Log out", style: UIAlertActionStyle.destructive,
                               handler: { (_: UIAlertAction) in
                                 NotificationCenter.default
                                   .post(name: NSNotification
                                     .Name(rawValue: "kLogoutNotification"),
                                     object: self)
                               }))
-    c.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+    c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
     present(c, animated: true, completion: nil)
   }
 }
