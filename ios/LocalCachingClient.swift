@@ -26,7 +26,7 @@ private func synchronized<T>(_ lock: AnyObject, _ body: () throws -> T) rethrows
 
 extension FMDatabase {
   func stringForQuery(_ sql: String, _ values: Any...) -> String? {
-    checkQuery(sql, values).string(forColumnIndex: 0)
+    return checkQuery(sql, values).string(forColumnIndex: 0)
   }
 
   func checkQuery(_ sql: String, _ values: Any...) -> FMResultSet {
@@ -199,7 +199,7 @@ private class SyncProgressTracker {
   }
 
   static var databaseFilePath: String {
-    "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/local-cache.db"
+    return "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/local-cache.db"
   }
 
   // MARK: - Initializer & Helpers
@@ -457,7 +457,7 @@ private class SyncProgressTracker {
   }
 
   func currentLevelAssignments() -> [TKMAssignment] {
-    getAssignments(level: getUserInfo()?.currentLevel() ?? 1)
+    return getAssignments(level: getUserInfo()?.currentLevel() ?? 1)
   }
 
   func currentKanji() -> Int32 {
@@ -508,7 +508,7 @@ private class SyncProgressTracker {
   // MARK: - Getting cached data
 
   var pendingProgress: Int32 {
-    synchronized(self) {
+    return synchronized(self) {
       if isCachedPendingProgressStale {
         cachedPendingProgress = self.countRows(in: "pending_progress")
         isCachedPendingProgressStale = false
@@ -518,7 +518,7 @@ private class SyncProgressTracker {
   }
 
   var pendingStudyMaterials: Int32 {
-    synchronized(self) {
+    return synchronized(self) {
       if isCachedPendingStudyMaterialsStale {
         cachedPendingStudyMaterials = self.countRows(in: "pending_study_materials")
         isCachedPendingStudyMaterialsStale = false
@@ -528,21 +528,21 @@ private class SyncProgressTracker {
   }
 
   var availableReviewCount: Int32 {
-    synchronized(self) {
+    return synchronized(self) {
       updateAvailableSubjectCountsIfStale()
       return cachedAvailableReviewCount
     }
   }
 
   var availableLessonCount: Int32 {
-    synchronized(self) {
+    return synchronized(self) {
       updateAvailableSubjectCountsIfStale()
       return cachedAvailableLessonCount
     }
   }
 
   var upcomingReviews: [Int32] {
-    synchronized(self) {
+    return synchronized(self) {
       updateAvailableSubjectCountsIfStale()
       return cachedUpcomingReviews
     }
@@ -589,14 +589,14 @@ private class SyncProgressTracker {
   }
 
   func getSRSLevelCount(at level: TKMSRSStageCategory) -> Int32 {
-    synchronized(self) {
+    return synchronized(self) {
       updateAvailableSRSCountsIfStale()
       return cachedSRSLevelCounts[Int(level.rawValue)]
     }
   }
 
   func getGuruKanjiCount() -> Int32 {
-    synchronized(self) {
+    return synchronized(self) {
       updateAvailableSRSCountsIfStale()
       return cachedGuruKanjiCount
     }

@@ -472,7 +472,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
   // MARK: - Tap Tsurukame
 
   func didTapExportDatabase(sender _: Any?) {
-    let url = LocalCachingClient.databaseFileUrl
+    let url = URL(fileURLWithPath: LocalCachingClient.databaseFilePath)
     let c = UIActivityViewController(activityItems: [url], applicationActivities: nil)
     present(c, animated: true, completion: nil)
   }
