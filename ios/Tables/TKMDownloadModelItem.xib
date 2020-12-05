@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" axis="vertical" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yNh-ru-bro">
+                    <view opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" axis="vertical" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yNh-ru-bro">
                         <rect key="frame" x="15" y="11" width="345" height="56"/>
                         <subviews>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="s5Z-Ht-X5C">
@@ -46,7 +46,7 @@
                                     <constraint firstItem="2oJ-ye-qHd" firstAttribute="bottom" secondItem="w4O-6U-Z8p" secondAttribute="bottom" id="wgh-a0-KVv"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="stS-CL-nMU">
+                            <view opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="stS-CL-nMU">
                                 <rect key="frame" x="0.0" y="56" width="345" height="0.0"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Levels 1-10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eto-ka-nfe">
@@ -65,9 +65,9 @@
                                         <rect key="frame" x="321" y="0.0" width="24" height="0.0"/>
                                     </imageView>
                                 </subviews>
-                            </stackView>
+                            </view>
                         </subviews>
-                    </stackView>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="yNh-ru-bro" firstAttribute="trailing" secondItem="QDK-Vq-9DG" secondAttribute="trailingMargin" id="3gu-89-rrr"/>

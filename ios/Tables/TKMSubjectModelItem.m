@@ -25,7 +25,7 @@ static const CGFloat kFontSize = 14.f;
 @property(weak, nonatomic) IBOutlet UILabel *subjectLabel;
 @property(weak, nonatomic) IBOutlet UILabel *readingLabel;
 @property(weak, nonatomic) IBOutlet UILabel *meaningLabel;
-@property(weak, nonatomic) IBOutlet UIStackView *answerStack;
+@property(weak, nonatomic) IBOutlet UIView *answerStack;
 @end
 
 @implementation TKMSubjectModelItem
