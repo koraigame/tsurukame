@@ -141,7 +141,7 @@ static const CGFloat kFontSize = 14.f;
     self.readingLabel.font = item.readingWrong ? [TKMStyle japaneseFontBoldWithSize:kFontSize]
                                                : [TKMStyle japaneseFontWithSize:kFontSize];
     self.meaningLabel.font = item.meaningWrong
-                                 ? [UIFont systemFontOfSize:kFontSize weight:UIFontWeightBold]
+                                 ? [UIFont boldSystemFontOfSize:kFontSize]
                                  : [UIFont systemFontOfSize:kFontSize];
   }
 

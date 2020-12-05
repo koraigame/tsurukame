@@ -124,12 +124,10 @@
   return @[
     [UIKeyCommand keyCommandWithInput:@" "
                         modifierFlags:0
-                               action:@selector(playAudio)
-                 discoverabilityTitle:@"Play reading"],
+                               action:@selector(playAudio)],
     [UIKeyCommand keyCommandWithInput:UIKeyInputLeftArrow
                         modifierFlags:0
-                               action:@selector(backButtonPressed:)
-                 discoverabilityTitle:@"Back"]
+                               action:@selector(backButtonPressed:)]
   ];
 }
 

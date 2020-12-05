@@ -208,8 +208,8 @@ typealias NotificationPermissionHandler = (Bool) -> Void
   func lessonItemOrderValueText() -> String {
     var lessonItemOrderText: [String] = []
     for i in Settings.lessonOrder {
-      if Int32(i) == TKMSubject_Type.unknown.rawValue { continue }
-      lessonItemOrderText.append(TKMSubjectTypeName(TKMSubject_Type(rawValue: Int32(i))!))
+      if Int32(truncating: i) == TKMSubject_Type.unknown.rawValue { continue }
+      lessonItemOrderText.append(TKMSubjectTypeName(TKMSubject_Type(rawValue: Int32(truncating: i))!))
     }
     if lessonItemOrderText.count < 3 { lessonItemOrderText.append("Random") }
     return lessonItemOrderText.joined(separator: ", ")

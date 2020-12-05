@@ -41,7 +41,9 @@ NSNotificationName kLocalCachingClientUserInfoChangedNotification =
 
   [TKMScreenshotter setUp];
 
-  [self.window setInterfaceStyle:Settings.interfaceStyle];
+  if (@available(iOS 13.0, *)) {
+    [self.window setInterfaceStyle:Settings.interfaceStyle];
+  }
   [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 
   _storyboard = self.window.rootViewController.storyboard;
@@ -103,12 +105,14 @@ NSNotificationName kLocalCachingClientUserInfoChangedNotification =
                                          reachability:_services.reachability];
 
   if (!TKMScreenshotter.isActive) {
+    if (@available(iOS 10.0, *)) {
     // Ask for notification permissions.
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     UNAuthorizationOptions options = UNAuthorizationOptionBadge | UNAuthorizationOptionAlert;
     [center requestAuthorizationWithOptions:options
                           completionHandler:^(BOOL granted, NSError *_Nullable error){
                           }];
+    }
   }
 
   void (^pushMainViewController)(void) = ^() {
@@ -188,12 +192,15 @@ NSNotificationName kLocalCachingClientUserInfoChangedNotification =
     return;
   }
 
-  [[WatchHelper sharedInstance] updatedDataWithClient:_services.localCachingClient];
+  if (@available(iOS 9.3, *)) {
+    [[WatchHelper sharedInstance] updatedDataWithClient:_services.localCachingClient];
+  }
 
   if (!Settings.notificationsAllReviews && !Settings.notificationsBadging) {
     return;
   }
 
+  if (@available(iOS 10.0, *)) {
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   void (^updateBlock)(void) = ^() {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:reviewCount];
@@ -242,6 +249,7 @@ NSNotificationName kLocalCachingClientUserInfoChangedNotification =
           dispatch_async(dispatch_get_main_queue(), updateBlock);
         }
       }];
+  }
 }
 
 - (void)userInfoChanged:(NSNotification *)notification {
