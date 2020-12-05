@@ -14,7 +14,6 @@
 
 #import "TKMReviewContainerViewController.h"
 
-#import "LocalCachingClient.h"
 #import "ReviewItem.h"
 #import "Settings.h"
 #import "TKMReviewMenuViewController.h"

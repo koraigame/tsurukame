@@ -14,12 +14,14 @@
 
 #import "AppDelegate.h"
 #import "Client.h"
-#import "LocalCachingClient.h"
 #import "LoginViewController.h"
 #import "Settings.h"
 #import "Tsurukame-Swift.h"
 
 #import <UserNotifications/UserNotifications.h>
+
+NSNotificationName kLocalCachingClientUserInfoChangedNotification =
+    @"LocalCachingClientUnauthorizedNotification";
 
 @interface AppDelegate () <LoginViewControllerDelegate>
 @end
@@ -115,7 +117,7 @@
 
     [_navigationController setViewControllers:@[ vc ] animated:animated];
   };
-  void (^syncProgressHandler)(float) = ^(float progress) {
+  void (^syncProgressHandler)(double) = ^(double progress) {
     if (progress == 1.0) {
       pushMainViewController();
     }
@@ -124,7 +126,7 @@
   // Do a sync before pushing the main view controller if this was a new login.
   if (clearUserData) {
     [_services.localCachingClient clearAllData];
-    [_services.localCachingClient syncWithProgressHandler:syncProgressHandler quick:true];
+    [_services.localCachingClient syncQuickly:true handler:syncProgressHandler];
   } else {
     [self userInfoChanged:nil];  // Set the user's max level.
     pushMainViewController();
@@ -167,14 +169,13 @@
   }
 
   __weak AppDelegate *weakSelf = self;
-  [_services.localCachingClient
-      syncWithProgressHandler:^(float progress) {
-        if (progress == 1.0) {
-          [weakSelf updateAppBadgeCount];
-          completionHandler(UIBackgroundFetchResultNewData);
-        }
-      }
-                        quick:true];
+  [_services.localCachingClient syncQuickly:true
+                                    handler:^(double progress) {
+                                      if (progress == 1.0) {
+                                        [weakSelf updateAppBadgeCount];
+                                        completionHandler(UIBackgroundFetchResultNewData);
+                                      }
+                                    }];
 }
 
 - (void)updateAppBadgeCount {
