@@ -30,6 +30,7 @@
 #import "SubjectDetailsViewController.h"
 #import "SubjectsRemainingViewController.h"
 #import "SuccessAnimation.h"
+#import "TKMDispatch.h"
 #import "TKMDownloadViewController.h"
 #import "TKMFontLoader.h"
 #import "TKMFontsViewController.h"

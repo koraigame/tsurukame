@@ -161,6 +161,7 @@ struct AudioPackage {
   }
 
   func didTapDeleteAllAudio(sender _: Any) {
+    if #available(iOS 8.0, *) {
     let c = UIAlertController(title: "Delete all offline audio", message: "Are you sure?",
                               preferredStyle: UIAlertControllerStyle.alert)
     c.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive) { _ in
@@ -168,5 +169,11 @@ struct AudioPackage {
     })
     c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
     present(c, animated: true, completion: nil)
+    } else {
+      let c = AlertView(title: "Delete all offline audio", message: "Are you sure?", cancelButtonTitle: "Cancel", "Delete") {
+        self.deleteAllAudio()
+        }
+      c.show()
+    }
   }
 }

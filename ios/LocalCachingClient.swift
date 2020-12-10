@@ -209,7 +209,7 @@ private class SyncProgressTracker {
   var reachability: Reachability
 
   var db: FMDatabaseQueue!
-  var queue: DispatchQueue
+  var queue: TKMDispatch
   var busy = false
 
   var cachedAvailableLessonCount: Int32!
@@ -230,7 +230,7 @@ private class SyncProgressTracker {
     self.client = client
     self.dataLoader = dataLoader
     self.reachability = reachability
-    queue = DispatchQueue.global(qos: .background)
+    queue = TKMDispatch("BackgroundLocalCachingClientQueue")
 
     super.init()
     openDatabase()
@@ -794,7 +794,7 @@ private class SyncProgressTracker {
       self.sendAllPendingProgress(handler: tracker.newTask(group: sendGroup))
       self.sendAllPendingStudyMaterials(handler: tracker.newTask(group: sendGroup))
 
-      sendGroup.notify(queue: self.queue) {
+      sendGroup.notify(queue: self.queue.queue) {
         let updateGroup = DispatchGroup()
         self.updateAssignments(handler: tracker.newTask(group: updateGroup))
         self.updateStudyMaterials(handler: tracker.newTask(group: updateGroup))

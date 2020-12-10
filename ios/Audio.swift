@@ -165,11 +165,15 @@ class Audio: NSObject {
   }
 
   private func showDialog(title: String, message: String) {
-    let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-
-    let vc = UIApplication.shared.keyWindow!.rootViewController!
-    vc.present(ac, animated: true, completion: nil)
+    if #available(iOS 8.0, *) {
+      let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+      ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      let vc = UIApplication.shared.keyWindow!.rootViewController!
+      vc.present(ac, animated: true, completion: nil)
+    } else {
+      let ac = AlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "OK")
+      ac.show()
+    }
   }
 
   @objc private func itemFinishedPlaying() {

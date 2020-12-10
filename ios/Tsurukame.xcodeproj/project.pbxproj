@@ -18,6 +18,7 @@
 		48BAFB2F257878D000358419 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAFB2A257878CF00358419 /* Error.swift */; };
 		48BAFB30257878D000358419 /* String+Rexy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAFB2B257878CF00358419 /* String+Rexy.swift */; };
 		48CF714823EAFA5600A838F4 /* TKMReviewBatchSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CF714623EAFA5600A838F4 /* TKMReviewBatchSizeViewController.m */; };
+		48F3B483257F0C7400703C0B /* TKMDispatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3B482257F0C7400703C0B /* TKMDispatch.m */; };
 		5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33812F134DC80E5D981C40E /* Pods_FontScreenshotter.framework */; };
 		630ADB6F21F8256E00BC9801 /* TKMCheckmarkModelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 630ADB6E21F8256E00BC9801 /* TKMCheckmarkModelItem.m */; };
 		6319C9A0204015B900C31F87 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 6319C99F204015B900C31F87 /* NSString+MD5.m */; };
@@ -226,6 +227,8 @@
 		48BAFB2A257878CF00358419 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		48BAFB2B257878CF00358419 /* String+Rexy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Rexy.swift"; sourceTree = "<group>"; };
 		48CF714623EAFA5600A838F4 /* TKMReviewBatchSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMReviewBatchSizeViewController.m; sourceTree = "<group>"; };
+		48F3B482257F0C7400703C0B /* TKMDispatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKMDispatch.m; sourceTree = "<group>"; };
+		48F3B484257F141800703C0B /* TKMDispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKMDispatch.h; sourceTree = "<group>"; };
 		4B8236EC341CF1BA18D16857 /* Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; sourceTree = "<group>"; };
 		568C3CC1B10EB467FE18C0D8 /* Pods_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630ADB6D21F8256E00BC9801 /* TKMCheckmarkModelItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKMCheckmarkModelItem.h; sourceTree = "<group>"; };
@@ -525,6 +528,8 @@
 				C90846BC237F1C790068A272 /* ComplicationExtension */,
 				6398480D23D699E70077EB6B /* ContextSentenceModelItem.swift */,
 				636A63DD238A107A00902269 /* CurrentLevelChartItem.swift */,
+				48F3B482257F0C7400703C0B /* TKMDispatch.m */,
+				48F3B484257F141800703C0B /* TKMDispatch.h */,
 				481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */,
 				63CAAAF91FC6EADC00E09DA1 /* data.bin */,
 				631CAD5E234AC507008CEA73 /* DataLoader.swift */,
@@ -1250,6 +1255,7 @@
 				C9164D3923D0CFCF00B6D93A /* InterfaceStyleViewController.swift in Sources */,
 				633DE9352094D80D00AC25F4 /* ReviewTaskOrderViewController.m in Sources */,
 				C904455D2395DBAE001BC48B /* AnswerTextField.swift in Sources */,
+				48F3B483257F0C7400703C0B /* TKMDispatch.m in Sources */,
 				633DE95820C5634A00AC25F4 /* TKMModelItem.m in Sources */,
 				48BAFB30257878D000358419 /* String+Rexy.swift in Sources */,
 				657E731E22DAD99C00F6F4C1 /* SubjectsRemainingViewController.m in Sources */,

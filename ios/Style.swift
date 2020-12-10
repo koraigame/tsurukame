@@ -199,6 +199,7 @@ class TKMStyle: NSObject {
 
   // Wrapper around UITraitCollection.performAsCurrent that just does nothing
   // on iOS < 13.
+  @available(iOS 8.0, *)
   class func withTraitCollection(_ tc: UITraitCollection, f: () -> Void) {
     if #available(iOS 13.0, *) {
       #if swift(>=5.0)

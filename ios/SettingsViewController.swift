@@ -17,6 +17,44 @@ import UserNotifications
 
 typealias NotificationPermissionHandler = (Bool) -> Void
 
+@available(iOS, deprecated: 8.0)
+class AlertView: UIAlertView {
+  typealias AlertHandler = () -> Void
+  var button1Handler: AlertHandler?
+  var button2Handler: AlertHandler?
+  var button3Handler: AlertHandler?
+  override func dismiss(withClickedButtonIndex buttonIndex: Int, animated: Bool) {
+    if buttonIndex == 1 {
+      button1Handler?()
+    } else if buttonIndex == 2 {
+      button2Handler?()
+    } else if buttonIndex == 3 {
+      button3Handler?()
+    }
+  }
+  convenience init(title: String, message: String?, cancelButtonTitle: String?,
+                   _ button1Title: String?, _ button1Handler: @escaping AlertHandler) {
+    self.init(title: title, message: message ?? "", delegate: nil, cancelButtonTitle: cancelButtonTitle)
+    self.addButton(withTitle: button1Title)
+    self.button1Handler = button1Handler
+  }
+  convenience init(title: String, message: String?, cancelButtonTitle: String?,
+                   _ button1Title: String?, _ button1Handler: @escaping AlertHandler,
+                   _ button2Title: String?, _ button2Handler: @escaping AlertHandler) {
+    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title, button1Handler)
+    self.addButton(withTitle: button2Title)
+    self.button2Handler = button2Handler
+  }
+  convenience init(title: String, message: String?, cancelButtonTitle: String?,
+                   _ button1Title: String?, _ button1Handler: @escaping AlertHandler,
+                   _ button2Title: String?, _ button2Handler: @escaping AlertHandler,
+                   _ button3Title: String?, _ button3Handler: @escaping AlertHandler) {
+    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title, button1Handler, button2Title, button2Handler)
+    self.addButton(withTitle: button3Title)
+    self.button3Handler = button3Handler
+  }
+}
+
 @objcMembers class SettingsViewController: UITableViewController {
   var services: TKMServices!
   var model: TKMTableModel!
@@ -427,10 +465,15 @@ typealias NotificationPermissionHandler = (Bool) -> Void
       You must add a Japanese keyboard to your \(device).
       Open Settings then "General ⮕ Keyboard ⮕ Keyboards ⮕ Add New Keyboard."
       """
+      if #available(iOS 8.0, *) {
       let alert = UIAlertController(title: "No Japanese Keyboard", message: message,
                                     preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
       present(alert, animated: true, completion: nil)
+      } else {
+        let alert = AlertView(title: "No Japanese Keyboard", message: message, delegate: nil, cancelButtonTitle: "Close")
+        alert.show()
+      }
       switchView.isOn = false
       return
     }
@@ -478,6 +521,7 @@ typealias NotificationPermissionHandler = (Bool) -> Void
   }
 
   func didTapLogOut(sender _: Any?) {
+    if #available(iOS 8.0, *) {
     let c = UIAlertController(title: "Are you sure?", message: nil,
                               preferredStyle: UIAlertControllerStyle.alert)
     c.addAction(UIAlertAction(title: "Log out", style: UIAlertActionStyle.destructive,
@@ -489,5 +533,11 @@ typealias NotificationPermissionHandler = (Bool) -> Void
                               }))
     c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
     present(c, animated: true, completion: nil)
+    } else {
+      let c = AlertView(title: "Are you sure?", message: nil, cancelButtonTitle: "Cancel", "Log out") {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "kLogoutNotification"), object: self)
+        }
+      c.show()
+    }
   }
 }

@@ -22,7 +22,11 @@ class UpcomingReviewsXAxisValueFormatter: IAxisValueFormatter {
   init(_ startTime: Date) {
     self.startTime = startTime
     dateFormatter = DateFormatter()
-    dateFormatter.setLocalizedDateFormatFromTemplate("ha")
+    if #available(iOS 8.0, *) {
+      dateFormatter.setLocalizedDateFormatFromTemplate("ha")
+    } else {
+      dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ha", options: 0, locale: dateFormatter.locale)
+    }
   }
 
   func stringForValue(_ value: Double, axis _: AxisBase?) -> String {
@@ -89,7 +93,9 @@ class UpcomingReviewsChartCell: TKMModelCell {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    view.frame = contentView.bounds.inset(by: layoutMargins)
+    if #available(iOS 8.0, *) {
+      view.frame = contentView.bounds.inset(by: layoutMargins)
+    }
   }
 
   override func update(with baseItem: TKMModelItem!) {

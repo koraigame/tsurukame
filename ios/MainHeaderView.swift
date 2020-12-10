@@ -193,6 +193,7 @@ class MainHeaderView: UIView {
     delegate?.settingsButtonTapped()
   }
 
+  @available(iOS 8.0, *)
   override func traitCollectionDidChange(_: UITraitCollection?) {
     updateGradientColors()
   }

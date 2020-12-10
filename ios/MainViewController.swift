@@ -39,11 +39,20 @@ private func setTableViewCellCount(_ item: TKMBasicModelItem, count: Int) -> Boo
 @objc
 class MainViewController: UITableViewController, LoginViewControllerDelegate,
   MainHeaderViewDelegate,
-  SearchResultViewControllerDelegate, UISearchControllerDelegate {
+  SearchResultViewControllerDelegate, UISearchControllerDelegate, UISearchDisplayDelegate {
   var services: TKMServices!
   var model: TKMTableModel!
   @IBOutlet var headerView: MainHeaderView!
-  var searchController: UISearchController!
+  var displayController: UISearchDisplayController!
+  private var _searchController: Any? = nil
+  @available(iOS 8.0, *) var searchController: UISearchController! {
+    get {
+      return _searchController as? UISearchController
+    }
+    set {
+      _searchController = newValue
+    }
+  }
   weak var searchResultsViewController: SearchResultViewController!
   var hourlyRefreshTimer = Timer()
   var isShowingUnauthorizedAlert = false
@@ -82,12 +91,19 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     searchResultsViewController = searchResultsVC
 
     // Create the search controller.
-    searchController = UISearchController(searchResultsController: searchResultsViewController)
-    searchController.searchResultsUpdater = searchResultsViewController
-    searchController.delegate = self
-
+    var searchBar = UISearchBar()
+    if #available(iOS 8.0, *) {
+      searchController = UISearchController(searchResultsController: searchResultsViewController)
+      searchController.searchResultsUpdater = searchResultsViewController
+      searchController.delegate = self
+      searchBar = searchController.searchBar
+    } else {
+      displayController = UISearchDisplayController(searchBar: searchBar, contentsController: searchResultsViewController)
+      displayController.delegate = self
+      displayController.searchResultsDataSource = self
+    }
+    
     // Configure the search bar.
-    let searchBar = searchController.searchBar
     searchBar.barTintColor = TKMStyle.radicalColor2
     searchBar.autocapitalizationType = .none
 
@@ -320,7 +336,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   // MARK: - MainHeaderViewDelegate
 
   func searchButtonTapped() {
-    present(searchController, animated: true, completion: nil)
+    if #available(iOS 8.0, *) {
+      present(searchController, animated: true, completion: nil)
+    } else {
+      searchDisplayController?.setActive(true, animated: true)
+    }
   }
 
   func settingsButtonTapped() {
@@ -331,18 +351,21 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
   func updateHourlyTimer() {
     cancelHourlyTimer()
-
-    let calendar = Calendar.current as NSCalendar
-    let date = calendar
-      .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
-
+    let calendar = Calendar.current
     if #available(iOS 10.0, *) {
+      let date = (calendar as NSCalendar)
+        .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
       hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
                                                 repeats: false,
                                                 block: { [weak self] _ in
                                                   if self == nil { return }
                                                   self!.hourlyTimerExpired()
                                                 })
+    } else {
+      var components = calendar.dateComponents([.year, .month, .day, .hour], from: Date())
+      components.hour = components.hour! + 1
+      let date = calendar.date(from: components)!
+      hourlyRefreshTimer = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow, target: self, selector: #selector(hourlyTimerExpired), userInfo: nil, repeats: false)
     }
   }
 
@@ -351,7 +374,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     hourlyRefreshTimer = Timer()
   }
 
-  func hourlyTimerExpired() {
+  @objc func hourlyTimerExpired() {
     refresh(quick: true)
     updateHourlyTimer()
   }
@@ -426,14 +449,20 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     }
     isShowingUnauthorizedAlert = true
 
+    let message = "Your API Token expired - please log in again. You won't lose your review progress"
+    if #available(iOS 8.0, *) {
     let ac = UIAlertController(title: "Logged out",
-                               message: "Your API Token expired - please log in again. You won't lose your review progress",
+                               message: message,
                                preferredStyle: .alert)
 
     ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
       self.loginAgain()
     }))
     present(ac, animated: true, completion: nil)
+    } else {
+      let ac = AlertView(title: "Logged out", message: message, cancelButtonTitle: nil, "OK", self.loginAgain)
+      ac.show()
+    }
   }
 
   func loginAgain() {
@@ -465,7 +494,12 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let vc = storyboard?
       .instantiateViewController(withIdentifier: "subjectDetailsViewController") as! SubjectDetailsViewController
     vc.setup(with: services, subject: subject, showHints: true, hideBackButton: false, index: 0)
+    if #available(iOS 8.0, *) {
     searchController.dismiss(animated: true) {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+    } else {
+      searchDisplayController?.setActive(false, animated: true)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }

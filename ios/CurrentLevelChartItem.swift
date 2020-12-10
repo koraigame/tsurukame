@@ -142,6 +142,7 @@ class CurrentLevelChartCell: TKMModelCell {
   }
 
   override func layoutSubviews() {
+    if #available(iOS 8.0, *) {
     var insets = layoutMargins
     insets.bottom = 0
     insets.top = 0
@@ -151,6 +152,7 @@ class CurrentLevelChartCell: TKMModelCell {
     for chart in [radicalChart!, kanjiChart!, vocabularyChart!] {
       chart.frame = CGRect(x: x, y: frame.minY, width: width, height: frame.height)
       x += width
+    }
     }
   }
 

@@ -193,7 +193,7 @@ public final class Regex {
       }
 
       let startIndex = utf8.index(utf8.startIndex, offsetBy: Int(elements[0].rm_eo)).samePosition(in: source)!
-      let range: Range<String.Index> = startIndex ..< source.endIndex
+      let range = startIndex ..< source.endIndex
       string = source[range]
     }
 

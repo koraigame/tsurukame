@@ -455,8 +455,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
     guard let window = view.window else {
       return
     }
-    let viewBottomLeft = view.convert(CGPoint(x: 0.0, y: view.bounds.maxY),
-                                      to: window)
+    let viewBottomLeft = view.transferPoint(CGPoint(x: 0.0, y: view.bounds.maxY),
+                                            to: window)
     let windowBottom = window.bounds.maxY
     let distanceFromViewBottomToWindowBottom = windowBottom - viewBottomLeft.y
 
@@ -504,8 +504,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   }
 
   private func randomTask() {
-    TKMStyle.withTraitCollection(traitCollection) {
-      if activeQueue.count == 0 {
+    func performRandomTask() {
+		  if activeQueue.count == 0 {
         delegate.reviewViewControllerFinishedAllReviewItems(self)
         return
       }
@@ -680,6 +680,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
       }
       animateSubjectDetailsView(shown: false, setupContextFunc: setupContextFunc)
     }
+    if #available(iOS 8.0, *) {
+      TKMStyle.withTraitCollection(traitCollection, f: performRandomTask)
+    } else {
+      performRandomTask()
+    }
   }
 
   // MARK: - Random fonts
@@ -774,7 +779,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
     UIView.setAnimationBeginsFromCurrentState(false)
 
     // Constraints.
-    answerFieldToBottomConstraint.isActive = !shown
+    if #available(iOS 8.0, *) {
+      answerFieldToBottomConstraint.isActive = !shown
+    }
 
     // Enable/disable the answer field, and set its first responder status.
     // This makes the keyboard appear or disappear immediately.  We need this animation to happen
@@ -849,7 +856,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
       kPreviousSubjectButtonPadding * 2 + labelBounds.size.height * kPreviousSubjectScale
 
     var newGradient: [CGColor]!
+    if #available(iOS 8.0, *) {
     TKMStyle.withTraitCollection(traitCollection) {
+      newGradient = (TKMStyle.gradient(forSubject: previousSubject) as! [CGColor])
+    }
+    } else {
       newGradient = (TKMStyle.gradient(forSubject: previousSubject) as! [CGColor])
     }
 
@@ -1222,10 +1233,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   // MARK: - Ignoring incorrect answers
 
   @IBAction func addSynonymButtonPressed(_: Any) {
+    let message = "Don't cheat! Only use this if you promise you knew the correct answer."
+    if #available(iOS 8.0, *) {
     let c = UIAlertController(title: "Ignore incorrect answer?",
-                              message:
-                              "Don't cheat!  Only use this if you promise you " +
-                                "knew the correct answer.",
+                              message: message,
                               preferredStyle: .actionSheet)
     c.popoverPresentationController?.sourceView = addSynonymButton
     c.popoverPresentationController?.sourceRect = addSynonymButton.bounds
@@ -1245,6 +1256,17 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
     c.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     present(c, animated: true, completion: nil)
+    } else {
+      var c: AlertView
+      if activeTaskType == .meaning {
+        c = AlertView(title: "Ignore incorrect answer?", message: message, cancelButtonTitle: "Cancel",
+                      "My answer was correct", {self.markCorrect()}, "Ask again later", {self.askAgain()}, "Add synonym", {self.addSynonym()})
+      } else {
+        c = AlertView(title: "Ignore incorrect answer?", message: message, cancelButtonTitle: "Cancel",
+                      "My answer was correct", {self.markCorrect()}, "Ask again later", {self.askAgain()})
+      }
+      c.show()
+    }
   }
 
   @objc func markCorrect() {
