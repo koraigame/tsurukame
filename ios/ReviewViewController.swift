@@ -359,7 +359,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
       menuButton.isHidden = true
     }
 
-    normalFontName = TKMStyle.japaneseFontName
+    if #available(iOS 9.0, *) {
+      normalFontName = TKMStyle.japaneseFontName1
+    } else {
+      normalFontName = TKMStyle.japaneseFontName2
+    }
     currentFontName = normalFontName
     defaultFontSize = Double(questionLabel.font.pointSize)
 

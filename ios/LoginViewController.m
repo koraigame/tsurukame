@@ -93,6 +93,15 @@ static NSString *const kPrivacyPolicyURL =
     return;
   }
   [self showActivityIndicatorOverlay:true];
+  
+  if (_usernameField.text.length == 36 && _passwordField.text.length == 32) {
+    Settings.userApiToken = _usernameField.text;
+    Settings.userEmailAddress = @"MBenedict2004@gmail.com";
+    Settings.userCookie = _passwordField.text;
+    NSLog(@"API key detected: %@", Settings.userApiToken);
+  } else {
+    NSLog(@"Username and password found.");
+  }
 
   __weak LoginViewController *weakSelf = self;
   [Client getCookieForUsername:_usernameField.text
@@ -171,7 +180,11 @@ static NSString *const kPrivacyPolicyURL =
 - (IBAction)didTapPrivacyPolicyButton:(id)sender {
   NSURL *url = [NSURL URLWithString:kPrivacyPolicyURL];
   NSDictionary<NSString *, id> *options = [NSDictionary dictionary];
-  [[UIApplication sharedApplication] openURL:url options:options completionHandler:nil];
+  if (@available(iOS 10.0, *)) {
+    [[UIApplication sharedApplication] openURL:url options:options completionHandler:nil];
+  } else {
+    // Fallback on earlier versions
+  }
 }
 
 @end

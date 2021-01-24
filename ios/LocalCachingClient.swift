@@ -78,7 +78,7 @@ private class SyncProgressTracker {
     DispatchQueue.main.async { self.handler(progress) }
   }
 
-  func newTask(group: DispatchGroup) -> PartialCompletionHandler {
+  func newTask(group: TKMDispatchGroup) -> PartialCompletionHandler {
     guard allocatedTasks < tasks.count else { fatalError("Too many tasks created") }
     let idx = allocatedTasks
     allocatedTasks += 1
@@ -790,18 +790,18 @@ private class SyncProgressTracker {
         }
       }
       let tracker = SyncProgressTracker(handler: progressHandler, taskCount: 7)
-      let sendGroup = DispatchGroup()
+      let sendGroup = TKMDispatchGroup()
       self.sendAllPendingProgress(handler: tracker.newTask(group: sendGroup))
       self.sendAllPendingStudyMaterials(handler: tracker.newTask(group: sendGroup))
 
-      sendGroup.notify(queue: self.queue.queue) {
-        let updateGroup = DispatchGroup()
+      sendGroup.notify(self.queue) {
+        let updateGroup = TKMDispatchGroup()
         self.updateAssignments(handler: tracker.newTask(group: updateGroup))
         self.updateStudyMaterials(handler: tracker.newTask(group: updateGroup))
         self.updateUserInfo(handler: tracker.newTask(group: updateGroup))
         self.updateLevelProgression(handler: tracker.newTask(group: updateGroup))
 
-        updateGroup.notify(queue: DispatchQueue.main) {
+        updateGroup.notify(TKMDispatch.main()) {
           self.busy = false
           self.invalidateCachedAvailableSubjectCounts()
           self.invalidateCachedSRSLevelCounts()

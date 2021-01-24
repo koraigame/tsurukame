@@ -10,7 +10,15 @@
 #import "TKMDispatch.h"
 
 @implementation TKMDispatch
-dispatch_queue_t queue;
+__strong dispatch_queue_t queue;
+
++ (TKMDispatch*) main {
+  return [TKMDispatch initWithQueue:dispatch_get_main_queue()];
+}
+
+- (dispatch_queue_t) getQueue {
+  return queue;
+}
 
 - (void) async:(dispatch_block_t)block {
   dispatch_async(queue, block);
@@ -20,13 +28,27 @@ dispatch_queue_t queue;
   queue = dispatch_queue_create(label, NULL);
   return self;
 }
+
++ (instancetype)initWithQueue:(dispatch_queue_t)queue {
+  TKMDispatch* d = [[TKMDispatch alloc] init: "D"];
+  d.queue = queue;
+  return d;
+}
 @end
 
 @implementation TKMDispatchGroup
-dispatch_group_t group;
+__strong dispatch_group_t group;
 
 - (void) notify:(TKMDispatch*) queue withBlock: (dispatch_block_t) block {
-  dispatch_group_notify(group, queue.queue, block);
+  dispatch_group_notify(group, [queue getQueue], block);
+}
+
+- (void) enter {
+  dispatch_group_enter(group);
+}
+
+- (void) leave {
+  dispatch_group_leave(group);
 }
 
 - (instancetype)init {
