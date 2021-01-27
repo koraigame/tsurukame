@@ -254,9 +254,11 @@ NSTimeInterval TKMMinimumTimeUntilGuruSeconds(int itemLevel, int srsStage) {
 - (NSString *)displayText {
   if (self.hasType && self.type == TKMReading_Type_Onyomi && Settings.useKatakanaForOnyomi) {
     if (@available(iOS 9.0, *)) {
-    return [self.reading stringByApplyingTransform:NSStringTransformHiraganaToKatakana reverse:NO];
+      return [self.reading stringByApplyingTransform:NSStringTransformHiraganaToKatakana
+                                             reverse:NO];
     } else {
-      CFMutableStringRef r = (__bridge CFMutableStringRef)[NSMutableString stringWithString:self.reading];
+      CFMutableStringRef r =
+          (__bridge CFMutableStringRef)[NSMutableString stringWithString:self.reading];
       CFStringTransform(r, NULL, kCFStringTransformHiraganaKatakana, NO);
       return (__bridge NSMutableString *)r;
     }

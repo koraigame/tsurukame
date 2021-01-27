@@ -122,9 +122,7 @@
 
 - (NSArray<UIKeyCommand *> *)keyCommands {
   return @[
-    [UIKeyCommand keyCommandWithInput:@" "
-                        modifierFlags:0
-                               action:@selector(playAudio)],
+    [UIKeyCommand keyCommandWithInput:@" " modifierFlags:0 action:@selector(playAudio)],
     [UIKeyCommand keyCommandWithInput:UIKeyInputLeftArrow
                         modifierFlags:0
                                action:@selector(backButtonPressed:)]

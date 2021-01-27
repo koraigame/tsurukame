@@ -438,10 +438,11 @@ NSString *TKMConvertKanaText(NSString *input) {
     if (replacement) {
       if (firstCharacterIsUppercase || _alphabet == kTKMAlphabetKatakana) {
         if (@available(iOS 9.0, *)) {
-        replacement = [replacement stringByApplyingTransform:NSStringTransformHiraganaToKatakana
-                                                     reverse:NO];
+          replacement = [replacement stringByApplyingTransform:NSStringTransformHiraganaToKatakana
+                                                       reverse:NO];
         } else {
-          CFMutableStringRef r = (__bridge CFMutableStringRef)[NSMutableString stringWithString:replacement];
+          CFMutableStringRef r =
+              (__bridge CFMutableStringRef)[NSMutableString stringWithString:replacement];
           CFStringTransform(r, NULL, kCFStringTransformHiraganaKatakana, NO);
           replacement = (__bridge NSMutableString *)r;
         }

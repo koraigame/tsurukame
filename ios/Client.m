@@ -426,7 +426,7 @@ static NSString *GetSessionCookie(NSURLSession *session) {
           handler(nil, newCookie);
           return;
         }
-        
+
         NSLog(@"%@", response);
         handler([TKMClientError errorWithMessage:@"Unknown error"], nil);
       };

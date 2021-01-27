@@ -36,10 +36,10 @@ typedef NS_ENUM(NSUInteger, ReviewOrder) {
   ReviewOrder_DescendingSRSStage = 7,
 };
 
-typedef NS_ENUM(NSUInteger, InterfaceStyle){
-    InterfaceStyle_System = 1,
-    InterfaceStyle_Light = 2,
-    InterfaceStyle_Dark = 3
+typedef NS_ENUM(NSUInteger, InterfaceStyle) {
+  InterfaceStyle_System = 1,
+  InterfaceStyle_Light = 2,
+  InterfaceStyle_Dark = 3
 };
 
 @interface Settings : NSObject

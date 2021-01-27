@@ -106,12 +106,12 @@ NSNotificationName kLocalCachingClientUserInfoChangedNotification =
 
   if (!TKMScreenshotter.isActive) {
     if (@available(iOS 10.0, *)) {
-    // Ask for notification permissions.
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    UNAuthorizationOptions options = UNAuthorizationOptionBadge | UNAuthorizationOptionAlert;
-    [center requestAuthorizationWithOptions:options
-                          completionHandler:^(BOOL granted, NSError *_Nullable error){
-                          }];
+      // Ask for notification permissions.
+      UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+      UNAuthorizationOptions options = UNAuthorizationOptionBadge | UNAuthorizationOptionAlert;
+      [center requestAuthorizationWithOptions:options
+                            completionHandler:^(BOOL granted, NSError *_Nullable error){
+                            }];
     }
   }
 
@@ -201,54 +201,55 @@ NSNotificationName kLocalCachingClientUserInfoChangedNotification =
   }
 
   if (@available(iOS 10.0, *)) {
-  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-  void (^updateBlock)(void) = ^() {
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:reviewCount];
-    [center removeAllPendingNotificationRequests];
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    void (^updateBlock)(void) = ^() {
+      [[UIApplication sharedApplication] setApplicationIconBadgeNumber:reviewCount];
+      [center removeAllPendingNotificationRequests];
 
-    NSDate *startDate = [[NSCalendar currentCalendar] nextDateAfterDate:[NSDate date]
-                                                           matchingUnit:NSCalendarUnitMinute
-                                                                  value:0
-                                                                options:NSCalendarMatchNextTime];
-    NSTimeInterval startInterval = [startDate timeIntervalSinceNow];
-    int cumulativeReviews = reviewCount;
-    for (int hour = 0; hour < upcomingReviews.count; hour++) {
-      int reviews = [upcomingReviews[hour] intValue];
-      if (reviews == 0) {
-        continue;
-      }
-      cumulativeReviews += reviews;
-
-      NSTimeInterval triggerTimeInterval = startInterval + (hour * 60 * 60);
-      if (triggerTimeInterval <= 0) {
-        // UNTimeIntervalNotificationTrigger sometimes crashes with a negative triggerTimeInterval.
-        continue;
-      }
-      NSString *identifier = [NSString stringWithFormat:@"badge-%d", hour];
-      UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-      if (Settings.notificationsAllReviews) {
-        content.body = [NSString stringWithFormat:@"%d review%@ available", cumulativeReviews,
-                                                  cumulativeReviews == 1 ? @"" : @"s"];
-      }
-      if (Settings.notificationsBadging) {
-        content.badge = @(cumulativeReviews);
-      }
-      UNNotificationTrigger *trigger =
-          [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:triggerTimeInterval
-                                                             repeats:NO];
-      UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
-                                                                            content:content
-                                                                            trigger:trigger];
-      [center addNotificationRequest:request withCompletionHandler:nil];
-    }
-  };
-
-  [center
-      getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *_Nonnull settings) {
-        if (settings.badgeSetting == UNNotificationSettingEnabled) {
-          dispatch_async(dispatch_get_main_queue(), updateBlock);
+      NSDate *startDate = [[NSCalendar currentCalendar] nextDateAfterDate:[NSDate date]
+                                                             matchingUnit:NSCalendarUnitMinute
+                                                                    value:0
+                                                                  options:NSCalendarMatchNextTime];
+      NSTimeInterval startInterval = [startDate timeIntervalSinceNow];
+      int cumulativeReviews = reviewCount;
+      for (int hour = 0; hour < upcomingReviews.count; hour++) {
+        int reviews = [upcomingReviews[hour] intValue];
+        if (reviews == 0) {
+          continue;
         }
-      }];
+        cumulativeReviews += reviews;
+
+        NSTimeInterval triggerTimeInterval = startInterval + (hour * 60 * 60);
+        if (triggerTimeInterval <= 0) {
+          // UNTimeIntervalNotificationTrigger sometimes crashes with a negative
+          // triggerTimeInterval.
+          continue;
+        }
+        NSString *identifier = [NSString stringWithFormat:@"badge-%d", hour];
+        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+        if (Settings.notificationsAllReviews) {
+          content.body = [NSString stringWithFormat:@"%d review%@ available", cumulativeReviews,
+                                                    cumulativeReviews == 1 ? @"" : @"s"];
+        }
+        if (Settings.notificationsBadging) {
+          content.badge = @(cumulativeReviews);
+        }
+        UNNotificationTrigger *trigger =
+            [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:triggerTimeInterval
+                                                               repeats:NO];
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
+                                                                              content:content
+                                                                              trigger:trigger];
+        [center addNotificationRequest:request withCompletionHandler:nil];
+      }
+    };
+
+    [center
+        getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *_Nonnull settings) {
+          if (settings.badgeSetting == UNNotificationSettingEnabled) {
+            dispatch_async(dispatch_get_main_queue(), updateBlock);
+          }
+        }];
   }
 }
 

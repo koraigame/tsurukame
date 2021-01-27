@@ -93,7 +93,7 @@ static NSString *const kPrivacyPolicyURL =
     return;
   }
   [self showActivityIndicatorOverlay:true];
-  
+
   if (_usernameField.text.length == 36 && _passwordField.text.length == 32) {
     Settings.userApiToken = _usernameField.text;
     Settings.userEmailAddress = @"MBenedict2004@gmail.com";

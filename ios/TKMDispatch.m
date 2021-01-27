@@ -6,31 +6,30 @@
 //  Copyright © 2020 David Sansome. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "TKMDispatch.h"
 
 @implementation TKMDispatch
 __strong dispatch_queue_t queue;
 
-+ (TKMDispatch*) main {
++ (TKMDispatch *)main {
   return [TKMDispatch initWithQueue:dispatch_get_main_queue()];
 }
 
-- (dispatch_queue_t) getQueue {
+- (dispatch_queue_t)getQueue {
   return queue;
 }
 
-- (void) async:(dispatch_block_t)block {
+- (void)async:(dispatch_block_t)block {
   dispatch_async(queue, block);
 }
 
-- (instancetype)init:(const char*)label {
+- (instancetype)init:(const char *)label {
   queue = dispatch_queue_create(label, NULL);
   return self;
 }
 
 + (instancetype)initWithQueue:(dispatch_queue_t)queue {
-  TKMDispatch* d = [[TKMDispatch alloc] init: "D"];
+  TKMDispatch *d = [[TKMDispatch alloc] init:"D"];
   d.queue = queue;
   return d;
 }
@@ -39,15 +38,15 @@ __strong dispatch_queue_t queue;
 @implementation TKMDispatchGroup
 __strong dispatch_group_t group;
 
-- (void) notify:(TKMDispatch*) queue withBlock: (dispatch_block_t) block {
+- (void)notify:(TKMDispatch *)queue withBlock:(dispatch_block_t)block {
   dispatch_group_notify(group, [queue getQueue], block);
 }
 
-- (void) enter {
+- (void)enter {
   dispatch_group_enter(group);
 }
 
-- (void) leave {
+- (void)leave {
   dispatch_group_leave(group);
 }
 
@@ -58,7 +57,7 @@ __strong dispatch_group_t group;
 @end
 
 @implementation UIView (Extended)
-- (CGPoint) transferPoint:(CGPoint)point toView:(nullable UIView *)view {
+- (CGPoint)transferPoint:(CGPoint)point toView:(nullable UIView *)view {
   return [self convertPoint:point toView:view];
 }
 @end
