@@ -789,7 +789,7 @@ private class SyncProgressTracker {
           db.checkUpdate("UPDATE sync SET assignments_updated_after = \"\";")
         }
       }
-      let tracker = SyncProgressTracker(handler: progressHandler, taskCount: 7)
+      let tracker = SyncProgressTracker(handler: progressHandler, taskCount: 6)
       let sendGroup = TKMDispatchGroup()
       self.sendAllPendingProgress(handler: tracker.newTask(group: sendGroup))
       self.sendAllPendingStudyMaterials(handler: tracker.newTask(group: sendGroup))
