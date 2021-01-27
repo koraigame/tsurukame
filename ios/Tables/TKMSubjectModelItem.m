@@ -66,6 +66,10 @@ static const CGFloat kFontSize = 14.f;
   return @"TKMSubjectModelItem";
 }
 
+- (CGFloat) rowHeight {
+  return 42.f;
+}
+
 @end
 
 @implementation TKMSubjectModelView {

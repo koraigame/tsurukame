@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN;
 @property(nonatomic) bool showRemaining;
 @property(nonatomic) NSArray<id> *gradientColors;
 
+- (CGFloat) rowHeight;
+
 @end
 
 @interface TKMSubjectCollectionModelItem : NSObject <TKMModelItem>
