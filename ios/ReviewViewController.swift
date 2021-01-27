@@ -168,7 +168,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   #if swift(>=5)
   private let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator.FeedbackStyle.light)
   #endif
-  private let tickImage = UIImage(named: "checkmark.circle")
+  private let tickImage = UIImage(named: "checkmark")
   private let forwardArrowImage = UIImage(named: "ic_arrow_forward_white")
   private let skipImage = UIImage(named: "goforward.plus")
 

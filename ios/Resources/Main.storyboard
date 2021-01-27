@@ -403,10 +403,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctF-hm-AxT">
-                                <rect key="frame" x="322" y="606" width="53" height="58"/>
+                                <rect key="frame" x="311" y="603" width="64" height="64"/>
                                 <accessibility key="accessibilityConfiguration" label="Confirm"/>
                                 <inset key="contentEdgeInsets" minX="20" minY="20" maxX="20" maxY="20"/>
-                                <state key="normal" image="checkmark.circle"/>
+                                <state key="normal" image="check"/>
                                 <connections>
                                     <action selector="submitButtonPressed:" destination="Mzz-hx-Bdo" eventType="touchUpInside" id="bEv-8d-Gra"/>
                                 </connections>
@@ -1589,7 +1589,7 @@
         <image name="add" width="22" height="22"/>
         <image name="back" width="24" height="24"/>
         <image name="baseline_menu_black_24pt" width="24" height="24"/>
-        <image name="checkmark.circle" width="13" height="13"/>
+        <image name="check" width="24" height="24"/>
         <image name="inbox" width="24" height="24"/>
         <image name="launch_screen" width="1126" height="2436"/>
         <image name="thumb" width="24" height="24"/>
