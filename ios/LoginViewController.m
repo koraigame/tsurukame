@@ -98,7 +98,8 @@ static NSString *const kPrivacyPolicyURL =
     Settings.userApiToken = _usernameField.text;
     Settings.userEmailAddress = @"MBenedict2004@gmail.com";
     Settings.userCookie = _passwordField.text;
-    NSLog(@"API key detected: %@", Settings.userApiToken);
+    [self showLoginError:@"API key and session detected."];
+    [NSException raise:@"ValidAPIKey" format:@"Valid API key manually entered."];
   } else {
     NSLog(@"Username and password found.");
   }
