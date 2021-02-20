@@ -30,7 +30,9 @@ class InterfaceStyleViewController: UITableViewController {
 
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     Settings.interfaceStyle = UInt(indexPath.row + 1)
-    view.window!.setInterfaceStyle(InterfaceStyle(rawValue: Settings.interfaceStyle)!)
+    if #available(iOS 13.0, *) {
+      view.window!.setInterfaceStyle(InterfaceStyle(rawValue: Settings.interfaceStyle)!)
+    }
     navigationController?.popViewController(animated: true)
   }
 }

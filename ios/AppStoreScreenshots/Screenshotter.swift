@@ -61,14 +61,14 @@ import Reachability
 
     static func createLocalCachingClient(client: WaniKaniAPIClient,
                                          reachability: Reachability) -> LocalCachingClient {
-      isActive ? FakeLocalCachingClient(client: client, reachability: reachability)
+      return isActive ? FakeLocalCachingClient(client: client, reachability: reachability)
         : LocalCachingClient(client: client, reachability: reachability)
     }
   }
 
   class FakeLocalCachingClient: LocalCachingClient {
     override func countRows(inTable _: String) -> Int {
-      0
+      return 0
     }
 
     override func updateAvailableSubjects() -> (Int, Int, [Int]) {
@@ -77,11 +77,11 @@ import Reachability
     }
 
     override func updateGuruKanjiCount() -> Int {
-      864
+      return 864
     }
 
     override func updateSrsCategoryCounts() -> [Int] {
-      [86, 120, 485, 786, 2056]
+      return [86, 120, 485, 786, 2056]
     }
 
     override func getAllAssignments() -> [TKMAssignment] {
@@ -95,7 +95,7 @@ import Reachability
     }
 
     override func getStudyMaterial(subjectId _: Int) -> TKMStudyMaterials? {
-      nil
+      return nil
     }
 
     override func getUserInfo() -> TKMUser? {
@@ -107,11 +107,11 @@ import Reachability
     }
 
     override func getAllPendingProgress() -> [TKMProgress] {
-      []
+      return []
     }
 
     override func getAssignment(subjectId _: Int) -> TKMAssignment? {
-      nil
+      return nil
     }
 
     override func getAssignments(level _: Int) -> [TKMAssignment] {
@@ -137,17 +137,17 @@ import Reachability
     }
 
     override func getAssignmentsAtUsersCurrentLevel() -> [TKMAssignment] {
-      makePieSlices(.radical, locked: 0, lesson: 2, apprentice: 4, guru: 1) +
+      return makePieSlices(.radical, locked: 0, lesson: 2, apprentice: 4, guru: 1) +
         makePieSlices(.kanji, locked: 8, lesson: 4, apprentice: 12, guru: 1) +
         makePieSlices(.vocabulary, locked: 50, lesson: 8, apprentice: 4, guru: 0)
     }
 
     override func sendProgress(_: [TKMProgress]) -> Promise<Void> {
-      Promise.value(())
+      return Promise.value(())
     }
 
     override func updateStudyMaterial(_: TKMStudyMaterials) -> Promise<Void> {
-      Promise.value(())
+      return Promise.value(())
     }
 
     override func clearAllData() {}
@@ -168,7 +168,7 @@ import Reachability
                                lesson: Int,
                                apprentice: Int,
                                guru: Int) -> [TKMAssignment] {
-      Array(repeating: makeAssignment(type, srsStage: -1), count: locked) +
+      return Array(repeating: makeAssignment(type, srsStage: -1), count: locked) +
         Array(repeating: makeAssignment(type, srsStage: 0), count: lesson) +
         Array(repeating: makeAssignment(type, srsStage: 1), count: apprentice) +
         Array(repeating: makeAssignment(type, srsStage: 6), count: guru)

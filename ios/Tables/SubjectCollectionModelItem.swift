@@ -17,7 +17,7 @@ import Foundation
 class SubjectCollectionModelItem: NSObject, TKMModelItem {
   let subjects: GPBInt32Array
   let localCachingClient: LocalCachingClient
-  weak var delegate: SubjectChipDelegate?
+  var delegate: SubjectChipDelegate?
 
   init(subjects: GPBInt32Array, localCachingClient: LocalCachingClient,
        delegate: SubjectChipDelegate) {
@@ -27,7 +27,7 @@ class SubjectCollectionModelItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    SubjectCollectionModelView.self
+    return SubjectCollectionModelView.self
   }
 }
 

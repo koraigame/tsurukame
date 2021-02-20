@@ -30,7 +30,7 @@ class FontSizeViewController: UITableViewController {
     super.viewDidLoad()
     assert(fontSizeByRow.count == tableView.numberOfRows(inSection: 0))
 
-    let row = fontSizeByRow.firstIndex(of: Settings.fontSize) ?? 0
+    let row = fontSizeByRow.index(of: Settings.fontSize) ?? 0
     tableView.cellForRow(at: IndexPath(row: row, section: 0))?.accessoryType = .checkmark
   }
 

@@ -17,15 +17,17 @@
 
 #import "LessonsViewController.h"
 #import "LoginViewController.h"
-#import "NSString+LevenshteinDistance.h"
 #import "NavigationController.h"
+#import "NSString+LevenshteinDistance.h"
+#import "Reachability.h"
 #import "ReviewSummaryViewController.h"
-#import "SettingsViewController.h"
 #import "SubjectCatalogueViewController.h"
 #import "SubjectsRemainingViewController.h"
 #import "SuccessAnimation.h"
+#import "TKMDispatch.h"
 #import "TKMDownloadViewController.h"
 #import "TKMFontLoader.h"
+#import "TKMFontsViewController.h"
 #import "TKMGradientView.h"
 #import "TKMKanaInput.h"
 #import "TKMListSeparatorItem.h"
@@ -33,12 +35,15 @@
 #import "Tables/TKMBasicModelItem.h"
 #import "Tables/TKMDownloadModelItem.h"
 #import "Tables/TKMModelItem.h"
+#import "Tables/TKMSwitchModelItem.h"
 #import "Tables/TKMTableModel.h"
 #import "UIView+SafeAreaInsets.h"
 
 #import "proto/Wanikani.pbobjc.h"
 
+#import <CommonCrypto/CommonCrypto.h>
 #import <Haneke/Haneke.h>
+#import <OAStackView/OAStackView.h>
 #import <WatchConnectivity/WatchConnectivity.h>
 
 #endif /* Tsurukame_Bridging_Header_h */

@@ -15,11 +15,11 @@
 import Foundation
 
 private let kTagRE =
-  try! NSRegularExpression(pattern: #"([^\[<]*)"# +
-    #"(?:[\[<]"# +
-    #"(/?(?:vocabulary|reading|ja|jp|kanji|radical|b|em|i|strong|kan|a))"# +
-    #"(?: href="([^"]+)"[^>]*)?"# +
-    #"[\]>])"#, options: [.caseInsensitive])
+  try! NSRegularExpression(pattern: "([^\\[<]*)" +
+    "(?:[\\[<]" +
+    "(/?(?:vocabulary|reading|ja|jp|kanji|radical|b|em|i|strong|kan|a))" +
+    "(?: href=\"([^\"]+)\"[^>]*)?" +
+    "[\\]>])", options: [.caseInsensitive])
 
 private func copyEnumArray<ValueType: RawRepresentable>(_ array: [ValueType]) -> GPBEnumArray {
   let ret = GPBEnumArray()

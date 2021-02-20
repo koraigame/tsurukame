@@ -19,7 +19,7 @@ enum TaskType {
   case meaning
 
   static func random() -> TaskType {
-    arc4random_uniform(2) == 0 ? .reading : .meaning
+    return arc4random_uniform(2) == 0 ? .reading : .meaning
   }
 }
 
@@ -47,7 +47,7 @@ class ReviewItem: NSObject {
 
   class func readyForReview(assignments: [TKMAssignment],
                             localCachingClient: LocalCachingClient) -> [ReviewItem] {
-    filterReadyItems(assignments: assignments,
+    return filterReadyItems(assignments: assignments,
                      localCachingClient: localCachingClient) { (assignment) -> Bool in
       assignment.isReviewStage && assignment.availableAtDate.timeIntervalSinceNow < 0
     }
@@ -55,7 +55,7 @@ class ReviewItem: NSObject {
 
   class func readyForLessons(assignments: [TKMAssignment],
                              localCachingClient: LocalCachingClient) -> [ReviewItem] {
-    filterReadyItems(assignments: assignments,
+    return filterReadyItems(assignments: assignments,
                      localCachingClient: localCachingClient) { (assignment) -> Bool in
       assignment.isLessonStage
     }
@@ -74,7 +74,7 @@ class ReviewItem: NSObject {
 
   private func getSubjectTypeIndex(_ subjectType: TKMSubject_Type) -> Int {
     for (idx, typeValue) in Settings.lessonOrder.enumerated() {
-      if typeValue == subjectType.rawValue {
+      if Int(typeValue) == Int(subjectType.rawValue) {
         return idx
       }
     }

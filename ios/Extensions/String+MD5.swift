@@ -12,20 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import CommonCrypto
 import Foundation
 
 extension String {
   public func MD5() -> String {
-    let str = data(using: .utf8)!
+    let str: Data = data(using: .utf8)!
     var digest = Data(count: Int(CC_MD5_DIGEST_LENGTH))
 
-    str.withUnsafeBytes { dataPointer in
-      digest.withUnsafeMutableBytes { digestPointer in
-        if let dataAddr = dataPointer.baseAddress,
-          let digestAddr = digestPointer.bindMemory(to: UInt8.self).baseAddress {
-          CC_MD5(dataAddr, CC_LONG(str.count), digestAddr)
-        }
+    _ = digest.withUnsafeMutableBytes { digestBytes in
+      str.withUnsafeBytes { messageBytes in
+        CC_MD5(messageBytes, CC_LONG(str.count), digestBytes)
       }
     }
 

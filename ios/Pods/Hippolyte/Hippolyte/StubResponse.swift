@@ -19,32 +19,27 @@ public struct StubResponse: HTTPStubResponse, Equatable {
     public init() {
     }
 
-    @discardableResult
     public func defaultResponse() -> Builder {
       response = StubResponse()
       return self
     }
 
-    @discardableResult
     public func stubResponse(withStatusCode statusCode: Int) -> Builder {
       response = StubResponse(statusCode: statusCode)
       return self
     }
 
-    @discardableResult
     public func stubResponse(withError error: NSError) -> Builder {
       response = StubResponse(error: error)
       return self
     }
 
-    @discardableResult
     public func addBody(_ body: Data) -> Builder {
       assert(response != nil)
       response.body = body
       return self
     }
 
-    @discardableResult
     public func addHeader(withKey key: String, value: String) -> Builder {
       assert(response != nil)
       response.headers[key] = value
@@ -52,7 +47,7 @@ public struct StubResponse: HTTPStubResponse, Equatable {
     }
 
     public func build() -> StubResponse {
-      response
+      return response
     }
 
   }
@@ -84,7 +79,7 @@ public struct StubResponse: HTTPStubResponse, Equatable {
   /// - Parameter statusCode: The statusCode to use when stubbing
   public init(statusCode: Int) {
     self.statusCode = statusCode
-    body = Data("".utf8)
+    body = "".data(using: .utf8)!
     headers = [:]
     shouldFail = false
     error = nil

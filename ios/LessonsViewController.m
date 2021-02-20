@@ -221,17 +221,12 @@
   return @[
     [UIKeyCommand keyCommandWithInput:UIKeyInputLeftArrow
                         modifierFlags:0
-                               action:@selector(prevPage)
-                 discoverabilityTitle:@"Previous"],
+                               action:@selector(prevPage)],
     [UIKeyCommand keyCommandWithInput:UIKeyInputRightArrow
                         modifierFlags:0
-                               action:@selector(nextPage)
-                 discoverabilityTitle:@"Next"],
+                               action:@selector(nextPage)],
     [UIKeyCommand keyCommandWithInput:@"\r" modifierFlags:0 action:@selector(nextPage)],
-    [UIKeyCommand keyCommandWithInput:@" "
-                        modifierFlags:0
-                               action:@selector(playAudio)
-                 discoverabilityTitle:@"Play reading"]
+    [UIKeyCommand keyCommandWithInput:@" " modifierFlags:0 action:@selector(playAudio)]
 
   ];
 }

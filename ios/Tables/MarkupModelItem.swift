@@ -15,7 +15,7 @@
 import Foundation
 
 func render(formattedText: [TKMFormattedText],
-            standardAttributes: [NSAttributedString.Key: Any]) -> NSMutableAttributedString {
+            standardAttributes: [NSAttributedStringKey: Any]) -> NSMutableAttributedString {
   let text = NSMutableAttributedString()
   for part in formattedText {
     text.append(render(formattedText: part, standardAttributes: standardAttributes))
@@ -24,10 +24,10 @@ func render(formattedText: [TKMFormattedText],
 }
 
 private func render(formattedText: TKMFormattedText,
-                    standardAttributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
+                    standardAttributes: [NSAttributedStringKey: Any]) -> NSAttributedString {
   var attributes = standardAttributes
   for i in 0 ..< formattedText.formatArray_Count {
-    let format = TKMFormattedText_Format(rawValue: formattedText.formatArray.value(at: i))
+    let format = TKMFormattedText_Format(rawValue: formattedText.formatArray.value(at: i))!
     switch format {
     case .kanji:
       attributes[.foregroundColor] = TKMStyle.Color.markupKanjiForeground

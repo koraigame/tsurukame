@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public protocol GPBPrimitiveArrayProtocol: NSObject {
+public protocol GPBPrimitiveArrayProtocol {
   associatedtype ElementType
   var count: UInt { get }
   func value(at: UInt) -> ElementType
 }
 
 public struct GPBPrimitiveArrayIterator<ArrayType: GPBPrimitiveArrayProtocol>: IteratorProtocol {
-  weak var array: ArrayType?
+  var array: ArrayType?
   private var i: UInt = 0
   public typealias Element = ArrayType.ElementType
 
@@ -40,7 +40,7 @@ public struct GPBPrimitiveArrayIterator<ArrayType: GPBPrimitiveArrayProtocol>: I
 
 extension GPBInt32Array: GPBPrimitiveArrayProtocol, Sequence {
   public typealias Iterator = GPBPrimitiveArrayIterator<GPBInt32Array>
-  public __consuming func makeIterator() -> GPBInt32Array.Iterator {
-    GPBPrimitiveArrayIterator(self)
+  public func makeIterator() -> GPBInt32Array.Iterator {
+    return GPBPrimitiveArrayIterator(self)
   }
 }

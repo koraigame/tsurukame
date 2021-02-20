@@ -29,7 +29,7 @@ class SubjectsByLevelViewController: UITableViewController, SubjectDelegate {
 
   // Only for objective-c compatibility.
   @objc func getLevel() -> Int {
-    level
+    return level
   }
 
   override func viewDidLoad() {

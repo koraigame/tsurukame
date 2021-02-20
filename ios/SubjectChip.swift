@@ -14,7 +14,7 @@
 
 import Foundation
 
-protocol SubjectChipDelegate: NSObject {
+protocol SubjectChipDelegate {
   func didTapSubjectChip(_ subjectChip: SubjectChip)
 }
 
@@ -23,14 +23,14 @@ class SubjectChip: UIView {
 
   var isDimmed: Bool {
     get {
-      (gradientView?.alpha ?? 0.0) < 0.75
+      return (gradientView?.alpha ?? 0.0) < 0.75
     }
     set {
       gradientView?.alpha = newValue ? 0.5 : 1.0
     }
   }
 
-  private weak var delegate: SubjectChipDelegate?
+  private var delegate: SubjectChipDelegate?
   private weak var gradientView: UIView?
   private weak var gradientLayer: CAGradientLayer?
 

@@ -60,7 +60,7 @@ enum PieSlice: Int {
 
 func unsetAllLabels(view: ChartViewBase) {
   let dataSet = view.data!.dataSets[0] as! PieChartDataSet
-  for other in dataSet.entries as! [PieChartDataEntry] {
+  for other in dataSet.values as! [PieChartDataEntry] {
     other.label = nil
   }
 }
@@ -74,11 +74,11 @@ func unsetAllLabels(view: ChartViewBase) {
   }
 
   func cellClass() -> AnyClass! {
-    CurrentLevelChartCell.self
+    return CurrentLevelChartCell.self
   }
 
   func rowHeight() -> CGFloat {
-    120
+    return 120
   }
 }
 
@@ -88,7 +88,7 @@ class CurrentLevelChartCell: TKMModelCell {
   var vocabularyChart: PieChartView!
   var strongDelegate: Delegate
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     strongDelegate = Delegate()
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     selectionStyle = .none
@@ -141,16 +141,17 @@ class CurrentLevelChartCell: TKMModelCell {
   }
 
   override func layoutSubviews() {
+    if #available(iOS 8.0, *) {
     var insets = layoutMargins
     insets.bottom = 0
     insets.top = 0
-
     let frame = contentView.bounds.inset(by: insets)
     let width = frame.width / 3
     var x = frame.minX
     for chart in [radicalChart!, kanjiChart!, vocabularyChart!] {
       chart.frame = CGRect(x: x, y: frame.minY, width: width, height: frame.height)
       x += width
+    }
     }
   }
 
@@ -193,11 +194,11 @@ class CurrentLevelChartCell: TKMModelCell {
       if sliceSizes[i] <= 0 {
         continue
       }
-      values.append(PieChartDataEntry(value: Double(sliceSizes[i]), data: i))
+      values.append(PieChartDataEntry(value: Double(sliceSizes[i]), data: i as AnyObject))
       colors.append(PieSlice(rawValue: i)!.color(baseColor: baseColor))
     }
 
-    let dataSet = PieChartDataSet(values)
+    let dataSet = PieChartDataSet(values: values, label: nil)
     dataSet.valueTextColor = TKMStyle.Color.label
     dataSet.entryLabelColor = TKMStyle.Color.grey33
     dataSet.valueFont = UIFont.systemFont(ofSize: 10.0)

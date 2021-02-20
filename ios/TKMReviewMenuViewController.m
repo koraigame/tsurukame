@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #import "TKMReviewMenuViewController.h"
-
 #import "Tables/TKMCheckmarkModelItem.h"
 #import "Tables/TKMTableModel.h"
 #import "Tsurukame-Swift.h"

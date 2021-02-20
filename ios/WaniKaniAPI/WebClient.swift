@@ -121,7 +121,7 @@ class WaniKaniWebClient: NSObject {
   }
 
   private func getApiToken(cookie: String) -> Promise<String> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       let req = authorize(kAccessTokenUrl, cookie: cookie)
       return request(req, session: URLSession.shared)
     }.then { (arg) -> Promise<String> in
@@ -135,7 +135,7 @@ class WaniKaniWebClient: NSObject {
   }
 
   private func createApiToken(cookie: String) -> Promise<String> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       let req = authorize(kNewAccessTokenUrl, cookie: cookie)
       return request(req)
     }.then { (arg) -> DataTaskPromise in
@@ -166,7 +166,7 @@ class WaniKaniWebClient: NSObject {
   }
 
   private func getEmailAddress(cookie: String) -> Promise<String> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       let req = authorize(kAccountUrl, cookie: cookie)
       return request(req, session: URLSession.shared)
     }.map { (arg) -> String in
@@ -178,12 +178,12 @@ class WaniKaniWebClient: NSObject {
 
   @objc(loginWithUsername:password:)
   func loginGeneric(username: String, password: String) -> AnyPromise {
-    AnyPromise(login(username: username, password: password))
+    return AnyPromise(login(username: username, password: password))
   }
 
   @objc
   class func errorDescription(_ err: WaniKaniWebClientError) -> String {
-    err.localizedDescription
+    return err.localizedDescription
   }
 
   // MARK: - Extracting things from HTTP responses

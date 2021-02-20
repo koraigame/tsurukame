@@ -147,7 +147,11 @@ static NSString *const kPrivacyPolicyURL =
 - (IBAction)didTapPrivacyPolicyButton:(id)sender {
   NSURL *url = [NSURL URLWithString:kPrivacyPolicyURL];
   NSDictionary<NSString *, id> *options = [NSDictionary dictionary];
-  [[UIApplication sharedApplication] openURL:url options:options completionHandler:nil];
+  if (@available(iOS 10.0, *)) {
+    [[UIApplication sharedApplication] openURL:url options:options completionHandler:nil];
+  } else {
+    // Fallback on earlier versions
+  }
 }
 
 @end

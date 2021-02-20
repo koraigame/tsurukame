@@ -38,7 +38,7 @@ class SubjectModelItem: NSObject, TKMModelItem {
   }
 
   func cellNibName() -> String! {
-    "TKMSubjectModelItem"
+    return "TKMSubjectModelItem"
   }
 }
 
@@ -53,7 +53,7 @@ class SubjectModelView: TKMModelCell {
   @IBOutlet var subjectLabel: UILabel!
   @IBOutlet var readingLabel: UILabel!
   @IBOutlet var meaningLabel: UILabel!
-  @IBOutlet var answerStack: UIStackView!
+  @IBOutlet var answerStack: OAStackView!
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
@@ -124,7 +124,7 @@ class SubjectModelView: TKMModelCell {
 
     readingLabel.font = item.readingWrong ? TKMStyle.japaneseFontBold(size: kFontSize)
       : TKMStyle.japaneseFont(size: kFontSize)
-    meaningLabel.font = item.meaningWrong ? UIFont.systemFont(ofSize: kFontSize, weight: .bold)
+    meaningLabel.font = item.meaningWrong ? UIFont.boldSystemFont(ofSize: kFontSize)
       : UIFont.systemFont(ofSize: kFontSize)
   }
 
@@ -168,12 +168,12 @@ class SubjectModelView: TKMModelCell {
     answerStack.frame = value ? hiddenFrame : visibleFrame
     answerStack.alpha = value ? 0.0 : 1.0
 
-    UIView.animate(withDuration: 0.5) {
+    UIView.animate(withDuration: 0.5, animations: {
       self.answerStack.frame = value ? visibleFrame : hiddenFrame
       self.answerStack.alpha = value ? 1.0 : 0.0
-    } completion: { _ in
+    }, completion: { _ in
       self.answerStack.isHidden = !value
-    }
+    })
   }
 
   override func didSelect() {

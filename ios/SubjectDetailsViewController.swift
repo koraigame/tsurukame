@@ -39,7 +39,7 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
   }
 
   func canSwipeToGoBack() -> Bool {
-    true
+    return true
   }
 
   override func viewDidLoad() {
@@ -83,7 +83,7 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
     navigationController?.popViewController(animated: true)
   }
 
-  override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
   // MARK: - SubjectDelegate
 
@@ -96,17 +96,15 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
 
   // MARK: - Keyboard navigation
 
-  override var canBecomeFirstResponder: Bool { true }
+  override var canBecomeFirstResponder: Bool { return true }
   override var keyCommands: [UIKeyCommand]? {
-    [
+    return [
       UIKeyCommand(input: " ",
                    modifierFlags: [],
-                   action: #selector(playAudio),
-                   discoverabilityTitle: "Play reading"),
-      UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
+                   action: #selector(playAudio)),
+      UIKeyCommand(input: UIKeyInputLeftArrow,
                    modifierFlags: [],
-                   action: #selector(backButtonPressed),
-                   discoverabilityTitle: "Back"),
+                   action: #selector(backButtonPressed)),
     ]
   }
 

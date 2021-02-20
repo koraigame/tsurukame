@@ -14,9 +14,23 @@
 
 import Foundation
 
+#if swift(>=4.1)
+  extension MutableCollection {
+    mutating func shuffle() {
+      let c = count
+      guard c > 1 else { return }
+      for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+        let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+        let i = index(firstUnshuffled, offsetBy: d)
+        swapAt(firstUnshuffled, i)
+      }
+    }
+  }
+#endif
+
 private let kDefaultAnimationDuration: TimeInterval = 0.25
 // Undocumented, but it's what the keyboard animations use.
-private let kDefaultAnimationCurve = UIView.AnimationCurve(rawValue: 7)!
+private let kDefaultAnimationCurve = UIViewAnimationCurve(rawValue: 7)!
 
 private let kPreviousSubjectScale: CGFloat = 0.25
 private let kPreviousSubjectButtonPadding: CGFloat = 6.0
@@ -151,9 +165,10 @@ protocol ReviewViewControllerDelegate {
 
 class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelegate {
   private var kanaInput: TKMKanaInput!
-  private let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator
-    .FeedbackStyle.light)
-  private let tickImage = UIImage(named: "checkmark.circle")
+  #if swift(>=5)
+  private let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator.FeedbackStyle.light)
+  #endif
+  private let tickImage = UIImage(named: "checkmark")
   private let forwardArrowImage = UIImage(named: "ic_arrow_forward_white")
   private let skipImage = UIImage(named: "goforward.plus")
 
@@ -187,7 +202,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   // These are set to match the keyboard animation.
   private var animationDuration: Double = kDefaultAnimationDuration
-  private var animationCurve: UIView.AnimationCurve = kDefaultAnimationCurve
+  private var animationCurve: UIViewAnimationCurve = kDefaultAnimationCurve
 
   private var currentFontName: String!
   private var normalFontName: String!
@@ -298,7 +313,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     case .random:
       break
 
-    @unknown default:
+    default:
       fatalError()
     }
 
@@ -306,7 +321,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   @objc public var activeQueueLength: Int {
-    activeQueue.count
+    return activeQueue.count
   }
 
   // MARK: - UIViewController
@@ -318,14 +333,14 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     TKMStyle.addShadowToView(previousSubjectButton, offset: 0, opacity: 0.7, radius: 4)
 
     wrapUpIcon.image = UIImage(named: "baseline_access_time_black_24pt")?
-      .withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+      .withRenderingMode(UIImageRenderingMode.alwaysTemplate)
 
     previousSubjectGradient = CAGradientLayer()
     previousSubjectGradient.cornerRadius = 4.0
     previousSubjectButton.layer.addSublayer(previousSubjectGradient)
 
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
-                                           name: UIResponder.keyboardWillShowNotification,
+                                           name: NSNotification.Name.UIKeyboardWillShow,
                                            object: nil)
 
     subjectDetailsView.setup(services: services, delegate: self)
@@ -334,7 +349,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     answerField.delegate = kanaInput
     answerField
       .addTarget(self, action: #selector(answerFieldValueDidChange),
-                 for: UIControl.Event.editingChanged)
+                 for: UIControlEvents.editingChanged)
 
     let showSuccessRate = delegate.reviewViewControllerShowsSuccessRate()
     successRateIcon.isHidden = !showSuccessRate
@@ -344,7 +359,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       menuButton.isHidden = true
     }
 
-    normalFontName = TKMStyle.japaneseFontName
+    if #available(iOS 9.0, *) {
+      normalFontName = TKMStyle.japaneseFontName1
+    } else {
+      normalFontName = TKMStyle.japaneseFontName2
+    }
     currentFontName = normalFontName
     defaultFontSize = Double(questionLabel.font.pointSize)
 
@@ -411,23 +430,23 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    UIStatusBarStyle.lightContent
+    return UIStatusBarStyle.lightContent
   }
 
   // MARK: - Event handlers
 
   @objc private func keyboardWillShow(notification: NSNotification) {
     guard let keyboardFrame = notification
-      .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+      .userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
       let animationDuration = notification
-      .userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+      .userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double,
       let animationCurve = notification
-      .userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int
+      .userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int
     else {
       return
     }
     self.animationDuration = animationDuration
-    self.animationCurve = UIView.AnimationCurve(rawValue: animationCurve)!
+    self.animationCurve = UIViewAnimationCurve(rawValue: animationCurve)!
 
     resizeKeyboard(toHeight: Double(keyboardFrame.size.height))
   }
@@ -440,8 +459,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     guard let window = view.window else {
       return
     }
-    let viewBottomLeft = view.convert(CGPoint(x: 0.0, y: view.bounds.maxY),
-                                      to: window)
+    let viewBottomLeft = view.transferPoint(CGPoint(x: 0.0, y: view.bounds.maxY),
+                                            to: window)
     let windowBottom = window.bounds.maxY
     let distanceFromViewBottomToWindowBottom = windowBottom - viewBottomLeft.y
 
@@ -489,8 +508,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   private func randomTask() {
-    TKMStyle.withTraitCollection(traitCollection) {
-      if activeQueue.count == 0 {
+    func performRandomTask() {
+		  if activeQueue.count == 0 {
         delegate.reviewViewControllerFinishedAllReviewItems(self)
         return
       }
@@ -555,7 +574,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         subjectTypePrompt = "Vocabulary"
       case .unknown: fallthrough
       case .gpbUnrecognizedEnumeratorValue: fallthrough
-      @unknown default:
+      default:
         fatalError()
       }
       switch activeTaskType! {
@@ -578,7 +597,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
       let boldFont = UIFont.boldSystemFont(ofSize: promptLabel!.font.pointSize)
       let prompt = NSMutableAttributedString(string: subjectTypePrompt + " " + taskTypePrompt)
-      prompt.setAttributes([NSAttributedString.Key.font: boldFont],
+      prompt.setAttributes([NSAttributedStringKey.font: boldFont],
                            range: NSRange(location: prompt.length - taskTypePrompt.count,
                                           length: taskTypePrompt.count))
 
@@ -612,8 +631,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       answerField.backgroundColor = TKMStyle.Color.background
       answerField.placeholder = taskTypePlaceholder
       if let firstReading = activeSubject.primaryReadings.first {
-        kanaInput.alphabet = (firstReading.hasType && firstReading.type == .onyomi &&
-          Settings.useKatakanaForOnyomi) ? .katakana : .hiragana
+        kanaInput
+          .alphabet = (firstReading.hasType && firstReading.type == .onyomi && Settings
+            .useKatakanaForOnyomi) ?
+          .katakana : .hiragana
       } else {
         kanaInput.alphabet = .hiragana
       }
@@ -660,6 +681,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       }
       animateSubjectDetailsView(shown: false, setupContextFunc: setupContextFunc)
     }
+    if #available(iOS 8.0, *) {
+      TKMStyle.withTraitCollection(traitCollection, f: performRandomTask)
+    } else {
+      performRandomTask()
+    }
   }
 
   // MARK: - Random fonts
@@ -667,7 +693,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   func fontsThatCanRenderText(_ text: String, exclude: [String]?) -> [String] {
     var availableFonts: [String] = []
 
-    for filename in Settings.selectedFonts {
+    for filename in Settings.selectedFonts ?? [] {
       if let font = services.fontLoader.font(byName: filename) {
         if let ex = exclude, ex.contains(font.fontName) {
           continue
@@ -683,7 +709,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   func nextCustomFont(thatCanRenderText _: String) -> String? {
     if let availableFonts = self.availableFonts,
-      let index = availableFonts.firstIndex(of: currentFontName) {
+      let index = availableFonts.index(of: currentFontName) {
       if index + 1 >= availableFonts.count {
         return availableFonts.first
       } else {
@@ -695,7 +721,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   func previousCustomFont(thatCanRenderText _: String) -> String? {
     if let availableFonts = self.availableFonts,
-      let index = availableFonts.firstIndex(of: currentFontName) {
+      let index = availableFonts.index(of: currentFontName) {
       if index == 0 {
         return availableFonts.last
       } else {
@@ -710,7 +736,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       // Re-set the supported fonts when we pick a random one as that is the first
       // step.
       availableFonts = fontsThatCanRenderText(text, exclude: nil).sorted()
-      return availableFonts?.randomElement() ?? normalFontName
+      return availableFonts?.first ?? normalFontName
     } else {
       return normalFontName
     }
@@ -754,7 +780,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     UIView.setAnimationBeginsFromCurrentState(false)
 
     // Constraints.
-    answerFieldToBottomConstraint.isActive = !shown
+    if #available(iOS 8.0, *) {
+      answerFieldToBottomConstraint.isActive = !shown
+    }
 
     // Enable/disable the answer field, and set its first responder status.
     // This makes the keyboard appear or disappear immediately.  We need this animation to happen
@@ -784,7 +812,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectButton.alpha = shown ? 0.0 : 1.0
 
     // Change the foreground color of the answer field.
-    answerField.textColor = shown ? UIColor.systemRed : TKMStyle.Color.label
+    answerField.textColor = shown ? UIColor.red : TKMStyle.Color.label
 
     // Scroll to the top.
     subjectDetailsView
@@ -829,7 +857,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       kPreviousSubjectButtonPadding * 2 + labelBounds.size.height * kPreviousSubjectScale
 
     var newGradient: [CGColor]!
+    if #available(iOS 8.0, *) {
     TKMStyle.withTraitCollection(traitCollection) {
+      newGradient = (TKMStyle.gradient(forSubject: previousSubject) as! [CGColor])
+    }
+    } else {
       newGradient = (TKMStyle.gradient(forSubject: previousSubject) as! [CGColor])
     }
 
@@ -937,7 +969,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   private var _isWrappingUp = false
   @objc public var wrappingUp: Bool {
     get {
-      _isWrappingUp
+      return _isWrappingUp
     }
     set {
       _isWrappingUp = newValue
@@ -1026,7 +1058,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     case .Precise:
       markAnswer(.Correct)
     case .Imprecise:
-      markAnswer(.Correct)
+      if Settings.exactMatch { shakeView(answerField) }
+      else { markAnswer(.Correct) }
     case .Incorrect:
       markAnswer(.Incorrect)
     case .OtherKanjiReading:
@@ -1061,8 +1094,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     let correct = result == .Correct || result == .OverrideAnswerCorrect
 
     if correct {
-      hapticGenerator.impactOccurred()
-      hapticGenerator.prepare()
+      #if swift(>=5)
+        hapticGenerator.impactOccurred()
+        hapticGenerator.prepare()
+      #endif
     }
 
     // Mark the task.
@@ -1141,7 +1176,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         }
       }
 
-      services.localCachingClient!.sendProgress([activeTask.answer])
+      _ = services.localCachingClient!.sendProgress([activeTask.answer])
 
       reviewsCompleted += 1
       completedReviews.append(activeTask)
@@ -1181,7 +1216,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       revealAnswerButton.isHidden = false
       UIView.animate(withDuration: animationDuration,
                      animations: {
-                       self.answerField.textColor = UIColor.systemRed
+                       self.answerField.textColor = UIColor.red
                        self.answerField.isEnabled = false
                        self.revealAnswerButton.alpha = 1.0
                        self.submitButton.setImage(self.forwardArrowImage, for: .normal)
@@ -1208,10 +1243,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // MARK: - Ignoring incorrect answers
 
   @IBAction func addSynonymButtonPressed(_: Any) {
+    let message = "Don't cheat! Only use this if you promise you knew the correct answer."
+    if #available(iOS 8.0, *) {
     let c = UIAlertController(title: "Ignore incorrect answer?",
-                              message:
-                              "Don't cheat!  Only use this if you promise you " +
-                                "knew the correct answer.",
+                              message: message,
                               preferredStyle: .actionSheet)
     c.popoverPresentationController?.sourceView = addSynonymButton
     c.popoverPresentationController?.sourceRect = addSynonymButton.bounds
@@ -1231,6 +1266,17 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
     c.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     present(c, animated: true, completion: nil)
+    } else {
+      var c: AlertView
+      if activeTaskType == .meaning {
+        c = AlertView(title: "Ignore incorrect answer?", message: message, cancelButtonTitle: "Cancel",
+                      "My answer was correct", {self.markCorrect()}, "Ask again later", {self.askAgain()}, "Add synonym", {self.addSynonym()})
+      } else {
+        c = AlertView(title: "Ignore incorrect answer?", message: message, cancelButtonTitle: "Cancel",
+                      "My answer was correct", {self.markCorrect()}, "Ask again later", {self.askAgain()})
+      }
+      c.show()
+    }
   }
 
   @objc func markCorrect() {
@@ -1247,7 +1293,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       activeStudyMaterials!.subjectId = activeSubject.id_p
     }
     activeStudyMaterials!.meaningSynonymsArray.add(answerField.text!)
-    services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
+    _ = services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
     markAnswer(.OverrideAnswerCorrect)
   }
 
@@ -1255,7 +1301,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // means that holding down the command key after (say) pressing ⌘C does not
   // repeat the action continuously on all subsequent reviews
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    super.canPerformAction(action, withSender: sender)
+    return super.canPerformAction(action, withSender: sender)
   }
 
   // MARK: - SubjectDelegate
@@ -1267,26 +1313,23 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // MARK: - Keyboard navigation
 
   override var canBecomeFirstResponder: Bool {
-    true
+    return true
   }
 
   override var keyCommands: [UIKeyCommand]? {
     let keyboardEnter = UIKeyCommand(input: "\r",
                                      modifierFlags: [],
-                                     action: #selector(enterKeyPressed),
-                                     discoverabilityTitle: "Continue")
+                                     action: #selector(enterKeyPressed))
     let numericKeyPadEnter = UIKeyCommand(input: "\u{3}",
                                           modifierFlags: [],
-                                          action: #selector(enterKeyPressed),
-                                          discoverabilityTitle: "Continue")
+                                          action: #selector(enterKeyPressed))
     var keyCommands: [UIKeyCommand] = []
 
     if !answerField.isEnabled, subjectDetailsView.isHidden {
       // Continue when a wrong answer has been entered but the subject details view is hidden.
       keyCommands.append(contentsOf: [UIKeyCommand(input: "\u{8}",
                                                    modifierFlags: [],
-                                                   action: #selector(backspaceKeyPressed),
-                                                   discoverabilityTitle: "Clear wrong answer"),
+                                                   action: #selector(backspaceKeyPressed)),
                                       keyboardEnter,
                                       numericKeyPadEnter])
     }
@@ -1295,20 +1338,16 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       // Key commands when showing the detail view
       keyCommands.append(contentsOf: [UIKeyCommand(input: " ",
                                                    modifierFlags: [],
-                                                   action: #selector(playAudio),
-                                                   discoverabilityTitle: "Play reading"),
+                                                   action: #selector(playAudio)),
                                       UIKeyCommand(input: "a",
                                                    modifierFlags: [.command],
-                                                   action: #selector(askAgain),
-                                                   discoverabilityTitle: "Ask again later"),
+                                                   action: #selector(askAgain)),
                                       UIKeyCommand(input: "c",
                                                    modifierFlags: [.command],
-                                                   action: #selector(markCorrect),
-                                                   discoverabilityTitle: "Mark correct"),
+                                                   action: #selector(markCorrect)),
                                       UIKeyCommand(input: "s",
                                                    modifierFlags: [.command],
-                                                   action: #selector(addSynonym),
-                                                   discoverabilityTitle: "Add as synonym"),
+                                                   action: #selector(addSynonym)),
                                       keyboardEnter,
                                       numericKeyPadEnter])
     }
@@ -1316,24 +1355,20 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     if Settings.selectedFonts.count > 0 {
       keyCommands.append(UIKeyCommand(input: "\t",
                                       modifierFlags: [],
-                                      action: #selector(toggleFont),
-                                      discoverabilityTitle: "Toggle font"))
+                                      action: #selector(toggleFont)))
       if #available(macOS 10.14, *) {
-        keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputRightArrow,
+        keyCommands.append(UIKeyCommand(input: UIKeyInputRightArrow,
                                         modifierFlags: [],
-                                        action: #selector(showNextCustomFont),
-                                        discoverabilityTitle: "Next font"))
-        keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
+                                        action: #selector(showNextCustomFont)))
+        keyCommands.append(UIKeyCommand(input: UIKeyInputLeftArrow,
                                         modifierFlags: [],
-                                        action: #selector(showPreviousCustomFont),
-                                        discoverabilityTitle: "Previous font"))
+                                        action: #selector(showPreviousCustomFont)))
       }
     }
     if !previousSubjectButton.isHidden {
       keyCommands.append(UIKeyCommand(input: "p",
                                       modifierFlags: [.command],
-                                      action: #selector(previousSubjectButtonPressed(_:)),
-                                      discoverabilityTitle: "Previous subject"))
+                                      action: #selector(previousSubjectButtonPressed(_:))))
     }
     return keyCommands
   }

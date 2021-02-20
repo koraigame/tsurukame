@@ -189,7 +189,11 @@ class MainHeaderView: UIView {
     UIView.animate(withDuration: 0.2) {
       self.progressView.alpha = 1.0
     }
-    progressView.observedProgress = progress
+    if #available(iOS 9.0, *) {
+      progressView.observedProgress = progress
+    } else {
+      // Fallback on earlier versions
+    }
   }
 
   @IBAction func didTapSearchButton(_: Any) {
@@ -200,6 +204,7 @@ class MainHeaderView: UIView {
     delegate?.settingsButtonTapped()
   }
 
+  @available(iOS 8.0, *)
   override func traitCollectionDidChange(_: UITraitCollection?) {
     updateGradientColors()
   }

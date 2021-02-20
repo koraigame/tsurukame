@@ -22,7 +22,11 @@ class UpcomingReviewsXAxisValueFormatter: IAxisValueFormatter {
   init(_ startTime: Date) {
     self.startTime = startTime
     dateFormatter = DateFormatter()
-    dateFormatter.setLocalizedDateFormatFromTemplate("ha")
+    if #available(iOS 8.0, *) {
+      dateFormatter.setLocalizedDateFormatFromTemplate("ha")
+    } else {
+      dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ha", options: 0, locale: dateFormatter.locale)
+    }
   }
 
   func stringForValue(_ value: Double, axis _: AxisBase?) -> String {
@@ -48,18 +52,18 @@ class UpcomingReviewsChartItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    UpcomingReviewsChartCell.self
+    return UpcomingReviewsChartCell.self
   }
 
   func rowHeight() -> CGFloat {
-    120
+    return 120
   }
 }
 
 class UpcomingReviewsChartCell: TKMModelCell {
   private let view: CombinedChartView
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     view = CombinedChartView()
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     selectionStyle = .none
@@ -89,7 +93,9 @@ class UpcomingReviewsChartCell: TKMModelCell {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    view.frame = contentView.bounds.inset(by: layoutMargins)
+    if #available(iOS 8.0, *) {
+      view.frame = contentView.bounds.inset(by: layoutMargins)
+    }
   }
 
   override func update(with baseItem: TKMModelItem!) {
@@ -115,14 +121,14 @@ class UpcomingReviewsChartCell: TKMModelCell {
       }
     }
 
-    let lineDataSet = LineChartDataSet(cumulativeData)
+    let lineDataSet = LineChartDataSet(values: cumulativeData, label: nil)
     lineDataSet.drawValuesEnabled = false
     lineDataSet.drawCircleHoleEnabled = false
     lineDataSet.circleRadius = 1.5
     lineDataSet.colors = [TKMStyle.vocabularyColor2]
     lineDataSet.circleColors = [TKMStyle.vocabularyColor2]
 
-    let barDataSet = BarChartDataSet(hourlyData)
+    let barDataSet = BarChartDataSet(values: hourlyData, label: nil)
     barDataSet.axisDependency = YAxis.AxisDependency.right
     barDataSet.colors = [TKMStyle.radicalColor2]
     barDataSet.valueFormatter = DefaultValueFormatter(decimals: 0)

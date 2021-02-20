@@ -76,21 +76,21 @@ extension FMResultSet: Sequence {
     var resultSet: FMResultSet
   }
 
-  public __consuming func makeIterator() -> FMResultSet.Iterator {
-    Iterator(resultSet: self)
+  public func makeIterator() -> FMResultSet.Iterator {
+    return Iterator(resultSet: self)
   }
 }
 
 /** Protobuf decoding methods. */
 extension FMResultSet {
-  public func proto<T: GPBMessage>(forColumnIndex columnIndex: Int) -> T? {
+  public func proto<T: GPBMessage>(forColumnIndex columnIndex: Int, _ value: T.Type) -> T? {
     guard let d = data(forColumnIndex: Int32(columnIndex)) else {
       return nil
     }
     return try? T(data: d)
   }
 
-  public func proto<T: GPBMessage>(forColumn column: String) -> T? {
+  public func proto<T: GPBMessage>(forColumn column: String, _ value: T.Type) -> T? {
     guard let d = data(forColumn: column) else {
       return nil
     }

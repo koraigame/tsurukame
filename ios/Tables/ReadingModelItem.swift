@@ -20,7 +20,7 @@ class ReadingModelItem: AttributedModelItem {
   var audio: Audio?
   var audioSubjectID: Int32 = 0
 
-  weak var audioDelegate: AudioDelegate?
+  var audioDelegate: AudioDelegate?
 
   override init(text: NSAttributedString) {
     super.init(text: text)
@@ -32,7 +32,7 @@ class ReadingModelItem: AttributedModelItem {
   }
 
   override func cellClass() -> AnyClass! {
-    ReadingModelCell.self
+    return ReadingModelCell.self
   }
 
   func playAudio() {
