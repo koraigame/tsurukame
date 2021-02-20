@@ -71,7 +71,6 @@ extension Message {
   ///     `BinaryEncodingError.missingRequiredFields`.
   ///   - options: The BinaryDecodingOptions to use.
   /// - Throws: `BinaryDecodingError` if decoding fails.
-  @inlinable
   public init(
     serializedData data: Data,
     extensions: ExtensionMap? = nil,
@@ -131,7 +130,6 @@ extension Message {
   ///     `BinaryEncodingError.missingRequiredFields`.
   ///   - options: The BinaryDecodingOptions to use.
   /// - Throws: `BinaryDecodingError` if decoding fails.
-  @inlinable
   public mutating func merge(
     serializedData data: Data,
     extensions: ExtensionMap? = nil,
@@ -183,7 +181,6 @@ extension Message {
   // Helper for `merge()`s to keep the Decoder internal to SwiftProtobuf while
   // allowing the generic over ContiguousBytes to get better codegen from the
   // compiler by being `@inlinable`.
-  @usableFromInline
   internal mutating func _merge(
     rawBuffer body: UnsafeRawBufferPointer,
     extensions: ExtensionMap?,
