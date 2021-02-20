@@ -14,7 +14,7 @@
 
 import Foundation
 
-protocol SearchResultViewControllerDelegate: NSObject {
+protocol SearchResultViewControllerDelegate {
   func searchResultSelected(subject: TKMSubject)
 }
 
@@ -55,7 +55,7 @@ private let kMaxResults = 50
 class SearchResultViewController: UITableViewController, UISearchResultsUpdating,
   SubjectDelegate {
   private var services: TKMServices!
-  private weak var delegate: SearchResultViewControllerDelegate?
+  private var delegate: SearchResultViewControllerDelegate?
 
   private var allSubjects: [TKMSubject]?
   private var model: TKMTableModel!

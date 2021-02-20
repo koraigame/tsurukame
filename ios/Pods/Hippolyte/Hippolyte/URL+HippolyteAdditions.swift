@@ -4,14 +4,10 @@
 
 import Foundation
 
-protocol Matcheable {
-  func matcher() -> Matcher
-}
-
 extension URL: Matcheable {
-  
-  func matcher() -> Matcher {
-    StringMatcher(string: absoluteString)
+
+  public func matcher() -> Matcher {
+    return StringMatcher(string: absoluteString)
   }
-  
+
 }

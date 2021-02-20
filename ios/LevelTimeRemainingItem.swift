@@ -109,6 +109,7 @@ private func averageRemainingLevelTime(_ lcc: LocalCachingClient) -> TimeInterva
 }
 
 private func intervalString(_ date: Date) -> String {
+  if #available(iOS 8.0, *) {
   let formatter = DateComponentsFormatter()
   formatter.unitsStyle = DateComponentsFormatter.UnitsStyle.abbreviated
 
@@ -122,4 +123,15 @@ private func intervalString(_ date: Date) -> String {
   }
 
   return formatter.string(from: components)!
+  } else {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.day, .hour, .minute], from: date, to: Date())
+    if let day = components.day, day > 0 {
+      return "\(day)d"
+    } else if let hour = components.hour, hour > 0 {
+      return "\(hour)h"
+    } else {
+      return "\(components.minute ?? 0)m"
+    }
+  }
 }

@@ -231,7 +231,7 @@ class WaniKaniAPIClient: NSObject {
     var body = CreateReviewRequest(review: CreateReviewRequest
       .Review(assignment_id: progress.assignment.id,
               incorrect_meaning_answers: Int(progress.meaningWrongCount),
-              incorrect_reading_answers: Int(progress.readingWrongCount)))
+              incorrect_reading_answers: Int(progress.readingWrongCount), created_at: nil))
 
     // Don't set created_at if it's very recent to try to allow for some clock drift.
     if progress.hasCreatedAt, progress.createdAtDate.timeIntervalSinceNow < -900 {
@@ -255,7 +255,7 @@ class WaniKaniAPIClient: NSObject {
   // MARK: - Sending study material updates
 
   func updateStudyMaterial(_ pb: TKMStudyMaterials) -> Promise<Void> {
-    firstly { () -> Promise<TKMStudyMaterials?> in
+    return firstly { () -> Promise<TKMStudyMaterials?> in
       // We need to check if a study material for the subject already exists.
       studyMaterial(subjectId: pb.subjectID, progress: Progress(totalUnitCount: 1))
     }.then { (existing: TKMStudyMaterials?) -> DataTaskPromise in
@@ -263,8 +263,8 @@ class WaniKaniAPIClient: NSObject {
       for synonym in pb.meaningSynonyms {
         synonyms.append(synonym)
       }
-      var body = StudyMaterialRequest(study_material: StudyMaterialRequest
-        .StudyMaterial(meaning_synonyms: synonyms))
+      let material = StudyMaterialRequest.StudyMaterial(subject_id: nil, meaning_note: nil, reading_note: nil, meaning_synonyms: synonyms)
+      var body = StudyMaterialRequest(study_material: material)
 
       var url: URL
       var method: String
@@ -306,7 +306,7 @@ class WaniKaniAPIClient: NSObject {
                                              results: Response<[DataType]>,
                                              progress: Progress)
     -> Promise<Response<[DataType]>> {
-    firstly {
+    return firstly {
       query(authorize(url))
     }.then { (response: PaginatedResponse<[DataType]>) -> Promise<Response<[DataType]>> in
       // Set the total progress unit count if this was the first page.
@@ -402,7 +402,7 @@ class WaniKaniAPIClient: NSObject {
 
   /** Fetches a single URL from the WaniKani API and returns its data. */
   private func query<Type: Codable>(_ req: URLRequest) -> Promise<Type> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       NSLog("%@ %@", req.httpMethod!, req.url!.absoluteString)
       return session.dataTask(.promise, with: req)
     }.map { (data, response) -> Type in
@@ -459,14 +459,14 @@ func decodeJSON<T: Decodable>(_ data: Data, request: URLRequest,
 struct WaniKaniDate: Codable {
   /** Formats a Date to a String suitable for use in the WaniKani API. */
   static func format(date: Date) -> String {
-    formatters.first!.string(from: date)
+    return formatters.first!.string(from: date)
   }
 
   let date: Date
 
   /** Number of seconds since 1970. */
   var seconds: Int32 {
-    Int32(date.timeIntervalSince1970)
+    return Int32(date.timeIntervalSince1970)
   }
 
   init(date: Date) {
@@ -537,6 +537,15 @@ private class Response<DataType: Codable>: Codable {
   var data_updated_at: String?
   var data: DataType
   var object: String?
+  
+  private enum Keys: String, CodingKey {
+    case data
+  }
+  
+  required init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: Keys.self)
+    data = try values.decodeIfPresent(DataType.self, forKey: .data)!
+  }
 }
 
 /** Container for paginated API responses. */

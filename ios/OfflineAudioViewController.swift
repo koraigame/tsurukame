@@ -43,6 +43,7 @@ struct AudioPackage {
     AudioPackage("a-levels-51-60.tar.lzfse", "Levels 51-60", 18_827_575),
   ]
 
+  @available(iOS 9.0, *)
   static func decompressLZFSE(compressedData: Data) -> Data? {
     if compressedData.count == 0 { return nil }
 
@@ -54,9 +55,8 @@ struct AudioPackage {
 
       let destinationBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
 
-      let decodedData = compressedData.withUnsafeBytes { (buffer: UnsafeRawBufferPointer) -> Data in
-        let unsafePointer = buffer.bindMemory(to: UInt8.self).baseAddress!
-        let decodedSize = compression_decode_buffer(destinationBuffer, bufferSize, unsafePointer,
+      let decodedData = compressedData.withUnsafeBytes { (buffer: UnsafePointer<UInt8>) -> Data in
+        let decodedSize = compression_decode_buffer(destinationBuffer, bufferSize, buffer,
                                                     compressedData.count, nil, COMPRESSION_LZFSE)
 
         if decodedSize == 0 {
@@ -109,40 +109,42 @@ struct AudioPackage {
       model.addSection()
       let deleteItem = TKMBasicModelItem(style: .default,
                                          title: "Delete all offline audio", subtitle: nil,
-                                         accessoryType: UITableViewCell.AccessoryType.none,
+                                         accessoryType: UITableViewCellAccessoryType.none,
                                          target: self,
                                          action: #selector(didTapDeleteAllAudio(sender:)))
-      deleteItem.textColor = UIColor.systemRed
+      deleteItem.textColor = UIColor.red
       model.add(deleteItem)
     }
   }
 
   override func url(forFilename filename: String) -> URL {
-    URL(string: "https://tsurukame.app/audio/\(filename)")!
+    return URL(string: "https://tsurukame.app/audio/\(filename)")!
   }
 
   override func didFinishDownload(for filename: String, at location: URL) {
     guard let data = try? Data(contentsOf: location) else {
       fatalError("Error reading data: \(url(forFilename: filename).absoluteString)")
     }
-    guard let tarData = OfflineAudioViewController.decompressLZFSE(compressedData: data) else {
-      fatalError("Error decompressing data: \(url(forFilename: filename).absoluteString)")
-    }
-    do {
-      try fileManager.untar(at: Audio.cacheDirectoryPath, tarData: tarData,
-                            progressBlock: { (progress: Float) in
-                              self.updateProgress(onMainThread: filename) {
-                                $0.state = TKMDownloadModelItemInstalling
-                                $0.installingProgress = progress
-                              }
-                            })
-    } catch {
-      fatalError("Error extracting data: \(url(forFilename: filename).absoluteString)")
-    }
+    if #available(iOS 9.0, *) {
+      guard let tarData = OfflineAudioViewController.decompressLZFSE(compressedData: data) else {
+        fatalError("Error decompressing data: \(url(forFilename: filename).absoluteString)")
+      }
+      do {
+        try fileManager.untar(at: Audio.cacheDirectoryPath, tarData: tarData,
+                              progressBlock: { (progress: Float) in
+                                self.updateProgress(onMainThread: filename) {
+                                  $0.state = TKMDownloadModelItemInstalling
+                                  $0.installingProgress = progress
+                                }
+                              })
+      } catch {
+        fatalError("Error extracting data: \(url(forFilename: filename).absoluteString)")
+      }
 
-    DispatchQueue.main.async {
-      Settings.installedAudioPackages.insert(filename)
-      self.markDownloadComplete(filename)
+      DispatchQueue.main.async {
+        Settings.installedAudioPackages.insert(filename)
+        self.markDownloadComplete(filename)
+      }
     }
   }
 
@@ -159,12 +161,19 @@ struct AudioPackage {
   }
 
   func didTapDeleteAllAudio(sender _: Any) {
+    if #available(iOS 8.0, *) {
     let c = UIAlertController(title: "Delete all offline audio", message: "Are you sure?",
-                              preferredStyle: UIAlertController.Style.alert)
-    c.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.destructive) { _ in
+                              preferredStyle: UIAlertControllerStyle.alert)
+    c.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive) { _ in
       self.deleteAllAudio()
     })
-    c.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+    c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
     present(c, animated: true, completion: nil)
+    } else {
+      let c = AlertView(title: "Delete all offline audio", message: "Are you sure?", cancelButtonTitle: "Cancel", "Delete") {
+        self.deleteAllAudio()
+        }
+      c.show()
+    }
   }
 }

@@ -22,8 +22,7 @@ private let kProfileImageSize: CGFloat = 80
 private let kUpcomingReviewsSection = 1
 
 private func userProfileImageURL(emailAddress: String) -> URL {
-  let address = emailAddress.trimmingCharacters(in: .whitespaces)
-    .lowercased()
+  let address = emailAddress.trimmingCharacters(in: .whitespaces).lowercased()
   let hash = address.MD5()
 
   let size = kProfileImageSize * UIScreen.main.scale
@@ -40,11 +39,20 @@ private func setTableViewCellCount(_ item: TKMBasicModelItem, count: Int) -> Boo
 @objc
 class MainViewController: UITableViewController, LoginViewControllerDelegate,
   MainHeaderViewDelegate,
-  SearchResultViewControllerDelegate, UISearchControllerDelegate {
+  SearchResultViewControllerDelegate, UISearchControllerDelegate, UISearchDisplayDelegate {
   var services: TKMServices!
   var model: TKMTableModel!
   @IBOutlet var headerView: MainHeaderView!
-  var searchController: UISearchController!
+  var displayController: UISearchDisplayController!
+  private var _searchController: Any? = nil
+  @available(iOS 8.0, *) var searchController: UISearchController! {
+    get {
+      return _searchController as? UISearchController
+    }
+    set {
+      _searchController = newValue
+    }
+  }
   weak var searchResultsViewController: SearchResultViewController!
   var hourlyRefreshTimer = Timer()
   var isShowingUnauthorizedAlert = false
@@ -83,12 +91,19 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     searchResultsViewController = searchResultsVC
 
     // Create the search controller.
-    searchController = UISearchController(searchResultsController: searchResultsViewController)
-    searchController.searchResultsUpdater = searchResultsViewController
-    searchController.delegate = self
-
+    var searchBar = UISearchBar()
+    if #available(iOS 8.0, *) {
+      searchController = UISearchController(searchResultsController: searchResultsViewController)
+      searchController.searchResultsUpdater = searchResultsViewController
+      searchController.delegate = self
+      searchBar = searchController.searchBar
+    } else {
+      displayController = UISearchDisplayController(searchBar: searchBar, contentsController: searchResultsViewController)
+      displayController.delegate = self
+      displayController.searchResultsDataSource = self
+    }
+    
     // Configure the search bar.
-    let searchBar = searchController.searchBar
     searchBar.barTintColor = TKMStyle.radicalColor2
     searchBar.autocapitalizationType = .none
 
@@ -96,9 +111,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     searchBar.tintColor = .white // Make the button white.
 
     if #available(iOS 13, *) {
-      let searchTextField = searchBar.searchTextField
-      searchTextField.backgroundColor = .systemBackground
-      searchTextField.tintColor = originalSearchBarTintColor
+      #if swift(>=5)
+        let searchTextField = searchBar.searchTextField
+        searchTextField.backgroundColor = .systemBackground
+        searchTextField.tintColor = originalSearchBarTintColor
+      #endif
     } else {
       for view in searchBar.subviews[0].subviews {
         if view.isKind(of: UITextField.self) {
@@ -130,11 +147,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationDidEnterBackground),
-                   name: UIApplication.didEnterBackgroundNotification,
+                   name: NSNotification.Name.UIApplicationDidEnterBackground,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationWillEnterForeground),
-                   name: UIApplication.willEnterForegroundNotification,
+                   name: NSNotification.Name.UIApplicationWillEnterForeground,
                    object: nil)
   }
 
@@ -145,7 +162,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updatingTableModel = true
 
     DispatchQueue.main.async {
-      WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      if #available(iOS 9.3, *) {
+        WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      }
       self.updatingTableModel = false
       self.recreateTableModel()
     }
@@ -236,14 +255,14 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    .lightContent
+    return .lightContent
   }
 
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
 
     // Bring the refresh control above the gradient.
-    refreshControl?.superview?.bringSubviewToFront(refreshControl!)
+    refreshControl?.superview?.bringSubview(toFront: refreshControl!)
 
     let headerSize = headerView.sizeThatFits(CGSize(width: view.bounds.size.width, height: 0))
     headerView.frame = CGRect(origin: headerView.frame.origin, size: headerSize)
@@ -310,7 +329,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   // MARK: - MainHeaderViewDelegate
 
   func searchButtonTapped() {
-    present(searchController, animated: true, completion: nil)
+    if #available(iOS 8.0, *) {
+      present(searchController, animated: true, completion: nil)
+    } else {
+      searchDisplayController?.setActive(true, animated: true)
+    }
   }
 
   func settingsButtonTapped() {
@@ -321,17 +344,22 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
   func updateHourlyTimer() {
     cancelHourlyTimer()
-
-    let calendar = Calendar.current as NSCalendar
-    let date = calendar
-      .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
-
-    hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
-                                              repeats: false,
-                                              block: { [weak self] _ in
-                                                guard let self = self else { return }
-                                                self.hourlyTimerExpired()
-                                              })
+    let calendar = Calendar.current
+    if #available(iOS 10.0, *) {
+      let date = (calendar as NSCalendar)
+        .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
+      hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
+                                                repeats: false,
+                                                block: { [weak self] _ in
+                                                  if self == nil { return }
+                                                  self!.hourlyTimerExpired()
+                                                })
+    } else {
+      var components = calendar.dateComponents([.year, .month, .day, .hour], from: Date())
+      components.hour = components.hour! + 1
+      let date = calendar.date(from: components)!
+      hourlyRefreshTimer = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow, target: self, selector: #selector(hourlyTimerExpired), userInfo: nil, repeats: false)
+    }
   }
 
   func cancelHourlyTimer() {
@@ -339,7 +367,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     hourlyRefreshTimer = Timer()
   }
 
-  func hourlyTimerExpired() {
+  @objc func hourlyTimerExpired() {
     refresh(quick: true)
     updateHourlyTimer()
   }
@@ -361,10 +389,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updateUserInfo()
     scheduleTableModelUpdate()
     guard let headerView = headerView else { return }
-
     let progress = Progress(totalUnitCount: -1)
     headerView.setProgress(progress: progress)
-    services.localCachingClient.sync(quick: quick, progress: progress)
+    _ = services.localCachingClient.sync(quick: quick, progress: progress)
   }
 
   @objc func availableItemsChanged() {
@@ -381,10 +408,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     guard let user = services.localCachingClient.getUserInfo(),
       let headerView = headerView,
       Settings.userEmailAddress != "" else { return }
-    let email = Settings.userEmailAddress
     let guruKanji = services.localCachingClient.guruKanjiCount
-    let imageURL = email.isEmpty ? URL(string: kDefaultProfileImageURL)
-      : userProfileImageURL(emailAddress: email)
+    let imageURL = Settings.userEmailAddress.isEmpty ? URL(string: kDefaultProfileImageURL)
+      : userProfileImageURL(emailAddress: Settings.userEmailAddress)
 
     headerView.update(username: user.username,
                       level: Int(user.level),
@@ -413,14 +439,20 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     }
     isShowingUnauthorizedAlert = true
 
+    let message = "Your API Token expired - please log in again. You won't lose your review progress"
+    if #available(iOS 8.0, *) {
     let ac = UIAlertController(title: "Logged out",
-                               message: "Your API Token expired - please log in again. You won't lose your review progress",
+                               message: message,
                                preferredStyle: .alert)
 
     ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
       self.loginAgain()
     }))
     present(ac, animated: true, completion: nil)
+    } else {
+      let ac = AlertView(title: "Logged out", message: message, cancelButtonTitle: nil, "OK", self.loginAgain)
+      ac.show()
+    }
   }
 
   func loginAgain() {
@@ -453,7 +485,12 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let vc = storyboard?
       .instantiateViewController(withIdentifier: "subjectDetailsViewController") as! SubjectDetailsViewController
     vc.setup(services: services, subject: subject, showHints: true, hideBackButton: false, index: 0)
+    if #available(iOS 8.0, *) {
     searchController.dismiss(animated: true) {
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+    } else {
+      searchDisplayController?.setActive(false, animated: true)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -483,29 +520,25 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     if hasLessons, !hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Continue lessons"))
+                              action: #selector(startLessons)))
     } else if hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Continue reviews"))
+                              action: #selector(startReviews)))
     }
 
     // Command L to start lessons, if any
     if hasLessons {
       ret.append(UIKeyCommand(input: "l",
                               modifierFlags: [.command],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Start lessons"))
+                              action: #selector(startLessons)))
     }
 
     // Command R to start reviews, if any
     if hasReviews {
       ret.append(UIKeyCommand(input: "r",
                               modifierFlags: [.command],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Start reviews"))
+                              action: #selector(startReviews)))
     }
 
     return ret

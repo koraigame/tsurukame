@@ -15,8 +15,9 @@
 import Foundation
 
 extension UIWindow {
+  @available(iOS 13.0, *)
   @objc func setInterfaceStyle(_ style: InterfaceStyle) {
-    if #available(iOS 13.0, *) {
+    #if swift(>=5)
       switch style {
       case .system:
         self.overrideUserInterfaceStyle = .unspecified
@@ -25,6 +26,6 @@ extension UIWindow {
       case .light:
         self.overrideUserInterfaceStyle = .light
       }
-    }
+    #endif
   }
 }

@@ -63,7 +63,9 @@ class SettingsController: WKInterfaceController, DataManagerDelegate {
   override func didDeactivate() {
     // This method is called when watch view controller is no longer visible
     super.didDeactivate()
+    #if swift(>=5)
     DataManager.sharedInstance.removeDelegate(self)
+    #endif
 
     // If we've been viewing settings make sure we refresh complication
     // on return.

@@ -18,7 +18,8 @@ private func main() {
   setlocale(LC_CTYPE, "UTF-8")
 
   let appDelegateClass: AnyClass = NSClassFromString("TestingAppDelegate") ?? AppDelegate.self
-  UIApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
+  UIApplicationMain(CommandLine.argc, UnsafeMutableRawPointer(CommandLine.unsafeArgv)
+    .bindMemory(to: UnsafeMutablePointer<Int8>.self, capacity: Int(CommandLine.argc)), nil,
                     NSStringFromClass(appDelegateClass))
 }
 
