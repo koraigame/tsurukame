@@ -14,6 +14,7 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelegate {
   var window: UIWindow?
@@ -23,15 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
   private var services: TKMServices!
 
   func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil)
+                   didFinishLaunchingWithOptions _: [UIApplicationLaunchOptionsKey: Any]? = nil)
     -> Bool {
     // Uncomment to slow the animation speed on a real device.
     // window?.layer.speed = .1
 
     Screenshotter.setUp()
 
-    window?.setInterfaceStyle(Settings.interfaceStyle)
-    application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+    if #available(iOS 13.0, *) {
+        window?.setInterfaceStyle(Settings.interfaceStyle)
+    }
+    application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 
     storyboard = window!.rootViewController!.storyboard
     navigationController = (window!.rootViewController as! UINavigationController)
@@ -93,9 +96,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
     services.client.subjectLevelGetter = services.localCachingClient
 
     if !Screenshotter.isActive {
+      if #available(iOS 10.0, *) {
       // Ask for notification permissions.
       let unc = UNUserNotificationCenter.current()
       unc.requestAuthorization(options: [.badge, .alert]) { _, _ in }
+      }
     }
 
     let pushMainViewController = { () in
@@ -180,6 +185,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
       return
     }
 
+    if #available(iOS 10.0, *) {
     WatchHelper.sharedInstance.updatedData(client: services.localCachingClient)
 
     let nc = UNUserNotificationCenter.current()
@@ -224,6 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
                                               trigger: trigger)
           nc.add(request, withCompletionHandler: nil)
         }
+      }
       }
     }
   }

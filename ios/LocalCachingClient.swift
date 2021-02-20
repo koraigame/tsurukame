@@ -37,20 +37,34 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
 
   private var db: FMDatabaseQueue!
 
-  @Cached(notificationName: .lccPendingItemsChanged) var pendingProgressCount: Int
-  @Cached(notificationName: .lccPendingItemsChanged) var pendingStudyMaterialsCount: Int
-
-  // swiftformat:disable all
-  @Cached(notificationName: .lccAvailableItemsChanged) var availableSubjects: (
-    lessonCount: Int,
-    reviewCount: Int,
-    upcomingReviews: [Int]
-  )
-  // swiftformat:enable all
-
-  @Cached var guruKanjiCount: Int
-  @Cached(notificationName: .lccSRSCategoryCountsChanged) var srsCategoryCounts: [Int]
-  @objc @Cached var maxLevelGrantedBySubscription: Int
+  private var _pendingProgressCount = Cached<Int>(n: .lccPendingItemsChanged)
+  var pendingProgressCount: Int {
+    get { return _pendingProgressCount.wrappedValue }
+  }
+  private var _pendingStudyMaterialsCount = Cached<Int>(n: .lccPendingItemsChanged)
+  var pendingStudyMaterialsCount: Int {
+    get { return _pendingStudyMaterialsCount.wrappedValue }
+  }
+  
+  private var _availableSubjects = Cached<(Int, Int, [Int])>(n: .lccAvailableItemsChanged)
+  var availableSubjects: (lessonCount: Int, reviewCount: Int, upcomingReviews: [Int]) {
+    get { return _availableSubjects.wrappedValue }
+  }
+  
+  private var _guruKanjiCount = Cached<Int>()
+  var guruKanjiCount: Int {
+    get { return _guruKanjiCount.wrappedValue }
+  }
+  
+  private var _srsCategoryCounts = Cached<[Int]>(n: .lccSRSCategoryCountsChanged)
+  var srsCategoryCounts: [Int] {
+    get { return _srsCategoryCounts.wrappedValue }
+  }
+  
+  private var _maxLevelGrantedBySubscription = Cached<Int>()
+  @objc var maxLevelGrantedBySubscription: Int {
+    get { return _maxLevelGrantedBySubscription.wrappedValue }
+  }
 
   init(client: WaniKaniAPIClient, reachability: Reachability) {
     self.client = client
@@ -80,7 +94,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func updateGuruKanjiCount() -> Int {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT COUNT(*) FROM subject_progress " +
         "WHERE srs_stage >= 5 AND subject_type = \(TKMSubject.TypeEnum.kanji.rawValue)")
       if cursor.next() {
@@ -91,7 +105,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func updateSrsCategoryCounts() -> [Int] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT srs_stage, COUNT(*) FROM subject_progress " +
         "WHERE srs_stage >= 1 GROUP BY srs_stage")
 
@@ -306,7 +320,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAllAssignments() -> [TKMAssignment] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       getAllAssignments(transaction: db)
     }
   }
@@ -314,13 +328,13 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   private func getAllAssignments(transaction db: FMDatabase) -> [TKMAssignment] {
     var ret = [TKMAssignment]()
     for cursor in db.query("SELECT pb FROM assignments") {
-      ret.append(cursor.proto(forColumnIndex: 0)!)
+      ret.append(cursor.proto(forColumnIndex: 0, TKMAssignment.self)!)
     }
     return ret
   }
 
   func getAllPendingProgress() -> [TKMProgress] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       getAllPendingProgress(transaction: db)
     }
   }
@@ -328,33 +342,33 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   private func getAllPendingProgress(transaction db: FMDatabase) -> [TKMProgress] {
     var ret = [TKMProgress]()
     for cursor in db.query("SELECT pb FROM pending_progress") {
-      ret.append(cursor.proto(forColumnIndex: 0)!)
+      ret.append(cursor.proto(forColumnIndex: 0, TKMProgress.self)!)
     }
     return ret
   }
 
   func getStudyMaterial(subjectId: Int32) -> TKMStudyMaterials? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM study_materials WHERE id = ?", args: [subjectId])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMStudyMaterials.self)
       }
       return nil
     }
   }
 
   func getUserInfo() -> TKMUser? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM user")
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMUser.self)
       }
       return nil
     }
   }
 
   func countRows(inTable table: String) -> Int {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT COUNT(*) FROM \(table)")
       if cursor.next() {
         return Int(cursor.int(forColumnIndex: 0))
@@ -364,15 +378,15 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAssignment(subjectId: Int32) -> TKMAssignment? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       var cursor = db.query("SELECT pb FROM assignments WHERE subject_id = ?", args: [subjectId])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMAssignment.self)
       }
 
       cursor = db.query("SELECT pb FROM pending_progress WHERE id = ?", args: [subjectId])
       if cursor.next() {
-        let progress: TKMProgress = cursor.proto(forColumnIndex: 0)!
+        let progress: TKMProgress = cursor.proto(forColumnIndex: 0, TKMProgress.self)!
         return progress.assignment
       }
 
@@ -381,7 +395,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAssignments(level: Int) -> [TKMAssignment] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       getAssignments(level: level, transaction: db)
     }
   }
@@ -402,7 +416,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       "LEFT JOIN assignments AS a " +
       "ON p.id = a.subject_id " +
       "WHERE p.level = ?", args: [level]) {
-      var assignment: TKMAssignment? = cursor.proto(forColumnIndex: 4)
+      var assignment: TKMAssignment? = cursor.proto(forColumnIndex: 4, TKMAssignment.self)
       if assignment == nil {
         assignment = TKMAssignment()
         assignment!.subjectID = cursor.int(forColumnIndex: 0)
@@ -449,27 +463,27 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     var ret = [TKMSubject]()
     db.inDatabase { db in
       for cursor in db.query("SELECT pb FROM subjects") {
-        ret.append(cursor.proto(forColumnIndex: 0)!)
+        ret.append(cursor.proto(forColumnIndex: 0, TKMSubject.self)!)
       }
     }
     return ret
   }
 
   func getSubject(id: Int32) -> TKMSubject? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM subjects WHERE id = ?", args: [id])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMSubject.self)
       }
       return nil
     }
   }
 
   func getSubject(japanese: String) -> TKMSubject? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM subjects WHERE japanese = ?", args: [japanese])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMSubject.self)
       }
       return nil
     }
@@ -483,7 +497,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func levelOf(subjectId: Int32) -> Int? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT level FROM subjects WHERE id = ?", args: [subjectId])
       if cursor.next() {
         return Int(cursor.int(forColumnIndex: 0))
@@ -514,10 +528,10 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAllLevelProgressions() -> [TKMLevel] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       var ret = [TKMLevel]()
       for cursor in db.query("SELECT pb FROM level_progressions") {
-        ret.append(cursor.proto(forColumnIndex: 0)!)
+        ret.append(cursor.proto(forColumnIndex: 0, TKMLevel.self)!)
       }
       return ret
     }
@@ -559,7 +573,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   private func sendAllPendingProgress(progress: Progress) -> Promise<Void> {
-    sendPendingProgress(getAllPendingProgress(), progress: progress)
+    return sendPendingProgress(getAllPendingProgress(), progress: progress)
   }
 
   private func clearPendingProgress(_ progress: TKMProgress) {
@@ -617,18 +631,18 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   private func getAllPendingStudyMaterials() -> [TKMStudyMaterials] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       var ret = [TKMStudyMaterials]()
       for cursor in db
         .query("SELECT s.pb FROM study_materials AS s, pending_study_materials AS p ON s.id = p.id") {
-        ret.append(cursor.proto(forColumnIndex: 0)!)
+          ret.append(cursor.proto(forColumnIndex: 0, TKMStudyMaterials.self)!)
       }
       return ret
     }
   }
 
   private func sendAllPendingStudyMaterials(progress: Progress) -> Promise<Void> {
-    sendPendingStudyMaterials(getAllPendingStudyMaterials(), progress: progress)
+    return sendPendingStudyMaterials(getAllPendingStudyMaterials(), progress: progress)
   }
 
   private func sendPendingStudyMaterials(_ materials: [TKMStudyMaterials],
@@ -820,7 +834,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
 
   // TODO: do everything on database queue.
   private func fetchUserInfo(progress: Progress) -> Promise<Void> {
-    firstly {
+    return firstly {
       client.user(progress: progress)
     }.done { user in
       NSLog("Updated user: %@", user.debugDescription)
@@ -842,7 +856,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   private func fetchLevelProgression(progress: Progress) -> Promise<Void> {
-    firstly {
+    return firstly {
       client.levelProgressions(progress: progress)
     }.done { progressions, _ in
       NSLog("Updated %d level progressions", progressions.count)
@@ -897,8 +911,12 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     let assignmentProgressUnits: Int64 = quick ? 1 : 8
     let subjectProgressUnits: Int64 = quick ? 1 : 20
     progress.totalUnitCount = 5 + assignmentProgressUnits + subjectProgressUnits
-    let childProgress = { (units: Int64) in
-      Progress(totalUnitCount: -1, parent: progress, pendingUnitCount: units)
+    let childProgress = { (units: Int64) -> Progress in
+      if #available(iOS 9.0, *) {
+        return Progress(totalUnitCount: -1, parent: progress, pendingUnitCount: units)
+      } else {
+        return Progress(totalUnitCount: units)
+      }
     }
 
     if !quick {
@@ -952,19 +970,18 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   // MARK: - Objective-C support
 
   var availableReviewCount: Int {
-    availableSubjects.reviewCount
+    return availableSubjects.reviewCount
   }
 
   var availableLessonCount: Int {
-    availableSubjects.lessonCount
+    return availableSubjects.lessonCount
   }
 
   var upcomingReviews: [Int] {
-    availableSubjects.upcomingReviews
+    return availableSubjects.upcomingReviews
   }
 }
 
-@propertyWrapper
 struct Cached<T> {
   private var stale = true
   var value: T?
@@ -973,8 +990,8 @@ struct Cached<T> {
 
   init() {}
 
-  init(notificationName: Notification.Name) {
-    self.notificationName = notificationName
+  init(n: Notification.Name) {
+    self.notificationName = n
   }
 
   mutating func invalidate() {
