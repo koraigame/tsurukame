@@ -23,20 +23,24 @@ private func UIColorFromHex(_ hexColor: Int32) -> UIColor {
 
 private func AdaptiveColor(light: UIColor, dark: UIColor) -> UIColor {
   if #available(iOS 13, *) {
-    return UIColor { (tc: UITraitCollection) -> UIColor in
-      if tc.userInterfaceStyle == .dark {
-        return dark
-      } else {
-        return light
+    #if swift(>=5)
+      return UIColor { (tc: UITraitCollection) -> UIColor in
+        if tc.userInterfaceStyle == .dark {
+          return dark
+        } else {
+          return light
+        }
       }
-    }
+    #else
+      return light
+    #endif
   } else {
     return light
   }
 }
 
 private func AdaptiveColorHex(light: Int32, dark: Int32) -> UIColor {
-  AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
+  return AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
 }
 
 @objc
@@ -73,12 +77,12 @@ class TKMStyle: NSObject {
                                            dark: UIColor(white: 0.682, alpha: 1))
 
   // The [Any] types force these to be exposed to objective-C as an untyped NSArray*.
-  static var radicalGradient: [Any] { [radicalColor1.cgColor, radicalColor2.cgColor] }
-  static var kanjiGradient: [Any] { [kanjiColor1.cgColor, kanjiColor2.cgColor] }
-  static var vocabularyGradient: [Any] { [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
-  static var lockedGradient: [Any] { [lockedColor1.cgColor, lockedColor2.cgColor] }
-  static var readingGradient: [Any] { [readingColor1.cgColor, readingColor2.cgColor] }
-  static var meaningGradient: [Any] { [meaningColor1.cgColor, meaningColor2.cgColor] }
+  static var radicalGradient: [Any] { return [radicalColor1.cgColor, radicalColor2.cgColor] }
+  static var kanjiGradient: [Any] { return [kanjiColor1.cgColor, kanjiColor2.cgColor] }
+  static var vocabularyGradient: [Any] { return [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
+  static var lockedGradient: [Any] { return [lockedColor1.cgColor, lockedColor2.cgColor] }
+  static var readingGradient: [Any] { return [readingColor1.cgColor, readingColor2.cgColor] }
+  static var meaningGradient: [Any] { return [meaningColor1.cgColor, meaningColor2.cgColor] }
 
   class func color(forSRSStageCategory srsStageCategory: SRSStageCategory) -> UIColor {
     switch srsStageCategory {
@@ -136,7 +140,8 @@ class TKMStyle: NSObject {
 
   // MARK: - Japanese fonts
 
-  static let japaneseFontName = "Hiragino Sans"
+  static let japaneseFontName1 = "Hiragino Sans"
+  static let japaneseFontName2 = "Hiragino Kaku Gothic ProN"
 
   // Tries to load fonts from the list of font names, in order, until one is found.
   private class func loadFont(_ names: [String], size: CGFloat) -> UIFont {
@@ -149,22 +154,24 @@ class TKMStyle: NSObject {
   }
 
   class func japaneseFont(size: CGFloat) -> UIFont {
-    UIFont(name: japaneseFontName, size: size)!
+    return UIFont(name: japaneseFontName1, size: size) ?? UIFont(name: japaneseFontName2, size: size)!
   }
 
   class func japaneseFontLight(size: CGFloat) -> UIFont {
-    loadFont(["HiraginoSans-W3",
+    return loadFont(["HiraginoSans-W3",
               "HiraginoSans-W2",
               "HiraginoSans-W1",
               "HiraginoSans-W4",
-              "HiraginoSans-W5"], size: size)
+              "HiraginoSans-W5",
+              "HiraKakuProN-W3"], size: size)
   }
 
   class func japaneseFontBold(size: CGFloat) -> UIFont {
-    loadFont(["HiraginoSans-W8",
+    return loadFont(["HiraginoSans-W8",
               "HiraginoSans-W7",
               "HiraginoSans-W6",
-              "HiraginoSans-W5"], size: size)
+              "HiraginoSans-W5",
+              "HiraKakuProN-W6"], size: size)
   }
 
   // MARK: - Dark mode aware UI colors
@@ -191,11 +198,14 @@ class TKMStyle: NSObject {
 
   // Wrapper around UITraitCollection.performAsCurrent that just does nothing
   // on iOS < 13.
+  @available(iOS 8.0, *)
   class func withTraitCollection(_ tc: UITraitCollection, f: () -> Void) {
     if #available(iOS 13.0, *) {
-      tc.performAsCurrent {
-        f()
-      }
+      #if swift(>=5.0)
+        tc.performAsCurrent {
+          f()
+        }
+      #endif
     } else {
       f()
     }

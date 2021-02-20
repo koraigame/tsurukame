@@ -14,7 +14,9 @@
 
 import CoreSpotlight
 import Foundation
+#if canImport(Intents)
 import Intents
+#endif
 import MobileCoreServices
 
 class SiriShortcutHelper: NSObject {
@@ -33,30 +35,49 @@ class SiriShortcutHelper: NSObject {
   }
 
   @available(iOS 12.0, *)
+<<<<<<< Updated upstream
   func newShortcutActivity(type: ShortcutType) -> NSUserActivity {
     let activity = NSUserActivity(activityType: type.rawValue)
     activity.persistentIdentifier = NSUserActivityPersistentIdentifier(type.rawValue)
     activity.isEligibleForSearch = true
     activity.isEligibleForPrediction = true
 
+=======
+  func newShortcutActivity(type: String) -> NSUserActivity {
+    let activity = NSUserActivity(activityType: type)
+    #if swift(>=5)
+      activity.persistentIdentifier = NSUserActivityPersistentIdentifier(type)
+      activity.isEligibleForSearch = true
+      activity.isEligibleForPrediction = true
+    #endif
+>>>>>>> Stashed changes
     configureType(type, activity: activity)
 
     return activity
   }
 
+<<<<<<< Updated upstream
   private func configureType(_ type: ShortcutType, activity: NSUserActivity) {
+=======
+  @available(iOS 9.0, *)
+  func configureType(_ type: String, activity: NSUserActivity) {
+>>>>>>> Stashed changes
     let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
     switch type {
     case .reviews:
       activity.title = "Start Wanikani Reviews"
       if #available(iOS 12.0, *) {
-        activity.suggestedInvocationPhrase = "Start Wanikani Reviews"
+        #if swift(>=5)
+          activity.suggestedInvocationPhrase = "Start Wanikani Reviews"
+        #endif
       }
       attributes.contentDescription = "Keep it up and burn every one"
     case .lessons:
       activity.title = "Start Wanikani Lessons"
       if #available(iOS 12.0, *) {
-        activity.suggestedInvocationPhrase = "Start Wanikani Lessons"
+        #if swift(>=5)
+          activity.suggestedInvocationPhrase = "Start Wanikani Lessons"
+        #endif
       }
       attributes.contentDescription = "Learn something new"
     }
