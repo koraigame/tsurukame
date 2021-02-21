@@ -19,7 +19,6 @@
 #import "NavigationController.h"
 #import "NSString+LevenshteinDistance.h"
 #import "Reachability.h"
-#import "ReviewSummaryViewController.h"
 #import "SubjectCatalogueViewController.h"
 #import "SuccessAnimation.h"
 #import "TKMDispatch.h"

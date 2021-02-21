@@ -8,14 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		0A943349E17FA7889EFEE41F /* Pods_Tsurukame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC80AAF9736A570E3C4CC09E /* Pods_Tsurukame.framework */; };
-		480B243123D6830300FC2A82 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 480B243023D6830300FC2A82 /* SwiftPackageProductDependency */; };
+		480B243123D6830300FC2A82 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		481B2FED23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */; };
 		488C04A225C7077600BDACDD /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488C04A125C7077500BDACDD /* String+MD5.swift */; };
-		48BAFB2C257878D000358419 /* CFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAFB27257878CE00358419 /* CFlags.swift */; };
-		48BAFB2D257878D000358419 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAFB28257878CE00358419 /* Regex.swift */; };
-		48BAFB2E257878D000358419 /* EFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BAFB29257878CE00358419 /* EFlags.swift */; };
 		48CF714823EAFA5600A838F4 /* TKMReviewBatchSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CF714623EAFA5600A838F4 /* TKMReviewBatchSizeViewController.m */; };
 		48F3B483257F0C7400703C0B /* TKMDispatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3B482257F0C7400703C0B /* TKMDispatch.m */; };
+		48FFC50125E2C808001B0C3C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
+		48FFC50925E2C843001B0C3C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFC50425E2C843001B0C3C /* Error.swift */; };
+		48FFC50A25E2C843001B0C3C /* CFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFC50525E2C843001B0C3C /* CFlags.swift */; };
+		48FFC50B25E2C843001B0C3C /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFC50625E2C843001B0C3C /* Regex.swift */; };
+		48FFC50C25E2C843001B0C3C /* EFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFC50725E2C843001B0C3C /* EFlags.swift */; };
+		48FFC50D25E2C843001B0C3C /* String+Rexy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFC50825E2C843001B0C3C /* String+Rexy.swift */; };
 		5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33812F134DC80E5D981C40E /* Pods_FontScreenshotter.framework */; };
 		630ADB6F21F8256E00BC9801 /* TKMCheckmarkModelItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 630ADB6E21F8256E00BC9801 /* TKMCheckmarkModelItem.m */; };
 		630EB10A25C561A900783E54 /* NSMutableAttributedString+Replacements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */; };
@@ -61,7 +64,7 @@
 		637CA11525D7E48A0082580E /* LessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA11425D7E48A0082580E /* LessonsViewController.swift */; };
 		637CA12C25D7EDFF0082580E /* ReviewSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA12B25D7EDFE0082580E /* ReviewSummaryViewController.swift */; };
 		637CA17625D7F2C70082580E /* wanikani.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA17525D7F2C70082580E /* wanikani.pb.swift */; };
-		637CA18725D7F5A10082580E /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 637CA18625D7F5A10082580E /* SwiftPackageProductDependency */; };
+		637CA18725D7F5A10082580E /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		637CA1BF25D806B60082580E /* wanikani.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA17525D7F2C70082580E /* wanikani.pb.swift */; };
 		637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6364A10A242DFB6F000ABF32 /* Intents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		638A5C4E25A471F9001A7AEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A5C4D25A471F9001A7AEE /* AppDelegate.swift */; };
@@ -75,7 +78,7 @@
 		6398480E23D699E70077EB6B /* ContextSentenceModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6398480D23D699E70077EB6B /* ContextSentenceModelItem.swift */; };
 		63996AE02594236F00149414 /* APIClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63996ADF2594236F00149414 /* APIClientTest.swift */; };
 		63996B0D2594356E00149414 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A1678F253AD8E600B5BCD6 /* APIClient.swift */; };
-		63996B15259435DF00149414 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		63996B15259435DF00149414 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		63996B24259436F500149414 /* URLRequest+SetBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A1676E253AD8AD00B5BCD6 /* URLRequest+SetBody.swift */; };
 		63996B2C2594383C00149414 /* WebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A16790253AD8E600B5BCD6 /* WebClient.swift */; };
 		63996B342594387100149414 /* NSRegularExpression+Matches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A1676D253AD8AD00B5BCD6 /* NSRegularExpression+Matches.swift */; };
@@ -242,12 +245,14 @@
 		4826740B23ECE46900F704E4 /* TKMReviewBatchSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMReviewBatchSizeViewController.h; sourceTree = "<group>"; };
 		488C04A125C7077500BDACDD /* String+MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
 		489894D423670CB000A20AF8 /* Tsurukame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tsurukame.entitlements; sourceTree = "<group>"; };
-		48BAFB27257878CE00358419 /* CFlags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFlags.swift; sourceTree = "<group>"; };
-		48BAFB28257878CE00358419 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
-		48BAFB29257878CE00358419 /* EFlags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFlags.swift; sourceTree = "<group>"; };
 		48CF714623EAFA5600A838F4 /* TKMReviewBatchSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMReviewBatchSizeViewController.m; sourceTree = "<group>"; };
 		48F3B482257F0C7400703C0B /* TKMDispatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKMDispatch.m; sourceTree = "<group>"; };
 		48F3B484257F141800703C0B /* TKMDispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKMDispatch.h; sourceTree = "<group>"; };
+		48FFC50425E2C843001B0C3C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		48FFC50525E2C843001B0C3C /* CFlags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFlags.swift; sourceTree = "<group>"; };
+		48FFC50625E2C843001B0C3C /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		48FFC50725E2C843001B0C3C /* EFlags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EFlags.swift; sourceTree = "<group>"; };
+		48FFC50825E2C843001B0C3C /* String+Rexy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Rexy.swift"; sourceTree = "<group>"; };
 		4B8236EC341CF1BA18D16857 /* Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; sourceTree = "<group>"; };
 		630ADB6D21F8256E00BC9801 /* TKMCheckmarkModelItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKMCheckmarkModelItem.h; sourceTree = "<group>"; };
 		630ADB6E21F8256E00BC9801 /* TKMCheckmarkModelItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKMCheckmarkModelItem.m; sourceTree = "<group>"; };
@@ -424,8 +429,8 @@
 			files = (
 				637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */,
 				63CAAB111FD7FACD00E09DA1 /* SystemConfiguration.framework in Frameworks */,
-				480B243123D6830300FC2A82 /* BuildFile in Frameworks */,
-				637CA18725D7F5A10082580E /* BuildFile in Frameworks */,
+				480B243123D6830300FC2A82 /* (null) in Frameworks */,
+				637CA18725D7F5A10082580E /* (null) in Frameworks */,
 				0A943349E17FA7889EFEE41F /* Pods_Tsurukame.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -517,6 +522,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		48FFC50325E2C843001B0C3C /* Rexy */ = {
+			isa = PBXGroup;
+			children = (
+				48FFC50425E2C843001B0C3C /* Error.swift */,
+				48FFC50525E2C843001B0C3C /* CFlags.swift */,
+				48FFC50625E2C843001B0C3C /* Regex.swift */,
+				48FFC50725E2C843001B0C3C /* EFlags.swift */,
+				48FFC50825E2C843001B0C3C /* String+Rexy.swift */,
+			);
+			path = Rexy;
+			sourceTree = "<group>";
+		};
 		630FD60A1FC45BDF00D21C1F = {
 			isa = PBXGroup;
 			children = (
@@ -564,6 +581,7 @@
 				633DE9332094D80D00AC25F4 /* ReviewTaskOrderViewController.h */,
 				633DE9342094D80D00AC25F4 /* ReviewTaskOrderViewController.m */,
 				631CAD71234B4A96008CEA73 /* ReviewViewController.swift */,
+				48FFC50325E2C843001B0C3C /* Rexy */,
 				63BEBF9625C57D4000123147 /* SearchResultViewController.swift */,
 				63F7F52B23D43DF6006A31FB /* Services.swift */,
 				633632EE201F3490006D582B /* Settings.swift */,
@@ -792,8 +810,8 @@
 			);
 			name = Tsurukame;
 			packageProductDependencies = (
-				480B243023D6830300FC2A82 /* SwiftPackageProductDependency */,
-				637CA18625D7F5A10082580E /* SwiftPackageProductDependency */,
+				480B243023D6830300FC2A82 /* Rexy */,
+				637CA18625D7F5A10082580E /* SwiftProtobuf */,
 			);
 			productName = wk;
 			productReference = 6319C9B520441DE200C31F87 /* Tsurukame.app */;
@@ -969,8 +987,8 @@
 			);
 			mainGroup = 630FD60A1FC45BDF00D21C1F;
 			packageReferences = (
-				480B242F23D6830300FC2A82 /* RemoteSwiftPackageReference */,
-				637CA18525D7F5A10082580E /* RemoteSwiftPackageReference */,
+				480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */,
+				637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */,
 			);
 			productRefGroup = 630FD60A1FC45BDF00D21C1F;
 			projectDirPath = "";
@@ -1111,13 +1129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tsurukame/Pods-Tsurukame-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tsurukame/Pods-Tsurukame-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tsurukame/Pods-Tsurukame-frameworks.sh\"\n";
@@ -1145,13 +1157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests-frameworks.sh\"\n";
@@ -1198,13 +1204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests/Pods-Tests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests/Pods-Tests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
@@ -1215,13 +1215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter-frameworks.sh\"\n";
@@ -1238,12 +1232,14 @@
 				63E9A8D12110859800418CE1 /* TKMListSeparatorItem.m in Sources */,
 				63B6F1ED226AF55300E6AA5C /* TKMLessonBatchSizeViewController.m in Sources */,
 				638A5C4E25A471F9001A7AEE /* AppDelegate.swift in Sources */,
+				48FFC50D25E2C843001B0C3C /* String+Rexy.swift in Sources */,
 				63E9E51121F424690022C16E /* TKMDownloadViewController.m in Sources */,
 				630ADB6F21F8256E00BC9801 /* TKMCheckmarkModelItem.m in Sources */,
 				633632EF201F3490006D582B /* Settings.swift in Sources */,
 				637CA17625D7F2C70082580E /* wanikani.pb.swift in Sources */,
 				63A16775253AD8AE00B5BCD6 /* FMDatabase+Assert.swift in Sources */,
 				637CA12C25D7EDFF0082580E /* ReviewSummaryViewController.swift in Sources */,
+				48FFC50C25E2C843001B0C3C /* EFlags.swift in Sources */,
 				63C74BC825C822C9004F6C99 /* SubjectModelItem.swift in Sources */,
 				638A5C6C25ADBB86001A7AEE /* main.swift in Sources */,
 				6398480E23D699E70077EB6B /* ContextSentenceModelItem.swift in Sources */,
@@ -1251,7 +1247,6 @@
 				63DD391425C509D8004D4E5B /* ProtobufExtensions.swift in Sources */,
 				63BDA9A7200E04E500D75DA2 /* NavigationController.m in Sources */,
 				63E9A8D72111BFCD00418CE1 /* SubjectCatalogueViewController.m in Sources */,
-				48BAFB2C257878D000358419 /* CFlags.swift in Sources */,
 				BBE4E332217276EC003A200E /* TKMFontsViewController.m in Sources */,
 				C92AB96F237F280300F79904 /* WatchHelper.swift in Sources */,
 				63F7F51F23D3F335006A31FB /* ReadingModelItem.swift in Sources */,
@@ -1267,10 +1262,10 @@
 				BBE4E32E2172576B003A200E /* TKMFontLoader.mm in Sources */,
 				63A16774253AD8AE00B5BCD6 /* CGContext+Blur.swift in Sources */,
 				630EB13F25C5713000783E54 /* ReviewItem.swift in Sources */,
-				48BAFB2E257878D000358419 /* EFlags.swift in Sources */,
 				63BDA9AA200E12F900D75DA2 /* SuccessAnimation.m in Sources */,
 				C9164D3923D0CFCF00B6D93A /* InterfaceStyleViewController.swift in Sources */,
 				633DE9352094D80D00AC25F4 /* ReviewTaskOrderViewController.m in Sources */,
+				48FFC50A25E2C843001B0C3C /* CFlags.swift in Sources */,
 				C904455D2395DBAE001BC48B /* AnswerTextField.swift in Sources */,
 				48F3B483257F0C7400703C0B /* TKMDispatch.m in Sources */,
 				633DE95820C5634A00AC25F4 /* TKMModelItem.m in Sources */,
@@ -1286,6 +1281,7 @@
 				633AFAE123516BE7004F732F /* SubjectDetailsView.swift in Sources */,
 				63DB064025A0372E0071DC1C /* MarkupFormatter.swift in Sources */,
 				C970BC0323D262CE001F3735 /* SiriShortcutHelper.swift in Sources */,
+				48FFC50925E2C843001B0C3C /* Error.swift in Sources */,
 				633DE95520C5634A00AC25F4 /* TKMSwitchModelItem.m in Sources */,
 				63CE766621F47669002A417B /* TKMReviewMenuViewController.m in Sources */,
 				637CA11525D7E48A0082580E /* LessonsViewController.swift in Sources */,
@@ -1297,6 +1293,7 @@
 				63F7F52923D42C6E006A31FB /* MainViewController.swift in Sources */,
 				636A63E1238A2B8200902269 /* SRSStageCategoryItem.swift in Sources */,
 				481B2FED23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift in Sources */,
+				48FFC50B25E2C843001B0C3C /* Regex.swift in Sources */,
 				63BEBF9725C57D4000123147 /* SearchResultViewController.swift in Sources */,
 				63A237611FE9264300C48657 /* UIColor+HexString.m in Sources */,
 				639528FD25CC2F4F009845ED /* LessonOrderViewController.swift in Sources */,
@@ -1318,7 +1315,6 @@
 				63FCAE78237F75CC00DB1418 /* Style.swift in Sources */,
 				63C74C7F25C96F58004F6C99 /* SubjectDelegate.swift in Sources */,
 				63D1026923D7ED3200838F7C /* UIWindow+InterfaceStyle.swift in Sources */,
-				48BAFB2D257878D000358419 /* Regex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1335,7 +1331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				633632EF201F3490006D582B /* Settings.swift in Sources */,
+				48FFC50125E2C808001B0C3C /* Settings.swift in Sources */,
 				C904455E2395DBAE001BC48B /* AnswerTextField.swift in Sources */,
 				63C42A2821B6A28D008CA938 /* ViewController.swift in Sources */,
 				634EB1A121B6BBA400E1831C /* TKMFontLoader.mm in Sources */,
@@ -1377,7 +1373,7 @@
 				63DB064125A0372E0071DC1C /* MarkupFormatter.swift in Sources */,
 				63DD391525C509D8004D4E5B /* ProtobufExtensions.swift in Sources */,
 				638A5CAF25ADC844001A7AEE /* FakeSubjectLevelGetter.swift in Sources */,
-				63996B15259435DF00149414 /* BuildFile in Sources */,
+				63996B15259435DF00149414 /* (null) in Sources */,
 				63996BE62595D1B700149414 /* WebClientTest.swift in Sources */,
 				63996B342594387100149414 /* NSRegularExpression+Matches.swift in Sources */,
 				631CAD68234AFAA5008CEA73 /* AnswerChecker.swift in Sources */,
@@ -2033,7 +2029,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		480B242F23D6830300FC2A82 /* RemoteSwiftPackageReference */ = {
+		480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/vadymmarkov/Rexy";
 			requirement = {
@@ -2041,25 +2037,25 @@
 				version = 1.0.1;
 			};
 		};
-		637CA18525D7F5A10082580E /* RemoteSwiftPackageReference */ = {
+		637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-protobuf";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.15.0;
+				minimumVersion = 1.15;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		480B243023D6830300FC2A82 /* SwiftPackageProductDependency */ = {
+		480B243023D6830300FC2A82 /* Rexy */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 480B242F23D6830300FC2A82 /* RemoteSwiftPackageReference */;
+			package = 480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */;
 			productName = Rexy;
 		};
-		637CA18625D7F5A10082580E /* SwiftPackageProductDependency */ = {
+		637CA18625D7F5A10082580E /* SwiftProtobuf */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 637CA18525D7F5A10082580E /* RemoteSwiftPackageReference */;
+			package = 637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */;
 			productName = SwiftProtobuf;
 		};
 /* End XCSwiftPackageProductDependency section */
