@@ -77,7 +77,6 @@ private func getArchiveData<T: Codable>(_ defaultValue: T, key: String) -> T {
   return (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T) ?? defaultValue
 }
 
-<<<<<<< Updated upstream
 @propertyWrapper struct Setting<T: Codable> {
   private let defaultValue: T
   private let key: String
@@ -137,46 +136,10 @@ private func getArchiveData<T: Codable>(_ defaultValue: T, key: String) -> T {
   var wrappedValue: A {
     get { EnumArraySetting<A, T>.fromRawArray(getArchiveData(defaultValue, key: key)) }
     set(newValue) { setArchiveData(EnumArraySetting<A, T>.toRawArray(newValue), key: key) }
-=======
-struct S<T: Codable> {
-  static func archiveData(_ object: T, _ key: String) -> Data {
-    if #available(iOS 11.0, *) {
-      return try! NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: true)
-    } else {
-      let data = NSMutableData()
-      let archiver = NSKeyedArchiver(forWritingWith: data)
-      archiver.requiresSecureCoding = true
-      archiver.encode(object, forKey: key)
-      return data as Data
-    }
-  }
-  
-  static func get(_ defaultValue: T, _ key: String) -> T {
-    // Encode anything not encoded
-    if let notEncodedObject = UserDefaults.standard.object(forKey: key) as? T {
-      UserDefaults.standard.set(archiveData(notEncodedObject, key), forKey: key)
-    }
-    // Decode value if obtainable and return it
-    guard let data = UserDefaults.standard.object(forKey: key) as? Data else {
-      UserDefaults.standard.set(archiveData(defaultValue, key), forKey: key)
-      return defaultValue
-    }
-    if #available(iOS 9.0, *) {
-      let t = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as Any?
-      return (t as? T) ?? defaultValue
-    } else {
-      return (NSKeyedUnarchiver.unarchiveObject(with: data) as? T) ?? defaultValue
-    }
-  }
-  
-  static func set(_ key: String, _ newValue: T) {
-    UserDefaults.standard.set(archiveData(newValue, key), forKey: key)
->>>>>>> Stashed changes
   }
 }
 
 @objcMembers class Settings: NSObject {
-<<<<<<< Updated upstream
   @Setting("", #keyPath(userCookie)) static var userCookie: String
   @Setting("", #keyPath(userEmailAddress)) static var userEmailAddress: String
   @Setting("", #keyPath(userApiToken)) static var userApiToken: String
@@ -221,7 +184,63 @@ struct S<T: Codable> {
 
   @Setting(true,
            #keyPath(subjectCatalogueViewShowAnswers)) static var subjectCatalogueViewShowAnswers: Bool
-=======
+}
+
+// Copyright 2021 David Sansome
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+struct S<T: Codable> {
+  static func archiveData(_ object: T, _ key: String) -> Data {
+    if #available(iOS 11.0, *) {
+      return try! NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: true)
+    } else {
+      let data = NSMutableData()
+      let archiver = NSKeyedArchiver(forWritingWith: data)
+      archiver.requiresSecureCoding = true
+      archiver.encode(object, forKey: key)
+      return data as Data
+    }
+  }
+  
+  static func get(_ defaultValue: T, _ key: String) -> T {
+    // Encode anything not encoded
+    if let notEncodedObject = UserDefaults.standard.object(forKey: key) as? T {
+      UserDefaults.standard.set(archiveData(notEncodedObject, key), forKey: key)
+    }
+    // Decode value if obtainable and return it
+    guard let data = UserDefaults.standard.object(forKey: key) as? Data else {
+      UserDefaults.standard.set(archiveData(defaultValue, key), forKey: key)
+      return defaultValue
+    }
+    if #available(iOS 9.0, *) {
+      let t = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as Any?
+      return (t as? T) ?? defaultValue
+    } else {
+      return (NSKeyedUnarchiver.unarchiveObject(with: data) as? T) ?? defaultValue
+    }
+  }
+  
+  static func set(_ key: String, _ newValue: T) {
+    UserDefaults.standard.set(archiveData(newValue, key), forKey: key)
+  }
+}
+
+struct E<T: RawRepresentable> {}
+struct A<C: Sequence, T: RawRepresentable> {}
+
+@objcMembers class Settings: NSObject {
   static var userCookie: String {
     get {return S.get("", #keyPath(userCookie))}
     set(n) {S.set(#keyPath(userCookie), n)}
@@ -350,5 +369,4 @@ struct S<T: Codable> {
     get {return S.get(true, #keyPath(subjectCatalogueViewShowAnswers))}
     set(n) {S.set(#keyPath(subjectCatalogueViewShowAnswers), n)}
   }
->>>>>>> Stashed changes
 }
