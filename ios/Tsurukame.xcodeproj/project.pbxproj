@@ -47,7 +47,6 @@
 		634C9B1623BF689000E4415C /* TKMListSeparatorItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63E9A8CD21106E0900418CE1 /* TKMListSeparatorItem.xib */; };
 		634EB1A021B6B6D900E1831C /* TKMTableModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 633DE95120C5634A00AC25F4 /* TKMTableModel.m */; };
 		634EB1A121B6BBA400E1831C /* TKMFontLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E32D2172576B003A200E /* TKMFontLoader.mm */; settings = {COMPILER_FLAGS = "-fmodules -fcxx-modules"; }; };
-		634EB1A221B6BBD600E1831C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
 		634EB1A321B6BC7000E1831C /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = BB2909A5217FAF8B00B1816F /* fonts */; };
 		635D0079218D94AA006CD711 /* TKMGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 635D0078218D94AA006CD711 /* TKMGradientView.m */; };
 		636502B325D7A39600801C2D /* SubjectsRemainingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636502B225D7A39600801C2D /* SubjectsRemainingViewController.swift */; };
@@ -1247,7 +1246,6 @@
 				637CA12C25D7EDFF0082580E /* ReviewSummaryViewController.swift in Sources */,
 				63C74BC825C822C9004F6C99 /* SubjectModelItem.swift in Sources */,
 				638A5C6C25ADBB86001A7AEE /* main.swift in Sources */,
-				633632EF201F3490006D582B /* Settings.swift in Sources */,
 				6398480E23D699E70077EB6B /* ContextSentenceModelItem.swift in Sources */,
 				63A16792253AD8E600B5BCD6 /* WebClient.swift in Sources */,
 				63DD391425C509D8004D4E5B /* ProtobufExtensions.swift in Sources */,
@@ -1337,7 +1335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				634EB1A221B6BBD600E1831C /* Settings.swift in Sources */,
+				633632EF201F3490006D582B /* Settings.swift in Sources */,
 				C904455E2395DBAE001BC48B /* AnswerTextField.swift in Sources */,
 				63C42A2821B6A28D008CA938 /* ViewController.swift in Sources */,
 				634EB1A121B6BBA400E1831C /* TKMFontLoader.mm in Sources */,
