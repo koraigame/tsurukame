@@ -31,11 +31,11 @@ struct S<T: Codable> {
   static func get(_ defaultValue: T, _ key: String) -> T {
     // Encode anything not encoded
     if let notEncodedObject = UserDefaults.standard.object(forKey: key) as? T {
-      set(notEncodedObject, key: key)
+      set(notEncodedObject, key)
     }
     // Decode value if obtainable and return it
     guard let data = UserDefaults.standard.object(forKey: key) as? Data else {
-      set(defaultValue, key: key)
+      set(defaultValue, key)
       return defaultValue
     }
     if #available(iOS 9.0, *) {
@@ -49,32 +49,32 @@ struct S<T: Codable> {
 
 struct E<T: RawRepresentable> where T.RawValue: Codable {
 	static func set(_ object: T, _ key: String) {
-		S.set(object.rawValue, key: key)
+		S.set(object.rawValue, key)
 	}
 	static func get(_ defaultValue: T, _ key: String) -> T {
-		return T(rawValue: S.get(defaultValue.rawValue, key: key))!
+		return T(rawValue: S.get(defaultValue.rawValue, key))!
 	}
 }
-struct A<C: Sequence, T: RawRepresentable> where A.Element == T, T.RawValue: Codable {
-	private static func fromRawArray(_ values: [T.RawValue]) -> A {
-		var ret = [T]()
+struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Codable {
+	private static func fromRawArray(_ values: [E.RawValue]) -> T {
+		var ret = [E]()
     for value in values {
-      ret.append(T(rawValue: value)!)
+      ret.append(E(rawValue: value)!)
     }
-    return ret as! A
+    return ret as! T
 	}
-	private static func toRawArray(_ values: A) -> [T,RawValue] {
-		var ret = [T.RawValue]()
+	private static func toRawArray(_ values: T) -> [E.RawValue] {
+		var ret = [E.RawValue]()
     for value in values {
       ret.append(value.rawValue)
     }
     return ret
 	}
-	static func set(_ object: T, _key: String) {
-		S.set(toRawArray(object), key: key)
+	static func set(_ object: T, _ key: String) {
+		S.set(toRawArray(object), key)
 	}
-	static func get(_ defaultValue: T, _ key: String) -> T {
-		return fromRawArray(S.get(defaultValue, key: key))
+	static func get(_ defaultValues: T, _ key: String) -> T {
+		return fromRawArray(S.get(toRawArray(defaultValues), key))
 	}
 }
 
@@ -108,8 +108,8 @@ struct A<C: Sequence, T: RawRepresentable> where A.Element == T, T.RawValue: Cod
     set(n) {S.set(n, #keyPath(prioritizeCurrentLevel))}
   }
   static var lessonOrder: [TKMSubject.TypeEnum] {
-    get {return A.get([.radical, .kanji, .vocabulary], #keyPath(lessonOrder))}
-    set(n) {A.set(n, #keyPath(lessonOrder))}
+    get {return A.get([.radical, .kanji, .vocabulary], "lessonOrder")}
+    set(n) {A.set(n, "lessonOrder")}
   }
   static var lessonBatchSize: Int {
     get {return S.get(5, #keyPath(lessonBatchSize))}
