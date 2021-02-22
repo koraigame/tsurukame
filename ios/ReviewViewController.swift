@@ -571,11 +571,6 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         subjectTypePrompt = "Radical"
       case .vocabulary:
         subjectTypePrompt = "Vocabulary"
-<<<<<<< Updated upstream
-=======
-      case .unknown: fallthrough
-      case .gpbUnrecognizedEnumeratorValue: fallthrough
->>>>>>> Stashed changes
       default:
         fatalError()
       }
@@ -1294,13 +1289,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       activeStudyMaterials = TKMStudyMaterials()
       activeStudyMaterials!.subjectID = activeSubject.id
     }
-<<<<<<< Updated upstream
     activeStudyMaterials!.meaningSynonyms.append(answerField.text!)
     services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
-=======
-    activeStudyMaterials!.meaningSynonymsArray.add(answerField.text!)
-    _ = services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
->>>>>>> Stashed changes
     markAnswer(.OverrideAnswerCorrect)
   }
 
@@ -1345,12 +1335,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       // Key commands when showing the detail view
       keyCommands.append(contentsOf: [UIKeyCommand(input: " ",
                                                    modifierFlags: [],
-<<<<<<< Updated upstream
-                                                   action: #selector(playAudio),
-                                                   discoverabilityTitle: "Play reading"),
+                                                   action: #selector(playAudio)),
                                       UIKeyCommand(input: "j", modifierFlags: [],
-=======
->>>>>>> Stashed changes
                                                    action: #selector(playAudio)),
                                       UIKeyCommand(input: "a",
                                                    modifierFlags: [.command],

@@ -321,7 +321,7 @@ extension TKMVocabulary {
   }
 
   private func isA(partOfSpeech: TKMVocabulary.PartOfSpeech) -> Bool {
-    partsOfSpeech.contains(partOfSpeech)
+    return partsOfSpeech.contains(partOfSpeech)
   }
 
   var isGodanVerb: Bool { return isA(partOfSpeech: .godanVerb) }

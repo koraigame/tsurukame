@@ -35,33 +35,20 @@ class SiriShortcutHelper: NSObject {
   }
 
   @available(iOS 12.0, *)
-<<<<<<< Updated upstream
   func newShortcutActivity(type: ShortcutType) -> NSUserActivity {
     let activity = NSUserActivity(activityType: type.rawValue)
-    activity.persistentIdentifier = NSUserActivityPersistentIdentifier(type.rawValue)
-    activity.isEligibleForSearch = true
-    activity.isEligibleForPrediction = true
-
-=======
-  func newShortcutActivity(type: String) -> NSUserActivity {
-    let activity = NSUserActivity(activityType: type)
     #if swift(>=5)
-      activity.persistentIdentifier = NSUserActivityPersistentIdentifier(type)
+      activity.persistentIdentifier = NSUserActivityPersistentIdentifier(type.rawValue)
       activity.isEligibleForSearch = true
       activity.isEligibleForPrediction = true
     #endif
->>>>>>> Stashed changes
     configureType(type, activity: activity)
 
     return activity
   }
 
-<<<<<<< Updated upstream
-  private func configureType(_ type: ShortcutType, activity: NSUserActivity) {
-=======
   @available(iOS 9.0, *)
-  func configureType(_ type: String, activity: NSUserActivity) {
->>>>>>> Stashed changes
+  private func configureType(_ type: ShortcutType, activity: NSUserActivity) {
     let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
     switch type {
     case .reviews:

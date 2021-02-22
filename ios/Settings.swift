@@ -52,7 +52,10 @@ struct S<T: Codable> {
   static func set(_ object: T, _ key: String) {
     var data: Data!
     if #available(iOS 11.0, *) {
-      data = try! NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: true)
+      let archiver = NSKeyedArchiver()
+      archiver.requiresSecureCoding = true
+      archiver.encode(object, forKey: key)
+      data = archiver.encodedData
     } else {
       let _data = NSMutableData()
       let archiver = NSKeyedArchiver(forWritingWith: _data)

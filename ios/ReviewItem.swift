@@ -74,11 +74,7 @@ class ReviewItem: NSObject {
 
   private func getSubjectTypeIndex(_ subjectType: TKMSubject.TypeEnum) -> Int {
     for (idx, typeValue) in Settings.lessonOrder.enumerated() {
-<<<<<<< Updated upstream
       if typeValue == subjectType {
-=======
-      if Int(typeValue) == Int(subjectType.rawValue) {
->>>>>>> Stashed changes
         return idx
       }
     }
