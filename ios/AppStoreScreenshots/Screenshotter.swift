@@ -1388,7 +1388,7 @@ import Reachability
     }
 
     override func sync(quick _: Bool, progress _: Progress) -> PMKFinalizer {
-      Promise.value(()).cauterize()
+      return Promise.value(()).cauterize()
     }
   }
 

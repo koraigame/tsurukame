@@ -14,6 +14,13 @@
 
 import Foundation
 import UIKit
+import UserNotifications
+
+@available(iOS 10.0, *)
+extension UNAuthorizationStatus {
+  static let provisional = UNAuthorizationStatus(rawValue: 3)!,
+  ephemeral = UNAuthorizationStatus(rawValue: 4)!
+}
 
 @available(iOS, deprecated: 8.0)
 class AlertView: UIAlertView {
@@ -69,7 +76,7 @@ class SettingsViewController: UITableViewController {
     super.viewDidLoad()
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(applicationDidBecomeActive(_:)),
-                                           name: UIApplication.didBecomeActiveNotification,
+                                           name: NSNotification.Name.UIApplicationDidBecomeActive,
                                            object: nil)
   }
 
@@ -276,7 +283,7 @@ class SettingsViewController: UITableViewController {
                                        accessoryType: .none,
                                        target: self,
                                        action: #selector(didTapLogOut(_:)))
-    logOutItem.textColor = .systemRed
+    logOutItem.textColor = UIColor.red
     model.add(logOutItem)
 
     self.model = model
@@ -294,15 +301,15 @@ class SettingsViewController: UITableViewController {
   }
 
   private var lessonBatchSizeText: String {
-    "\(Settings.lessonBatchSize)"
+    return "\(Settings.lessonBatchSize)"
   }
 
   private var reviewOrderValueText: String {
-    Settings.reviewOrder.description
+    return Settings.reviewOrder.description
   }
 
   private var taskOrderValueText: String {
-    Settings.meaningFirst ? "Meaning first" : "Reading first"
+    return Settings.meaningFirst ? "Meaning first" : "Reading first"
   }
 
   private var fontSizeValueText: String {
@@ -425,6 +432,7 @@ class SettingsViewController: UITableViewController {
       }
     }
 
+    if #available(iOS 10.0, *) {
     let center = UNUserNotificationCenter.current()
     center.getNotificationSettings { settings in
       switch settings.authorizationStatus {
@@ -436,12 +444,13 @@ class SettingsViewController: UITableViewController {
         }
       case .denied:
         DispatchQueue.main.async {
-          UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:],
+          UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:],
                                     completionHandler: nil)
         }
       default:
         break
       }
+    }
     }
   }
 
@@ -449,6 +458,7 @@ class SettingsViewController: UITableViewController {
     if notificationHandler == nil {
       return
     }
+    if #available(iOS 10.0, *) {
     let center = UNUserNotificationCenter.current()
     center.getNotificationSettings { settings in
       var granted = settings.authorizationStatus == .authorized
@@ -456,6 +466,9 @@ class SettingsViewController: UITableViewController {
         granted = granted || settings.authorizationStatus == .provisional
       }
       self.notificationHandler?(granted)
+    }
+    } else {
+      return
     }
   }
 

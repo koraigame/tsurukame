@@ -542,7 +542,7 @@ private class Response<DataType: Codable>: Codable {
     case data
   }
   
-  required init(from decoder: Decoder) throws {
+  required init(from decoder: Swift.Decoder) throws {
     let values = try decoder.container(keyedBy: Keys.self)
     data = try values.decodeIfPresent(DataType.self, forKey: .data)!
   }

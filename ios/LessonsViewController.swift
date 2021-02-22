@@ -52,9 +52,9 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     pageControl.setSubjects(subjects)
 
     // Add it as a child view controller, below the back button.
-    addChild(pageController)
+    addChildViewController(pageController)
     view.insertSubview(pageController.view, belowSubview: backButton)
-    pageController.didMove(toParent: self)
+    pageController.didMove(toParentViewController: self)
 
     // Hook up the page control.
     pageControl.addTarget(self, action: #selector(pageChanged), for: .valueChanged)
@@ -89,7 +89,7 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    .lightContent
+    return .lightContent
   }
 
   @IBAction private func didTapBackButton(sender _: Any) {
@@ -105,8 +105,7 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     }
 
     if let vc = createViewController(index: newPageIndex) {
-      let direction: UIPageViewController
-        .NavigationDirection = (newPageIndex > currentPageIndex) ? .forward : .reverse
+      let direction: UIPageViewControllerNavigationDirection = (newPageIndex > currentPageIndex) ? .forward : .reverse
       pageController.setViewControllers([vc], direction: direction, animated: true, completion: nil)
       currentPageIndex = newPageIndex
     }
@@ -160,19 +159,19 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   func pageViewController(_: UIPageViewController,
                           viewControllerAfter viewController: UIViewController)
     -> UIViewController? {
-    createViewController(index: indexOf(viewController: viewController) + 1)
+    return createViewController(index: indexOf(viewController: viewController) + 1)
   }
 
   func pageViewController(_: UIPageViewController,
                           viewControllerBefore viewController: UIViewController)
     -> UIViewController? {
-    createViewController(index: indexOf(viewController: viewController) - 1)
+    return createViewController(index: indexOf(viewController: viewController) - 1)
   }
 
   // MARK: - ReviewViewControllerDelegate
 
   func reviewViewControllerAllowsCheats(forReviewItem _: ReviewItem) -> Bool {
-    false
+    return false
   }
 
   func reviewViewControllerFinishedAllReviewItems(_ reviewViewController: ReviewViewController) {
@@ -180,17 +179,17 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   }
 
   func reviewViewControllerAllowsCustomFonts() -> Bool {
-    false
+    return false
   }
 
   func reviewViewControllerShowsSuccessRate() -> Bool {
-    false
+    return false
   }
 
   // MARK: - Keyboard navigation
 
   override var canBecomeFirstResponder: Bool {
-    true
+    return true
   }
 
   override var keyCommands: [UIKeyCommand]? {
@@ -200,20 +199,16 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     }
 
     return [
-      UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [],
-                   action: #selector(prevPage),
-                   discoverabilityTitle: "Previous"),
+      UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [],
+                   action: #selector(prevPage)),
       UIKeyCommand(input: "a", modifierFlags: [], action: #selector(prevPage)),
-      UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [],
-                   action: #selector(nextPage),
-                   discoverabilityTitle: "Next"),
+      UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [],
+                   action: #selector(nextPage)),
       UIKeyCommand(input: "d", modifierFlags: [], action: #selector(nextPage)),
       UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(nextPage)),
-      UIKeyCommand(input: " ", modifierFlags: [], action: #selector(playAudio),
-                   discoverabilityTitle: "Play reading"),
+      UIKeyCommand(input: " ", modifierFlags: [], action: #selector(playAudio)),
       UIKeyCommand(input: "j", modifierFlags: [], action: #selector(playAudio)),
-      UIKeyCommand(input: "q", modifierFlags: [], action: #selector(jumpToQuiz),
-                   discoverabilityTitle: "Jump to quiz"),
+      UIKeyCommand(input: "q", modifierFlags: [], action: #selector(jumpToQuiz)),
     ]
   }
 

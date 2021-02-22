@@ -21,7 +21,7 @@ class LessonOrderViewController: UITableViewController {
   }
 
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-    Settings.lessonOrder.count
+    return Settings.lessonOrder.count
   }
 
   override func tableView(_ tableView: UITableView,
@@ -32,13 +32,12 @@ class LessonOrderViewController: UITableViewController {
     return cell
   }
 
-  override func tableView(_: UITableView, editingStyleForRowAt _: IndexPath) -> UITableViewCell
-    .EditingStyle {
-    .none
+  override func tableView(_: UITableView, editingStyleForRowAt _: IndexPath) -> UITableViewCellEditingStyle {
+    return .none
   }
 
   override func tableView(_: UITableView, shouldIndentWhileEditingRowAt _: IndexPath) -> Bool {
-    false
+    return false
   }
 
   override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath,

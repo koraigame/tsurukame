@@ -690,7 +690,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   func fontsThatCanRenderText(_ text: String, exclude: [String]?) -> [String] {
     var availableFonts: [String] = []
 
-    for filename in Settings.selectedFonts ?? [] {
+    for filename in Settings.selectedFonts {
       if let font = services.fontLoader.font(byName: filename) {
         if let ex = exclude, ex.contains(font.fontName) {
           continue
@@ -1290,7 +1290,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       activeStudyMaterials!.subjectID = activeSubject.id
     }
     activeStudyMaterials!.meaningSynonyms.append(answerField.text!)
-    services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
+    _ = services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
     markAnswer(.OverrideAnswerCorrect)
   }
 
