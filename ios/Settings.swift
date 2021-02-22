@@ -12,6 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@objc enum ReviewOrder: UInt, Codable, CustomStringConvertible {
+  case random = 1
+  case ascendingSRSStage = 2
+  case currentLevelFirst = 3
+  case lowestLevelFirst = 4
+  case newestAvailableFirst = 5
+  case oldestAvailableFirst = 6
+  case descendingSRSStage = 7
+
+  var description: String {
+    switch self {
+    case .random: return "Random"
+    case .ascendingSRSStage: return "Ascending SRS stage"
+    case .descendingSRSStage: return "Descending SRS stage"
+    case .currentLevelFirst: return "Current level first"
+    case .lowestLevelFirst: return "Lowest level first"
+    case .newestAvailableFirst: return "Newest available first"
+    case .oldestAvailableFirst: return "Oldest available first"
+    }
+  }
+}
+
+@objc enum InterfaceStyle: UInt, Codable, CustomStringConvertible {
+  case system = 1
+  case light = 2
+  case dark = 3
+
+  var description: String {
+    switch self {
+    case .system: return "System"
+    case .light: return "Light"
+    case .dark: return "Dark"
+    }
+  }
+}
 
 struct S<T: Codable> {
   static func set(_ object: T, _ key: String) {
