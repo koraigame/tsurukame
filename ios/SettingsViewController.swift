@@ -15,6 +15,44 @@
 import Foundation
 import UIKit
 
+@available(iOS, deprecated: 8.0)
+class AlertView: UIAlertView {
+  typealias AlertHandler = () -> Void
+  var button1Handler: AlertHandler?
+  var button2Handler: AlertHandler?
+  var button3Handler: AlertHandler?
+  override func dismiss(withClickedButtonIndex buttonIndex: Int, animated: Bool) {
+    if buttonIndex == 1 {
+      button1Handler?()
+    } else if buttonIndex == 2 {
+      button2Handler?()
+    } else if buttonIndex == 3 {
+      button3Handler?()
+    }
+  }
+  convenience init(title: String, message: String?, cancelButtonTitle: String?,
+                   _ button1Title: String?, _ button1Handler: @escaping AlertHandler) {
+    self.init(title: title, message: message ?? "", delegate: nil, cancelButtonTitle: cancelButtonTitle)
+    self.addButton(withTitle: button1Title)
+    self.button1Handler = button1Handler
+  }
+  convenience init(title: String, message: String?, cancelButtonTitle: String?,
+                   _ button1Title: String?, _ button1Handler: @escaping AlertHandler,
+                   _ button2Title: String?, _ button2Handler: @escaping AlertHandler) {
+    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title, button1Handler)
+    self.addButton(withTitle: button2Title)
+    self.button2Handler = button2Handler
+  }
+  convenience init(title: String, message: String?, cancelButtonTitle: String?,
+                   _ button1Title: String?, _ button1Handler: @escaping AlertHandler,
+                   _ button2Title: String?, _ button2Handler: @escaping AlertHandler,
+                   _ button3Title: String?, _ button3Handler: @escaping AlertHandler) {
+    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title, button1Handler, button2Title, button2Handler)
+    self.addButton(withTitle: button3Title)
+    self.button3Handler = button3Handler
+  }
+}
+
 class SettingsViewController: UITableViewController {
   private var services: TKMServices!
   private var model: TKMTableModel?
