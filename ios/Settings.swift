@@ -177,6 +177,8 @@ private func getArchiveData<T: Codable>(_ defaultValue: T, key: String) -> T {
   @Setting(false, #keyPath(autoSwitchKeyboard)) static var autoSwitchKeyboard: Bool
   @Setting(false, #keyPath(allowSkippingReviews)) static var allowSkippingReviews: Bool
   @Setting(true, #keyPath(minimizeReviewPenalty)) static var minimizeReviewPenalty: Bool
+  @Setting(false, #keyPath(pausePartiallyCorrect)) static var pausePartiallyCorrect: Bool
+  @Setting(false, #keyPath(ankiMode)) static var ankiMode: Bool
 
   @Setting(false, #keyPath(playAudioAutomatically)) static var playAudioAutomatically: Bool
   @Setting([], #keyPath(installedAudioPackages)) static var installedAudioPackages: Set<String>

@@ -202,6 +202,18 @@ class SettingsViewController: UITableViewController {
                                                        action: #selector(minimizeReviewPenaltySwitchChanged(_:)))
     minimizeReviewPenaltyItem.numberOfSubtitleLines = 0
     model.add(minimizeReviewPenaltyItem)
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Pause on partially correct answers",
+                                 subtitle: "Allows making sure answer was correct",
+                                 on: Settings.pausePartiallyCorrect,
+                                 target: self,
+                                 action: #selector(partiallyCorrectSwitchChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Anki Mode",
+                                 subtitle: "Allows doing reviews without typing answers",
+                                 on: Settings.ankiMode,
+                                 target: self,
+                                 action: #selector(ankiModeSwitchChanged(_:))))
 
     model.addSection("Audio")
     model.add(TKMSwitchModelItem(style: .subtitle,
@@ -366,6 +378,14 @@ class SettingsViewController: UITableViewController {
 
   @objc private func showAllReadingsSwitchChanged(_ switchView: UISwitch) {
     Settings.showAllReadings = switchView.isOn
+  }
+
+  @objc private func partiallyCorrectSwitchChanged(_ switchView: UISwitch) {
+    Settings.pausePartiallyCorrect = switchView.isOn
+  }
+
+  @objc private func ankiModeSwitchChanged(_ switchView: UISwitch) {
+    Settings.ankiMode = switchView.isOn
   }
 
   @objc private func playAudioAutomaticallySwitchChanged(_ switchView: UISwitch) {
