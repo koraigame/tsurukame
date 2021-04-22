@@ -723,7 +723,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // MARK: - Animation
 
   private func animateSubjectDetailsView(shown: Bool,
-                                         setupContextFunc: ((AnimationContext) -> Void)?) {
+                                         setupContextFunc: ((AnimationContext) -> Void)?,
+                                         partiallyCorrect: Bool = false) {
     let cheats = delegate.reviewViewControllerAllowsCheats(forReviewItem: activeTask)
 
     if shown {
@@ -788,7 +789,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectButton.alpha = shown ? 0.0 : 1.0
 
     // Change the foreground color of the answer field.
-    answerField.textColor = shown ? UIColor.systemRed : TKMStyle.Color.label
+    let wrongColor = partiallyCorrect ? UIColor.systemYellow : UIColor.systemRed
+    answerField.textColor = shown ? wrongColor : TKMStyle.Color.label
 
     // Scroll to the top.
     subjectDetailsView
@@ -1206,11 +1208,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
                        if Settings.ankiMode { self.submitButton.isEnabled = false }
                      })
     } else {
-      revealAnswerButtonPressed(revealAnswerButton!)
+      revealAnswerButtonPressed(revealAnswerButton!, partiallyCorrect: partially)
     }
   }
 
-  @IBAction func revealAnswerButtonPressed(_: Any) {
+  @IBAction func revealAnswerButtonPressed(_: Any, partiallyCorrect: Bool = false) {
     subjectDetailsView.update(withSubject: activeSubject, studyMaterials: activeStudyMaterials,
                               assignment: activeAssignment, task: activeTask)
 
@@ -1221,7 +1223,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
           .font = UIFont(name: self.normalFontName, size: self.questionLabelFontSize())
       }
     }
-    animateSubjectDetailsView(shown: true, setupContextFunc: setupContextFunc)
+    animateSubjectDetailsView(shown: true,
+                              setupContextFunc: setupContextFunc,
+                              partiallyCorrect: partiallyCorrect)
   }
 
   // MARK: - Ignoring incorrect answers

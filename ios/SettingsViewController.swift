@@ -203,13 +203,19 @@ class SettingsViewController: UITableViewController {
     minimizeReviewPenaltyItem.numberOfSubtitleLines = 0
     model.add(minimizeReviewPenaltyItem)
     model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Exact match",
+                                 subtitle: "Requires typing in answers exactly correct",
+                                 on: Settings.exactMatch,
+                                 target: self,
+                                 action: #selector(exactMatchSwitchChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Pause on partially correct answers",
                                  subtitle: "Allows making sure answer was correct",
                                  on: Settings.pausePartiallyCorrect,
                                  target: self,
                                  action: #selector(partiallyCorrectSwitchChanged(_:))))
     model.add(TKMSwitchModelItem(style: .subtitle,
-                                 title: "Anki Mode",
+                                 title: "Anki mode",
                                  subtitle: "Allows doing reviews without typing answers",
                                  on: Settings.ankiMode,
                                  target: self,
@@ -386,6 +392,10 @@ class SettingsViewController: UITableViewController {
 
   @objc private func showAllReadingsSwitchChanged(_ switchView: UISwitch) {
     Settings.showAllReadings = switchView.isOn
+  }
+
+  @objc private func exactMatchSwitchChanged(_ switchView: UISwitch) {
+    Settings.exactMatch = switchView.isOn
   }
 
   @objc private func partiallyCorrectSwitchChanged(_ switchView: UISwitch) {
