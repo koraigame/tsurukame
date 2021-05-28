@@ -1099,7 +1099,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
     // Mark the task.
     var firstTimeAnswered = false
-    switch activeTaskType {
+    switch activeTaskType! {
     case .meaning:
       firstTimeAnswered = !activeTask.answer.hasMeaningWrong
       if firstTimeAnswered ||

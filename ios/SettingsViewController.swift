@@ -463,7 +463,7 @@ class SettingsViewController: UITableViewController {
     center.getNotificationSettings { settings in
       var granted = settings.authorizationStatus == .authorized
       if #available(iOS 12.0, *) {
-        granted = granted || settings.authorizationStatus == .provisional
+        granted = granted || settings.authorizationStatus == UNAuthorizationStatus(rawValue: 3)!
       }
       self.notificationHandler?(granted)
     }
