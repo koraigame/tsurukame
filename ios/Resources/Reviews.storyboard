@@ -360,7 +360,7 @@
         <!--subjectDetailsViewController-->
         <scene sceneID="BpP-SG-aE4">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="subjectDetailsViewController" storyboardName="Subjects" referencedIdentifier="subjectDetailsViewController" id="K53-ny-wyx" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Subjects" referencedIdentifier="subjectDetailsViewController" id="K53-ny-wyx" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HeD-4Z-LC8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1818" y="944"/>
