@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,6 +13,10 @@
         <scene sceneID="vXK-vc-8c7">
             <objects>
                 <viewController storyboardIdentifier="reviewMenuViewController" id="grn-VZ-wuf" customClass="TKMReviewMenuViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="obj-FK-VKR"/>
+                        <viewControllerLayoutGuide type="bottom" id="EzX-3E-xh2"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zGT-Ht-qXT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -23,13 +27,12 @@
                                 <color key="separatorColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="UfJ-l9-U0F"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="UfJ-l9-U0F" firstAttribute="trailing" secondItem="BPO-IH-trC" secondAttribute="trailing" id="b0x-9z-FQf"/>
-                            <constraint firstItem="BPO-IH-trC" firstAttribute="leading" secondItem="UfJ-l9-U0F" secondAttribute="leading" id="fxa-41-trm"/>
-                            <constraint firstItem="UfJ-l9-U0F" firstAttribute="bottom" secondItem="BPO-IH-trC" secondAttribute="bottom" id="nWZ-C8-RDQ"/>
-                            <constraint firstItem="BPO-IH-trC" firstAttribute="top" secondItem="UfJ-l9-U0F" secondAttribute="top" id="yZZ-7j-TS6"/>
+                            <constraint firstAttribute="trailing" secondItem="BPO-IH-trC" secondAttribute="trailing" id="b0x-9z-FQf"/>
+                            <constraint firstItem="BPO-IH-trC" firstAttribute="leading" secondItem="zGT-Ht-qXT" secondAttribute="leading" id="fxa-41-trm"/>
+                            <constraint firstItem="EzX-3E-xh2" firstAttribute="top" secondItem="BPO-IH-trC" secondAttribute="bottom" id="nWZ-C8-RDQ"/>
+                            <constraint firstItem="BPO-IH-trC" firstAttribute="top" secondItem="obj-FK-VKR" secondAttribute="bottom" id="yZZ-7j-TS6"/>
                         </constraints>
                     </view>
                     <connections>
@@ -45,10 +48,13 @@
         <scene sceneID="8Kn-zD-Fkz">
             <objects>
                 <viewController storyboardIdentifier="reviewContainer" id="CLc-42-KXf" customClass="TKMReviewContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EgA-mb-c9v"/>
+                        <viewControllerLayoutGuide type="bottom" id="4Mx-oR-IAg"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Gug-AB-yRH">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="p68-zW-cdx"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="NV2-1x-2UQ"/>
@@ -61,6 +67,10 @@
         <scene sceneID="Raa-L5-aFt">
             <objects>
                 <viewController storyboardIdentifier="reviewViewController" id="Mzz-hx-Bdo" customClass="ReviewViewController" customModule="Tsurukame" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Izk-az-8BS"/>
+                        <viewControllerLayoutGuide type="bottom" id="p0w-e5-Rcm"/>
+                    </layoutGuides>
                     <view key="view" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="4jI-do-0VR" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -118,13 +128,11 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctF-hm-AxT">
-                                <rect key="frame" x="361" y="835" width="53" height="58"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctF-hm-AxT">
+                                <rect key="frame" x="358" y="835" width="56" height="58"/>
                                 <accessibility key="accessibilityConfiguration" label="Confirm"/>
                                 <inset key="contentEdgeInsets" minX="20" minY="20" maxX="20" maxY="20"/>
-                                <state key="normal" image="checkmark.circle">
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="semibold"/>
-                                </state>
+                                <state key="normal" image="checkmark.circle"/>
                                 <connections>
                                     <action selector="submitButtonPressed:" destination="Mzz-hx-Bdo" eventType="touchUpInside" id="bEv-8d-Gra"/>
                                 </connections>
@@ -175,7 +183,7 @@
                                     <constraint firstAttribute="height" constant="16" id="cQ1-SQ-yZA"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hl2-BP-AQQ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hl2-BP-AQQ">
                                 <rect key="frame" x="0.0" y="49" width="56" height="56"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="contentEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
@@ -188,9 +196,9 @@
                             </button>
                             <tableView hidden="YES" clipsSubviews="YES" alpha="0.0" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="wFr-RK-iSqq" customClass="TKMSubjectDetailsView">
                                 <rect key="frame" x="0.0" y="896" width="414" height="0.0"/>
-                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
-                            <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fq3-oe-fWe">
+                            <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fq3-oe-fWe">
                                 <rect key="frame" x="0.0" y="833" width="62" height="62"/>
                                 <accessibility key="accessibilityConfiguration" hint="Double tap to open a menu" label="Cheats"/>
                                 <inset key="contentEdgeInsets" minX="20" minY="20" maxX="20" maxY="20"/>
@@ -205,7 +213,7 @@
                                     <action selector="revealAnswerButtonPressed:" destination="Mzz-hx-Bdo" eventType="touchUpInside" id="cKB-bi-Zr1"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GZq-HC-Qg5">
+                            <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GZq-HC-Qg5">
                                 <rect key="frame" x="16" y="746" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="LSu-63-JjB"/>
@@ -230,16 +238,15 @@
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="EBu-6v-Hcw"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Jee-0P-imk" secondAttribute="trailing" id="0Pg-uy-3Ek"/>
                             <constraint firstItem="lqe-Ns-DBU" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="13b-3r-nEp"/>
-                            <constraint firstAttribute="leading" secondItem="EBu-6v-Hcw" secondAttribute="leading" id="20c-9Q-aFt"/>
+                            <constraint firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="20c-9Q-aFt"/>
                             <constraint firstItem="TgI-GY-kYL" firstAttribute="leading" secondItem="sr9-jm-3e3" secondAttribute="trailing" constant="12" id="2CS-5j-iPA"/>
                             <constraint firstItem="M27-Di-5Wg" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="31d-hA-cMU"/>
-                            <constraint firstItem="GZq-HC-Qg5" firstAttribute="leading" secondItem="EBu-6v-Hcw" secondAttribute="leading" constant="16" id="6cK-KD-YsT"/>
+                            <constraint firstItem="GZq-HC-Qg5" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" constant="16" id="6cK-KD-YsT"/>
                             <constraint firstItem="Fq3-oe-fWe" firstAttribute="trailing" secondItem="Zyq-WW-fbd" secondAttribute="trailing" id="AGF-fk-KLj"/>
                             <constraint firstItem="wFr-RK-iSqq" firstAttribute="top" secondItem="M27-Di-5Wg" secondAttribute="bottom" id="AzB-Jc-8ht"/>
                             <constraint firstItem="Fq3-oe-fWe" firstAttribute="top" secondItem="Zyq-WW-fbd" secondAttribute="top" id="C9E-Lq-hm6"/>
@@ -257,7 +264,7 @@
                             <constraint firstItem="M27-Di-5Wg" firstAttribute="top" secondItem="lqe-Ns-DBU" secondAttribute="bottom" id="N0Y-l6-Q3x"/>
                             <constraint firstAttribute="trailing" secondItem="wFr-RK-iSqq" secondAttribute="trailing" id="OZr-5h-xBU"/>
                             <constraint firstItem="wFr-RK-iSqq" firstAttribute="bottom" secondItem="4jI-do-0VR" secondAttribute="bottom" id="OhI-AV-7Cr"/>
-                            <constraint firstItem="Hl2-BP-AQQ" firstAttribute="leading" secondItem="EBu-6v-Hcw" secondAttribute="leading" id="Pgn-1l-5G4"/>
+                            <constraint firstItem="Hl2-BP-AQQ" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="Pgn-1l-5G4"/>
                             <constraint firstAttribute="trailing" secondItem="M27-Di-5Wg" secondAttribute="trailing" id="QMg-yd-Jpe"/>
                             <constraint firstItem="gdi-7v-770" firstAttribute="bottom" secondItem="lqe-Ns-DBU" secondAttribute="bottom" id="U8c-84-ebp"/>
                             <constraint firstItem="sr9-jm-3e3" firstAttribute="top" secondItem="Jee-0P-imk" secondAttribute="bottom" constant="12" id="UAa-Gn-zh6"/>
@@ -273,8 +280,8 @@
                             <constraint firstItem="9gS-sh-cYw" firstAttribute="top" secondItem="Jee-0P-imk" secondAttribute="bottom" constant="12" id="hY3-dA-999"/>
                             <constraint firstItem="q5T-jg-CA5" firstAttribute="top" secondItem="Jee-0P-imk" secondAttribute="bottom" constant="12" id="jBu-Vm-cWg"/>
                             <constraint firstItem="Nab-RQ-m49" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="jOP-ra-UQp"/>
-                            <constraint firstItem="TY8-JV-WfA" firstAttribute="trailing" secondItem="EBu-6v-Hcw" secondAttribute="trailing" id="joD-sB-LiO"/>
-                            <constraint firstAttribute="trailing" secondItem="EBu-6v-Hcw" secondAttribute="trailing" id="kiF-W8-1if"/>
+                            <constraint firstItem="TY8-JV-WfA" firstAttribute="trailing" secondItem="4jI-do-0VR" secondAttribute="trailing" id="joD-sB-LiO"/>
+                            <constraint firstAttribute="trailing" secondItem="4jI-do-0VR" secondAttribute="trailing" id="kiF-W8-1if"/>
                             <constraint firstItem="Jee-0P-imk" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="ljd-NO-w9T"/>
                             <constraint firstItem="gcI-ex-zA1" firstAttribute="leading" secondItem="lSQ-lD-Xmj" secondAttribute="trailing" constant="6" id="nJ5-hs-SPn"/>
                             <constraint firstAttribute="trailing" secondItem="Nab-RQ-m49" secondAttribute="trailing" id="oyD-zi-Z0d"/>
@@ -283,10 +290,10 @@
                             <constraint firstItem="ctF-hm-AxT" firstAttribute="centerY" secondItem="M27-Di-5Wg" secondAttribute="centerY" id="rNU-ae-KIP"/>
                             <constraint firstItem="TgI-GY-kYL" firstAttribute="top" secondItem="Jee-0P-imk" secondAttribute="bottom" constant="12" id="rUl-Oy-n19"/>
                             <constraint firstAttribute="trailing" secondItem="ctF-hm-AxT" secondAttribute="trailing" id="s4d-2D-nAL"/>
-                            <constraint firstAttribute="bottom" secondItem="EBu-6v-Hcw" secondAttribute="bottom" id="vCF-K7-jHy"/>
+                            <constraint firstAttribute="bottom" secondItem="p0w-e5-Rcm" secondAttribute="top" id="vCF-K7-jHy"/>
                             <constraint firstItem="S3x-ei-BlA" firstAttribute="top" secondItem="Jee-0P-imk" secondAttribute="bottom" constant="12" id="vXr-eI-eku"/>
-                            <constraint firstItem="Jee-0P-imk" firstAttribute="top" secondItem="EBu-6v-Hcw" secondAttribute="top" id="w6F-Tb-Vrq"/>
-                            <constraint firstItem="TY8-JV-WfA" firstAttribute="leading" secondItem="EBu-6v-Hcw" secondAttribute="leading" id="whG-W0-ldl"/>
+                            <constraint firstItem="Jee-0P-imk" firstAttribute="top" secondItem="Izk-az-8BS" secondAttribute="bottom" id="w6F-Tb-Vrq"/>
+                            <constraint firstItem="TY8-JV-WfA" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="whG-W0-ldl"/>
                             <constraint firstItem="wFr-RK-iSqq" firstAttribute="leading" secondItem="4jI-do-0VR" secondAttribute="leading" id="wrE-hd-GIw"/>
                             <constraint firstAttribute="bottom" secondItem="M27-Di-5Wg" secondAttribute="bottom" id="y4K-ca-rw0"/>
                             <constraint firstItem="gdi-7v-770" firstAttribute="top" secondItem="lqe-Ns-DBU" secondAttribute="top" id="zT8-CO-8Fs"/>
@@ -332,9 +339,9 @@
             <objects>
                 <tableViewController storyboardIdentifier="reviewSummary" id="EMo-56-STG" customClass="ReviewSummaryViewController" customModule="Tsurukame" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="n9y-b6-xo4">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Review Summary" id="ikp-lf-4Rr">
@@ -362,15 +369,9 @@
     <resources>
         <image name="add" width="22" height="22"/>
         <image name="baseline_menu_black_24pt" width="24" height="24"/>
-        <image name="checkmark.circle" width="13" height="13"/>
+        <image name="checkmark.circle" width="17" height="17"/>
         <image name="inbox" width="24" height="24"/>
         <image name="thumb" width="24" height="24"/>
         <image name="tick" width="24" height="24"/>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
