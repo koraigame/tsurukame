@@ -11,10 +11,10 @@
 
 import Foundation
 
-open class ChartDataEntry: ChartDataEntryBase, NSCopying
+open class ChartDataEntry: ChartDataEntryBase
 {
     /// the x value
-    @objc open var x = 0.0
+    @objc open var x = Double(0.0)
     
     public required init()
     {
@@ -22,55 +22,52 @@ open class ChartDataEntry: ChartDataEntryBase, NSCopying
     }
     
     /// An Entry represents one single entry in the chart.
-    ///
-    /// - Parameters:
-    ///   - x: the x value
-    ///   - y: the y value (the actual value of the entry)
+    /// - parameter x: the x value
+    /// - parameter y: the y value (the actual value of the entry)
     @objc public init(x: Double, y: Double)
     {
         super.init(y: y)
+        
         self.x = x
     }
     
     /// An Entry represents one single entry in the chart.
-    ///
-    /// - Parameters:
-    ///   - x: the x value
-    ///   - y: the y value (the actual value of the entry)
-    ///   - data: Space for additional data this Entry represents.
+    /// - parameter x: the x value
+    /// - parameter y: the y value (the actual value of the entry)
+    /// - parameter data: Space for additional data this Entry represents.
     
-    @objc public convenience init(x: Double, y: Double, data: Any?)
+    @objc public init(x: Double, y: Double, data: AnyObject?)
     {
-        self.init(x: x, y: y)
+        super.init(y: y)
+        
+        self.x = x
+        
         self.data = data
     }
     
     /// An Entry represents one single entry in the chart.
-    ///
-    /// - Parameters:
-    ///   - x: the x value
-    ///   - y: the y value (the actual value of the entry)
-    ///   - icon: icon image
+    /// - parameter x: the x value
+    /// - parameter y: the y value (the actual value of the entry)
+    /// - parameter icon: icon image
     
-    @objc public convenience init(x: Double, y: Double, icon: NSUIImage?)
+    @objc public init(x: Double, y: Double, icon: NSUIImage?)
     {
-        self.init(x: x, y: y)
-        self.icon = icon
+        super.init(y: y, icon: icon)
+        
+        self.x = x
     }
     
     /// An Entry represents one single entry in the chart.
-    ///
-    /// - Parameters:
-    ///   - x: the x value
-    ///   - y: the y value (the actual value of the entry)
-    ///   - icon: icon image
-    ///   - data: Space for additional data this Entry represents.
+    /// - parameter x: the x value
+    /// - parameter y: the y value (the actual value of the entry)
+    /// - parameter icon: icon image
+    /// - parameter data: Space for additional data this Entry represents.
     
-    @objc public convenience init(x: Double, y: Double, icon: NSUIImage?, data: Any?)
+    @objc public init(x: Double, y: Double, icon: NSUIImage?, data: AnyObject?)
     {
-        self.init(x: x, y: y)
-        self.icon = icon
-        self.data = data
+        super.init(y: y, icon: icon, data: data)
+        
+        self.x = x
     }
         
     // MARK: NSObject
@@ -82,7 +79,7 @@ open class ChartDataEntry: ChartDataEntryBase, NSCopying
     
     // MARK: NSCopying
     
-    open func copy(with zone: NSZone? = nil) -> Any
+    @objc open func copyWithZone(_ zone: NSZone?) -> AnyObject
     {
         let copy = type(of: self).init()
         
@@ -104,7 +101,8 @@ extension ChartDataEntry/*: Equatable*/ {
             return true
         }
 
-        return y == object.y
+        return ((data == nil && object.data == nil) || (data?.isEqual(object.data) ?? false))
+            && y == object.y
             && x == object.x
     }
 }

@@ -5,7 +5,7 @@
 import Foundation
 
 public enum HTTPMethod: String {
-  case GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH
+  case GET, PUT, POST, DELETE
 }
 
 public struct StubRequest: Hashable {
@@ -17,41 +17,30 @@ public struct StubRequest: Hashable {
     public init() {
     }
 
-    @discardableResult
     public func stubRequest(withMethod method: HTTPMethod, url: URL) -> Builder {
       request = StubRequest(method: method, url: url)
       return self
     }
 
-    @discardableResult
     public func stubRequest(withMethod method: HTTPMethod, urlMatcher: Matcher) -> Builder {
       request = StubRequest(method: method, urlMatcher: urlMatcher)
       return self
     }
 
-    @discardableResult
     public func addHeader(withKey key: String, value: String) -> Builder {
       assert(request != nil)
       request.setHeader(key: key, value: value)
       return self
     }
 
-    @discardableResult
     public func addResponse(_ response: StubResponse) -> Builder {
       assert(request != nil)
       request.response = response
       return self
     }
 
-    @discardableResult
-    public func addMatcher(_ matcher: Matcher) -> Builder {
-      assert(request != nil)
-      request.bodyMatcher = matcher
-      return self
-    }
-
     public func build() -> StubRequest {
-      request
+      return request
     }
 
   }
@@ -65,18 +54,16 @@ public struct StubRequest: Hashable {
 
   /// Initialize a request with method and URL
   ///
-  /// - Parameters:
-  ///   - method: The `HTTPMethod` to match
-  ///   - url: The `URL` to match
+  /// - Parameter method: The `HTTPMethod` to match
+  /// - Parameter  url: The `URL` to match
   public init(method: HTTPMethod, url: URL) {
     self.init(method: method, urlMatcher: url.matcher())
   }
 
   /// Initialize a request with method and `Matcher`
   ///
-  /// - Parameters:
-  ///   - method: The `HTTPMethod` to match
-  ///   - urlMatcher: The `Matcher` to use for URLs
+  /// - Parameter method: The `HTTPMethod` to match
+  /// - Parameter  url: The `Matcher` to use for URLs
   public init(method: HTTPMethod, urlMatcher: Matcher) {
     self.method = method
     self.urlMatcher = urlMatcher
@@ -85,22 +72,19 @@ public struct StubRequest: Hashable {
   }
 
   public func matchesRequest(_ request: HTTPRequest) -> Bool {
-    request.method == method && matchesUrl(request.url) && matchesHeaders(request.headers) && matchesBody(request.body)
+    return request.method == method && matchesUrl(request.url) && matchesHeaders(request.headers)
+      && matchesBody(request.body)
   }
 
   private func matchesUrl(_ url: URL?) -> Bool {
-    urlMatcher.matches(string: url?.absoluteString)
+    return urlMatcher.matches(string: url?.absoluteString)
   }
 
-  private func matchesHeaders(_ headersToMatch: [String: String]?) -> Bool {
-    guard let headersToMatch = headersToMatch else {
-      return headers.isEmpty
-    }
-    for key in headers.keys {
-      guard let value = headersToMatch[key] else {
-        return false
-      }
-      if value != headers[key] {
+  private func matchesHeaders(_ headers: [String: String]?) -> Bool {
+    guard let otherHeaders = headers else { return self.headers.isEmpty }
+    for key in self.headers.keys {
+      guard let value = otherHeaders[key] else { return false }
+      if value != self.headers[key] {
         return false
       }
     }
@@ -108,9 +92,7 @@ public struct StubRequest: Hashable {
   }
 
   private func matchesBody(_ body: Data?) -> Bool {
-    guard let bodyMatcher = bodyMatcher, let body = body else {
-      return true
-    }
+    guard let bodyMatcher = bodyMatcher, let body = body else { return true }
     return bodyMatcher.matches(data: body)
   }
 
@@ -118,15 +100,19 @@ public struct StubRequest: Hashable {
     headers[key] = value
   }
 
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(method)
-    hasher.combine(urlMatcher)
-    hasher.combine(bodyMatcher)
-    hasher.combine(headers)
+  public var hashValue: Int {
+    let bodyHash: Int
+    if let bodyMatcher = bodyMatcher {
+      bodyHash = bodyMatcher.hashValue
+    } else {
+      bodyHash = 0
+    }
+    return method.hashValue ^ urlMatcher.hashValue ^ bodyHash ^ headers.count.hashValue &* 16777619
   }
-
+  
   public static func ==(lhs: StubRequest, rhs: StubRequest) -> Bool {
-    lhs.method == rhs.method && lhs.urlMatcher == rhs.urlMatcher && lhs.headers == rhs.headers && lhs.bodyMatcher == rhs.bodyMatcher
+    return lhs.method == rhs.method && lhs.urlMatcher == rhs.urlMatcher && lhs.headers == rhs.headers
+      && lhs.bodyMatcher == rhs.bodyMatcher
   }
 
 }
