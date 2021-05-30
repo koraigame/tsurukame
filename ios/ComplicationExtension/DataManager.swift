@@ -25,6 +25,12 @@ enum ComplicationDataSource: Int {
   case ReviewCounts, Level, Character
 }
 
+extension Date {
+  func distance(end: Date) -> TimeInterval {
+    return end.timeIntervalSinceReferenceDate - timeIntervalSinceReferenceDate
+  }
+}
+
 class DataManager {
   private let userDefaultsKeyData = "LastKnownData"
   private let userDefaultsKeySource = "DataSource"
@@ -78,7 +84,7 @@ class DataManager {
 
   func dataIsStale() -> Bool {
     if let staleDate = dataStaleAfter() {
-      return Date().distance(to: staleDate) < 0
+      return Date().distance(end: staleDate) < 0
     }
     return false
   }
@@ -88,7 +94,7 @@ class DataManager {
        let dataSentAt = data[WatchHelper.keySentAt] as? EpochTimeInt {
       let dataSent = Date(timeIntervalSince1970: TimeInterval(dataSentAt))
       let bestBeforeDate = Date().addingTimeInterval(0 - dataStaleLimit)
-      return bestBeforeDate.distance(to: dataSent) < 0
+      return bestBeforeDate.distance(end: dataSent) < 0
     }
     return true
   }

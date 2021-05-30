@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 func createCurrentLevelReviewTimeItem(services: TKMServices,
                                       currentLevelAssignments: [TKMAssignment]) -> TKMModelItem {

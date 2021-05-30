@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class SRSStageCategoryItem: TKMBasicModelItem {
   let stageCategory: SRSStageCategory

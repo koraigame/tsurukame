@@ -14,7 +14,6 @@
 
 import Foundation
 import UIKit
-import WaniKaniAPI
 
 class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelegate {
   var window: UIWindow?

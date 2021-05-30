@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 @objc
 class SubjectsByLevelViewController: UITableViewController, SubjectDelegate {

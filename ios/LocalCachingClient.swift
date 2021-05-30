@@ -16,7 +16,6 @@ import FMDB
 import Foundation
 import PromiseKit
 import Reachability
-import WaniKaniAPI
 
 extension Notification.Name {
   static let lccUnauthorized = Notification.Name(rawValue: "lccUnauthorized")

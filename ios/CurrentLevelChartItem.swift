@@ -14,7 +14,6 @@
 
 import Charts
 import Foundation
-import WaniKaniAPI
 
 enum PieSlice: Int {
   case Locked = 0

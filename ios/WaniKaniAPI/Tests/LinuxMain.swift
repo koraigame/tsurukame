@@ -14,8 +14,6 @@
 
 import XCTest
 
-import WaniKaniAPITests
-
 var tests = [XCTestCaseEntry]()
 tests += WaniKaniAPITests.allTests()
 XCTMain(tests)

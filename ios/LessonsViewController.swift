@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   UIPageViewControllerDelegate, ReviewViewControllerDelegate {

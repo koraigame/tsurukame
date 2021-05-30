@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 @objc(TKMSubjectModelItem)
 @objcMembers
@@ -172,12 +171,12 @@ class SubjectModelView: TKMModelCell {
     answerStack.frame = value ? hiddenFrame : visibleFrame
     answerStack.alpha = value ? 0.0 : 1.0
 
-    UIView.animate(withDuration: 0.5) {
+    UIView.animate(withDuration: 0.5, animations: {
       self.answerStack.frame = value ? visibleFrame : hiddenFrame
       self.answerStack.alpha = value ? 1.0 : 0.0
-    } completion: { _ in
+    }, completion: { _ in
       self.answerStack.isHidden = !value
-    }
+    })
   }
 
   override func didSelect() {

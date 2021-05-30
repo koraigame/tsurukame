@@ -14,7 +14,6 @@
 
 import Foundation
 import PromiseKit
-import WaniKaniAPI
 
 extension Notification.Name {
   static let logout = Notification.Name("kLogoutNotification")

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 private func UIColorFromHex(_ hexColor: Int32) -> UIColor {
   let red = (CGFloat)((hexColor & 0xFF0000) >> 16) / 255

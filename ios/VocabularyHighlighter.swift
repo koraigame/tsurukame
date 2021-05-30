@@ -13,8 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
-
 import Rexy
 
 private class ConjugationGroup {

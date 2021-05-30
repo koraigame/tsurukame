@@ -577,12 +577,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
           .gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: tsurukameHighlightColor,
                                                   fillFraction: 3 / 10)
         return template
-      } else {
+      } else { return nil }
+      /* else {
         let template = CLKComplicationTemplateGraphicCircularStackText()
         template.line1TextProvider = CLKSimpleTextProvider(text: "")
         template.line2TextProvider = CLKSimpleTextProvider(text: character)
         return template
-      }
+      }*/
     default:
       return nil
     }
@@ -591,7 +592,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   func relativeDateProvider(date: Date) -> CLKRelativeDateTextProvider {
     // Always use hour because the complication cache does not call often enough
     // to vary this unit.
-    CLKRelativeDateTextProvider(date: date, style: .offsetShort, units: .hour)
+    return CLKRelativeDateTextProvider(date: date, style: .offset, units: .hour)
   }
 
   /**

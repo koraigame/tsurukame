@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 private let kSectionHeaderHeight: CGFloat = 38.0
 private let kSectionFooterHeight: CGFloat = 0.0
