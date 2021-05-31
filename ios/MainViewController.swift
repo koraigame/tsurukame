@@ -136,11 +136,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationDidEnterBackground),
-                   name: UIApplication.didEnterBackgroundNotification,
+                   name: NSNotification.Name.UIApplicationDidEnterBackground,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationWillEnterForeground),
-                   name: UIApplication.willEnterForegroundNotification,
+                   name: NSNotification.Name.UIApplicationWillEnterForeground,
                    object: nil)
   }
 
@@ -246,14 +246,14 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    .lightContent
+    return .lightContent
   }
 
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
 
     // Bring the refresh control above the gradient.
-    refreshControl?.superview?.bringSubviewToFront(refreshControl!)
+    refreshControl?.superview?.bringSubview(toFront: refreshControl!)
 
     let headerSize = headerView.sizeThatFits(CGSize(width: view.bounds.size.width, height: 0))
     headerView.frame = CGRect(origin: headerView.frame.origin, size: headerSize)

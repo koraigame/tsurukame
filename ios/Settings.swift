@@ -153,6 +153,10 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     get {return S.get(5, #keyPath(lessonBatchSize))}
     set(n) {S.set(n, #keyPath(lessonBatchSize))}
   }
+  static var showStatsSection: Bool {
+    get {return S.get(true, #keyPath(showStatsSection))}
+    set(n) {S.set(n, #keyPath(showStatsSection))}
+  }
   static var reviewOrder: ReviewOrder {
     get {return E.get(ReviewOrder.random, #keyPath(reviewOrder))}
     set(n) {E.set(n, #keyPath(reviewOrder))}
@@ -160,6 +164,10 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
   static var reviewBatchSize: Int {
     get {return S.get(5, #keyPath(reviewBatchSize))}
     set(n) {S.set(n, #keyPath(reviewBatchSize))}
+  }
+  static var apprenticeLessonsLimit: Int {
+    get {return S.get(5, #keyPath(apprenticeLessonsLimit))}
+    set(n) {S.set(n, #keyPath(apprenticeLessonsLimit))}
   }
   static var groupMeaningReading: Bool {
     get {return S.get(false, #keyPath(groupMeaningReading))}

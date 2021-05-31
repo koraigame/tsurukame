@@ -14,6 +14,7 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelegate {
   var window: UIWindow?
@@ -31,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
     Screenshotter.setUp()
 
     window?.setInterfaceStyle(Settings.interfaceStyle)
-    application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+    application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 
     storyboard = window!.rootViewController!.storyboard
     navigationController = (window!.rootViewController as! UINavigationController)

@@ -82,7 +82,7 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
     navigationController?.popViewController(animated: true)
   }
 
-  override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+  override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
   // MARK: - SubjectDelegate
 
@@ -95,14 +95,14 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
 
   // MARK: - Keyboard navigation
 
-  override var canBecomeFirstResponder: Bool { true }
+  override var canBecomeFirstResponder: Bool { return true }
   override var keyCommands: [UIKeyCommand]? {
-    [
+    return [
       UIKeyCommand(input: " ",
                    modifierFlags: [],
                    action: #selector(playAudio),
                    discoverabilityTitle: "Play reading"),
-      UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
+      UIKeyCommand(input: UIKeyInputLeftArrow,
                    modifierFlags: [],
                    action: #selector(backButtonPressed),
                    discoverabilityTitle: "Back"),

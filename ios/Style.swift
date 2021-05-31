@@ -14,6 +14,12 @@
 
 import Foundation
 
+private extension UIColor {
+  convenience init(f: (UITraitCollection) -> UIColor) {
+    self.init()
+  }
+}
+
 private func UIColorFromHex(_ hexColor: Int32) -> UIColor {
   let red = (CGFloat)((hexColor & 0xFF0000) >> 16) / 255
   let green = (CGFloat)((hexColor & 0x00FF00) >> 8) / 255
@@ -36,7 +42,7 @@ private func AdaptiveColor(light: UIColor, dark: UIColor) -> UIColor {
 }
 
 private func AdaptiveColorHex(light: Int32, dark: Int32) -> UIColor {
-  AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
+  return AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
 }
 
 @objc

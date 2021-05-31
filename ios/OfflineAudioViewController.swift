@@ -112,13 +112,13 @@ struct AudioPackage {
                                          accessoryType: UITableViewCell.AccessoryType.none,
                                          target: self,
                                          action: #selector(didTapDeleteAllAudio(sender:)))
-      deleteItem.textColor = UIColor.systemRed
+      deleteItem.textColor = UIColor.red
       model.add(deleteItem)
     }
   }
 
   override func url(forFilename filename: String) -> URL {
-    URL(string: "https://tsurukame.app/audio/\(filename)")!
+    return URL(string: "https://tsurukame.app/audio/\(filename)")!
   }
 
   override func didFinishDownload(for filename: String, at location: URL) {

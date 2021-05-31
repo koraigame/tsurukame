@@ -268,11 +268,11 @@ class SettingsViewController: UITableViewController {
   }
 
   private var lessonBatchSizeText: String {
-    "\(Settings.lessonBatchSize)"
+    return "\(Settings.lessonBatchSize)"
   }
 
   private var apprenticeLessonsLimitText: String {
-    Settings.apprenticeLessonsLimit != Int.max ?
+    return Settings.apprenticeLessonsLimit != Int.max ?
       "\(Settings.apprenticeLessonsLimit)" : "None"
   }
 

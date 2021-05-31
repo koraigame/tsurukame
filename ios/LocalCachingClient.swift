@@ -36,23 +36,36 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   let reachability: Reachability
 
   private var db: FMDatabaseQueue!
-
-  @Cached(notificationName: .lccPendingItemsChanged) var pendingProgressCount: Int
-  @Cached(notificationName: .lccPendingItemsChanged) var pendingStudyMaterialsCount: Int
-
-  // swiftformat:disable all
-  @Cached(notificationName: .lccAvailableItemsChanged) var availableSubjects: (
-    lessonCount: Int,
-    reviewCount: Int,
-    upcomingReviews: [Int]
-  )
-  // swiftformat:enable all
-
-  @Cached var guruKanjiCount: Int
-  @Cached var apprenticeCount: Int
-  @Cached(notificationName: .lccSRSCategoryCountsChanged) var srsCategoryCounts: [Int]
-  @objc @Cached var maxLevelGrantedBySubscription: Int
-
+  
+  private var _pendingProgressCount = Cached<Int>(n: .lccPendingItemsChanged)
+  var pendingProgressCount: Int {
+    get { return _pendingProgressCount.wrappedValue }
+  }
+  private var _pendingStudyMaterialsCount = Cached<Int>(n: .lccPendingItemsChanged)
+  var pendingStudyMaterialsCount: Int {
+    get { return _pendingStudyMaterialsCount.wrappedValue }
+  }
+  
+  private var _availableSubjects = Cached<(Int, Int, [Int])>(n: .lccAvailableItemsChanged)
+  var availableSubjects: (lessonCount: Int, reviewCount: Int, upcomingReviews: [Int]) {
+    get { return _availableSubjects.wrappedValue }
+  }
+  
+  private var _guruKanjiCount = Cached<Int>()
+  var guruKanjiCount: Int {
+    get { return _guruKanjiCount.wrappedValue }
+  }
+  
+  private var _srsCategoryCounts = Cached<[Int]>(n: .lccSRSCategoryCountsChanged)
+  var srsCategoryCounts: [Int] {
+    get { return _srsCategoryCounts.wrappedValue }
+  }
+  
+  private var _maxLevelGrantedBySubscription = Cached<Int>()
+  @objc var maxLevelGrantedBySubscription: Int {
+    get { return _maxLevelGrantedBySubscription.wrappedValue }
+  }
+  
   init(client: WaniKaniAPIClient, reachability: Reachability) {
     self.client = client
     self.reachability = reachability
@@ -72,9 +85,6 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     _guruKanjiCount.updateBlock = {
       self.updateGuruKanjiCount()
     }
-    _apprenticeCount.updateBlock = {
-      self.updateApprenticeCount()
-    }
     _srsCategoryCounts.updateBlock = {
       self.updateSrsCategoryCounts()
     }
@@ -84,7 +94,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func updateGuruKanjiCount() -> Int {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT COUNT(*) FROM subject_progress " +
         "WHERE srs_stage >= 5 AND subject_type = \(TKMSubject.TypeEnum.kanji.rawValue)")
       if cursor.next() {
@@ -94,19 +104,8 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     }
   }
 
-  func updateApprenticeCount() -> Int {
-    db.inDatabase { db in
-      let cursor = db.query("SELECT COUNT(*) FROM subject_progress " +
-        "WHERE srs_stage >= 1 AND srs_stage <= 4")
-      if cursor.next() {
-        return Int(cursor.int(forColumnIndex: 0))
-      }
-      return 0
-    }
-  }
-
   func updateSrsCategoryCounts() -> [Int] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT srs_stage, COUNT(*) FROM subject_progress " +
         "WHERE srs_stage >= 1 GROUP BY srs_stage")
 
@@ -298,14 +297,14 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       // Populate subject progress if we need to.
       if shouldPopulateSubjectProgress {
         let sql = "REPLACE INTO subject_progress (id, level, srs_stage, subject_type) " +
-          "VALUES (?, ?, ?, ?)"
+        "VALUES (?, ?, ?, ?)"
         for assignment in getAllAssignments(transaction: db) {
           db.mustExecuteUpdate(sql, args: [
             assignment.subjectID,
             assignment.level,
             assignment.srsStage.rawValue,
             assignment.subjectType.rawValue,
-          ])
+            ])
         }
         for progress in getAllPendingProgress(transaction: db) {
           let assignment = progress.assignment
@@ -314,14 +313,14 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
             assignment.level,
             assignment.srsStage.rawValue,
             assignment.subjectType.rawValue,
-          ])
+            ])
         }
       }
     }
   }
 
   func getAllAssignments() -> [TKMAssignment] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       getAllAssignments(transaction: db)
     }
   }
@@ -329,13 +328,13 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   private func getAllAssignments(transaction db: FMDatabase) -> [TKMAssignment] {
     var ret = [TKMAssignment]()
     for cursor in db.query("SELECT pb FROM assignments") {
-      ret.append(cursor.proto(forColumnIndex: 0)!)
+      ret.append(cursor.proto(forColumnIndex: 0, TKMAssignment.self)!)
     }
     return ret
   }
 
   func getAllPendingProgress() -> [TKMProgress] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       getAllPendingProgress(transaction: db)
     }
   }
@@ -343,33 +342,33 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   private func getAllPendingProgress(transaction db: FMDatabase) -> [TKMProgress] {
     var ret = [TKMProgress]()
     for cursor in db.query("SELECT pb FROM pending_progress") {
-      ret.append(cursor.proto(forColumnIndex: 0)!)
+      ret.append(cursor.proto(forColumnIndex: 0, TKMProgress.self)!)
     }
     return ret
   }
 
   func getStudyMaterial(subjectId: Int32) -> TKMStudyMaterials? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM study_materials WHERE id = ?", args: [subjectId])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMStudyMaterials.self)
       }
       return nil
     }
   }
 
   func getUserInfo() -> TKMUser? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM user")
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMUser.self)
       }
       return nil
     }
   }
 
   func countRows(inTable table: String) -> Int {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT COUNT(*) FROM \(table)")
       if cursor.next() {
         return Int(cursor.int(forColumnIndex: 0))
@@ -379,15 +378,15 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAssignment(subjectId: Int32) -> TKMAssignment? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       var cursor = db.query("SELECT pb FROM assignments WHERE subject_id = ?", args: [subjectId])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMAssignment.self)
       }
 
       cursor = db.query("SELECT pb FROM pending_progress WHERE id = ?", args: [subjectId])
       if cursor.next() {
-        let progress: TKMProgress = cursor.proto(forColumnIndex: 0)!
+        let progress: TKMProgress = cursor.proto(forColumnIndex: 0, TKMProgress.self)!
         return progress.assignment
       }
 
@@ -396,7 +395,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAssignments(level: Int) -> [TKMAssignment] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       getAssignments(level: level, transaction: db)
     }
   }
@@ -417,17 +416,17 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       "LEFT JOIN assignments AS a " +
       "ON p.id = a.subject_id " +
       "WHERE p.level = ?", args: [level]) {
-      var assignment: TKMAssignment? = cursor.proto(forColumnIndex: 4)
-      if assignment == nil {
-        assignment = TKMAssignment()
-        assignment!.subjectID = cursor.int(forColumnIndex: 0)
-        assignment!.level = cursor.int(forColumnIndex: 1)
-        assignment!.subjectType = TKMSubject.TypeEnum(rawValue: Int(cursor.int(forColumnIndex: 3)))!
-      }
-      assignment!.srsStageNumber = cursor.int(forColumnIndex: 2)
+        var assignment: TKMAssignment? = cursor.proto(forColumnIndex: 4, TKMAssignment.self)
+        if assignment == nil {
+          assignment = TKMAssignment()
+          assignment!.subjectID = cursor.int(forColumnIndex: 0)
+          assignment!.level = cursor.int(forColumnIndex: 1)
+          assignment!.subjectType = TKMSubject.TypeEnum(rawValue: Int(cursor.int(forColumnIndex: 3)))!
+        }
+        assignment!.srsStageNumber = cursor.int(forColumnIndex: 2)
 
-      ret.append(assignment!)
-      subjectIds.insert(Int(assignment!.subjectID))
+        ret.append(assignment!)
+        subjectIds.insert(Int(assignment!.subjectID))
     }
 
     // Add fake assignments for any other subjects at this level that don't have assignments yet (the
@@ -464,27 +463,27 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     var ret = [TKMSubject]()
     db.inDatabase { db in
       for cursor in db.query("SELECT pb FROM subjects") {
-        ret.append(cursor.proto(forColumnIndex: 0)!)
+        ret.append(cursor.proto(forColumnIndex: 0, TKMSubject.self)!)
       }
     }
     return ret
   }
 
   func getSubject(id: Int32) -> TKMSubject? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM subjects WHERE id = ?", args: [id])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMSubject.self)
       }
       return nil
     }
   }
 
   func getSubject(japanese: String) -> TKMSubject? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM subjects WHERE japanese = ?", args: [japanese])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0)
+        return cursor.proto(forColumnIndex: 0, TKMSubject.self)
       }
       return nil
     }
@@ -498,7 +497,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func levelOf(subjectId: Int32) -> Int? {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       let cursor = db.query("SELECT level FROM subjects WHERE id = ?", args: [subjectId])
       if cursor.next() {
         return Int(cursor.int(forColumnIndex: 0))
@@ -529,10 +528,10 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAllLevelProgressions() -> [TKMLevel] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       var ret = [TKMLevel]()
       for cursor in db.query("SELECT pb FROM level_progressions") {
-        ret.append(cursor.proto(forColumnIndex: 0)!)
+        ret.append(cursor.proto(forColumnIndex: 0, TKMLevel.self)!)
       }
       return ret
     }
@@ -556,11 +555,11 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
         }
         db.mustExecuteUpdate("REPLACE INTO subject_progress (id, level, srs_stage, subject_type) " +
           "VALUES (?, ?, ?, ?)",
-          args: [
-            p.assignment.subjectID,
-            p.assignment.level,
-            newSrsStage.rawValue,
-            p.assignment.subjectType.rawValue,
+                             args: [
+                              p.assignment.subjectID,
+                              p.assignment.level,
+                              newSrsStage.rawValue,
+                              p.assignment.subjectType.rawValue,
           ])
       }
     }
@@ -569,13 +568,12 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     _availableSubjects.invalidate()
     _srsCategoryCounts.invalidate()
     _guruKanjiCount.invalidate()
-    _apprenticeCount.invalidate()
 
     return sendPendingProgress(progress, progress: Progress(totalUnitCount: -1))
   }
 
   private func sendAllPendingProgress(progress: Progress) -> Promise<Void> {
-    sendPendingProgress(getAllPendingProgress(), progress: progress)
+    return sendPendingProgress(getAllPendingProgress(), progress: progress)
   }
 
   private func clearPendingProgress(_ progress: TKMProgress) {
@@ -600,20 +598,20 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     for p in items {
       promise = promise.then { _ in
         self.client.sendProgress(p).asVoid()
-      }.recover { err in
-        if let apiError = err as? WaniKaniAPIError, apiError.code == 422 {
-          // Drop the data if the server is clearly telling us our data is invalid and
-          // cannot be accepted. This most commonly happens when doing reviews before
-          // progress from elsewhere has synced, leaving the app trying to report
-          // progress on reviews you already did elsewhere.
-          return
-        } else {
-          throw err
-        }
-      }.map {
-        self.clearPendingProgress(p)
-      }.ensure {
-        progress.completedUnitCount += 1
+        }.recover { err in
+          if let apiError = err as? WaniKaniAPIError, apiError.code == 422 {
+            // Drop the data if the server is clearly telling us our data is invalid and
+            // cannot be accepted. This most commonly happens when doing reviews before
+            // progress from elsewhere has synced, leaving the app trying to report
+            // progress on reviews you already did elsewhere.
+            return
+          } else {
+            throw err
+          }
+        }.map {
+          self.clearPendingProgress(p)
+        }.ensure {
+          progress.completedUnitCount += 1
       }
     }
     return promise
@@ -633,18 +631,18 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   private func getAllPendingStudyMaterials() -> [TKMStudyMaterials] {
-    db.inDatabase { db in
+    return db.inDatabase { db in
       var ret = [TKMStudyMaterials]()
       for cursor in db
         .query("SELECT s.pb FROM study_materials AS s, pending_study_materials AS p ON s.id = p.id") {
-        ret.append(cursor.proto(forColumnIndex: 0)!)
+          ret.append(cursor.proto(forColumnIndex: 0, TKMStudyMaterials.self)!)
       }
       return ret
     }
   }
 
   private func sendAllPendingStudyMaterials(progress: Progress) -> Promise<Void> {
-    sendPendingStudyMaterials(getAllPendingStudyMaterials(), progress: progress)
+    return sendPendingStudyMaterials(getAllPendingStudyMaterials(), progress: progress)
   }
 
   private func sendPendingStudyMaterials(_ materials: [TKMStudyMaterials],
@@ -663,10 +661,10 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       promise = promise.then { _ in
         firstly {
           self.client.updateStudyMaterial(m).asVoid()
-        }.map {
-          self.clearPendingStudyMaterial(m)
-        }.ensure {
-          progress.completedUnitCount += 1
+          }.map {
+            self.clearPendingStudyMaterial(m)
+          }.ensure {
+            progress.completedUnitCount += 1
         }
       }
     }
@@ -785,26 +783,26 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
 
     return firstly { () -> Promise<WaniKaniAPIClient.Assignments> in
       client.assignments(progress: progress, updatedAfter: updatedAfter)
-    }.done { assignments, updatedAt in
-      NSLog("Updated %d assignments at %@", assignments.count, updatedAt)
-      self.db.inTransaction { db in
-        for assignment in assignments {
-          db.mustExecuteUpdate("REPLACE INTO assignments (id, pb, subject_id) " +
-            "VALUES (?, ?, ?)",
-            args: [
-              assignment.id,
-              try! assignment.serializedData(),
-              assignment.subjectID,
-            ])
-          db.mustExecuteUpdate("REPLACE INTO subject_progress (id, level, " +
-            "srs_stage, subject_type) VALUES (?, ?, ?, ?)",
-            args: [assignment.subjectID, assignment.level,
-                   assignment.srsStage.rawValue,
-                   assignment.subjectType.rawValue])
+      }.done { assignments, updatedAt in
+        NSLog("Updated %d assignments at %@", assignments.count, updatedAt)
+        self.db.inTransaction { db in
+          for assignment in assignments {
+            db.mustExecuteUpdate("REPLACE INTO assignments (id, pb, subject_id) " +
+              "VALUES (?, ?, ?)",
+                                 args: [
+                                  assignment.id,
+                                  try! assignment.serializedData(),
+                                  assignment.subjectID,
+              ])
+            db.mustExecuteUpdate("REPLACE INTO subject_progress (id, level, " +
+              "srs_stage, subject_type) VALUES (?, ?, ?, ?)",
+                                 args: [assignment.subjectID, assignment.level,
+                                        assignment.srsStage.rawValue,
+                                        assignment.subjectType.rawValue])
+          }
+          db.mustExecuteUpdate("UPDATE sync SET assignments_updated_after = ?",
+                               args: [updatedAt])
         }
-        db.mustExecuteUpdate("UPDATE sync SET assignments_updated_after = ?",
-                             args: [updatedAt])
-      }
     }
   }
 
@@ -820,54 +818,54 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
 
     return firstly { () -> Promise<WaniKaniAPIClient.StudyMaterials> in
       client.studyMaterials(progress: progress, updatedAfter: updatedAfter)
-    }.done { materials, updatedAt in
-      NSLog("Updated %d study materials at %@", materials.count, updatedAt)
-      self.db.inTransaction { db in
-        for material in materials {
-          db.mustExecuteUpdate("REPLACE INTO study_materials (id, pb) " +
-            "VALUES (?, ?)",
-            args: [material.subjectID, try! material.serializedData()])
+      }.done { materials, updatedAt in
+        NSLog("Updated %d study materials at %@", materials.count, updatedAt)
+        self.db.inTransaction { db in
+          for material in materials {
+            db.mustExecuteUpdate("REPLACE INTO study_materials (id, pb) " +
+              "VALUES (?, ?)",
+                                 args: [material.subjectID, try! material.serializedData()])
+          }
+          db.mustExecuteUpdate("UPDATE sync SET study_materials_updated_after = ?",
+                               args: [updatedAt])
         }
-        db.mustExecuteUpdate("UPDATE sync SET study_materials_updated_after = ?",
-                             args: [updatedAt])
-      }
     }
   }
 
   // TODO: do everything on database queue.
   private func fetchUserInfo(progress: Progress) -> Promise<Void> {
-    firstly {
+    return firstly {
       client.user(progress: progress)
-    }.done { user in
-      NSLog("Updated user: %@", user.debugDescription)
-      let oldMaxLevel = self.maxLevelGrantedBySubscription
-      self.db.inTransaction { db in
-        db.mustExecuteUpdate("REPLACE INTO user (id, pb) VALUES (0, ?)",
-                             args: [try! user.serializedData()])
-
-        if oldMaxLevel > 0, user.maxLevelGrantedBySubscription > oldMaxLevel {
-          // The user's max level increased, so more subjects might be available now. Clear the
-          // sync marker to force all the subjects to be downloaded again next sync.
-          db.mustExecuteUpdate("UPDATE sync SET subjects_updated_after = \"\"")
+      }.done { user in
+        NSLog("Updated user: %@", user.debugDescription)
+        let oldMaxLevel = self.maxLevelGrantedBySubscription
+        self.db.inTransaction { db in
+          db.mustExecuteUpdate("REPLACE INTO user (id, pb) VALUES (0, ?)",
+                               args: [try! user.serializedData()])
+          
+          if oldMaxLevel > 0, user.maxLevelGrantedBySubscription > oldMaxLevel {
+            // The user's max level increased, so more subjects might be available now. Clear the
+            // sync marker to force all the subjects to be downloaded again next sync.
+            db.mustExecuteUpdate("UPDATE sync SET subjects_updated_after = \"\"")
+          }
         }
-      }
-      if user.maxLevelGrantedBySubscription != oldMaxLevel {
-        self._maxLevelGrantedBySubscription.invalidate()
-      }
+        if user.maxLevelGrantedBySubscription != oldMaxLevel {
+          self._maxLevelGrantedBySubscription.invalidate()
+        }
     }
   }
 
   private func fetchLevelProgression(progress: Progress) -> Promise<Void> {
-    firstly {
+    return firstly {
       client.levelProgressions(progress: progress)
-    }.done { progressions, _ in
-      NSLog("Updated %d level progressions", progressions.count)
-      self.db.inTransaction { db in
-        for level in progressions {
-          db.mustExecuteUpdate("REPLACE INTO level_progressions (id, level, pb) VALUES (?, ?, ?)",
-                               args: [level.id, level.level, try! level.serializedData()])
+      }.done { progressions, _ in
+        NSLog("Updated %d level progressions", progressions.count)
+        self.db.inTransaction { db in
+          for level in progressions {
+            db.mustExecuteUpdate("REPLACE INTO level_progressions (id, level, pb) VALUES (?, ?, ?)",
+                                 args: [level.id, level.level, try! level.serializedData()])
+          }
         }
-      }
     }
   }
 
@@ -883,23 +881,23 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
 
     return firstly { () -> Promise<WaniKaniAPIClient.Subjects> in
       client.subjects(progress: progress, updatedAfter: updatedAfter)
-    }.done { subjects, updatedAt in
-      NSLog("Updated %d subjects at %@", subjects.count, updatedAt)
-      self.db.inTransaction { db in
-        for subject in subjects {
-          db.mustExecuteUpdate("REPLACE INTO subjects (id, japanese, level, type, pb) " +
-            "VALUES (?, ?, ?, ?, ?)",
-            args: [
-              subject.id,
-              subject.japanese,
-              subject.level,
-              subject.subjectType.rawValue,
-              try! subject.serializedData(),
-            ])
+      }.done { subjects, updatedAt in
+        NSLog("Updated %d subjects at %@", subjects.count, updatedAt)
+        self.db.inTransaction { db in
+          for subject in subjects {
+            db.mustExecuteUpdate("REPLACE INTO subjects (id, japanese, level, type, pb) " +
+              "VALUES (?, ?, ?, ?, ?)",
+                                 args: [
+                                  subject.id,
+                                  subject.japanese,
+                                  subject.level,
+                                  subject.subjectType.rawValue,
+                                  try! subject.serializedData(),
+              ])
+          }
+          db.mustExecuteUpdate("UPDATE sync SET subjects_updated_after = ?",
+                               args: [updatedAt])
         }
-        db.mustExecuteUpdate("UPDATE sync SET subjects_updated_after = ?",
-                             args: [updatedAt])
-      }
     }
   }
 
@@ -913,8 +911,12 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     let assignmentProgressUnits: Int64 = quick ? 1 : 8
     let subjectProgressUnits: Int64 = quick ? 1 : 20
     progress.totalUnitCount = 5 + assignmentProgressUnits + subjectProgressUnits
-    let childProgress = { (units: Int64) in
-      Progress(totalUnitCount: -1, parent: progress, pendingUnitCount: units)
+    let childProgress = { (units: Int64) -> Progress in
+      if #available(iOS 9.0, *) {
+        return Progress(totalUnitCount: -1, parent: progress, pendingUnitCount: units)
+      } else {
+        return Progress(totalUnitCount: units)
+      }
     }
 
     if !quick {
@@ -936,21 +938,20 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       // Fetch subjects before fetching anything else - we need to know subject levels to use them
       // in assignment protos.
       fetchSubjects(progress: childProgress(subjectProgressUnits)),
-    ]).then { _ in
-      when(fulfilled: [
-        self.fetchAssignments(progress: childProgress(assignmentProgressUnits)),
-        self.fetchStudyMaterials(progress: childProgress(1)),
-        self.fetchUserInfo(progress: childProgress(1)),
-        self.fetchLevelProgression(progress: childProgress(1)),
-      ])
-    }.ensure {
-      self._availableSubjects.invalidate()
-      self._srsCategoryCounts.invalidate()
-      postNotificationOnMainQueue(.lccUserInfoChanged)
-
-      self.busy = false
-      progress.completedUnitCount = progress.totalUnitCount
-    }.catch(handleError)
+      ]).then { _ in
+        when(fulfilled: [
+          self.fetchAssignments(progress: childProgress(assignmentProgressUnits)),
+          self.fetchStudyMaterials(progress: childProgress(1)),
+          self.fetchUserInfo(progress: childProgress(1)),
+          self.fetchLevelProgression(progress: childProgress(1)),
+          ])
+      }.ensure {
+        self._availableSubjects.invalidate()
+        self._srsCategoryCounts.invalidate()
+        postNotificationOnMainQueue(.lccUserInfoChanged)
+        self.busy = false
+        progress.completedUnitCount = progress.totalUnitCount
+      }.catch(handleError)
   }
 
   func clearAllData() {
@@ -968,19 +969,18 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   // MARK: - Objective-C support
 
   var availableReviewCount: Int {
-    availableSubjects.reviewCount
+    return availableSubjects.reviewCount
   }
 
   var availableLessonCount: Int {
-    availableSubjects.lessonCount
+    return availableSubjects.lessonCount
   }
 
   var upcomingReviews: [Int] {
-    availableSubjects.upcomingReviews
+    return availableSubjects.upcomingReviews
   }
 }
 
-@propertyWrapper
 struct Cached<T> {
   private var stale = true
   var value: T?
@@ -989,8 +989,8 @@ struct Cached<T> {
 
   init() {}
 
-  init(notificationName: Notification.Name) {
-    self.notificationName = notificationName
+  init(n: Notification.Name) {
+    self.notificationName = n
   }
 
   mutating func invalidate() {

@@ -160,19 +160,19 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   func pageViewController(_: UIPageViewController,
                           viewControllerAfter viewController: UIViewController)
     -> UIViewController? {
-    createViewController(index: indexOf(viewController: viewController) + 1)
+    return createViewController(index: indexOf(viewController: viewController) + 1)
   }
 
   func pageViewController(_: UIPageViewController,
                           viewControllerBefore viewController: UIViewController)
     -> UIViewController? {
-    createViewController(index: indexOf(viewController: viewController) - 1)
+    return createViewController(index: indexOf(viewController: viewController) - 1)
   }
 
   // MARK: - ReviewViewControllerDelegate
 
   func reviewViewControllerAllowsCheats(forReviewItem _: ReviewItem) -> Bool {
-    false
+    return false
   }
 
   func reviewViewControllerFinishedAllReviewItems(_ reviewViewController: ReviewViewController) {
@@ -180,17 +180,17 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   }
 
   func reviewViewControllerAllowsCustomFonts() -> Bool {
-    false
+    return false
   }
 
   func reviewViewControllerShowsSuccessRate() -> Bool {
-    false
+    return false
   }
 
   // MARK: - Keyboard navigation
 
   override var canBecomeFirstResponder: Bool {
-    true
+    return true
   }
 
   override var keyCommands: [UIKeyCommand]? {
