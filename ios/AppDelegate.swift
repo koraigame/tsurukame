@@ -94,9 +94,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
     services.client.subjectLevelGetter = services.localCachingClient
 
     if !Screenshotter.isActive {
-      // Ask for notification permissions.
-      let unc = UNUserNotificationCenter.current()
-      unc.requestAuthorization(options: [.badge, .alert]) { _, _ in }
+      if #available(iOS 10.0, *) {
+        // Ask for notification permissions.
+        let unc = UNUserNotificationCenter.current()
+        unc.requestAuthorization(options: [.badge, .alert]) { _, _ in }
+      }
     }
 
     let pushMainViewController = { () in
@@ -181,6 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
       return
     }
 
+    if #available(iOS 10.0, *) {
     WatchHelper.sharedInstance.updatedData(client: services.localCachingClient)
 
     let nc = UNUserNotificationCenter.current()
@@ -225,6 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
                                               trigger: trigger)
           nc.add(request, withCompletionHandler: nil)
         }
+      }
       }
     }
   }

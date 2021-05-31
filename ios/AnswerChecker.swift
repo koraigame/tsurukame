@@ -101,7 +101,13 @@ import Foundation
         convertKatakanaToHiragana(String(text[text.index(after: dash)...]))
     }
 
-    return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+    if #available(iOS 9.0, *) {
+      return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+    } else {
+      let t = NSMutableString(string: text) as CFMutableString
+      CFStringTransform(t, nil, kCFStringTransformHiraganaKatakana, true)
+      return String(t)
+    }
   }
 
   class func normalizedString(_ text: String, taskType: TaskType,

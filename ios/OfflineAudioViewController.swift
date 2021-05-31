@@ -43,6 +43,7 @@ struct AudioPackage {
     AudioPackage("a-levels-51-60.tar.lzfse", "Levels 51-60", 18_827_575),
   ]
 
+  @available(iOS 9.0, *)
   static func decompressLZFSE(compressedData: Data) -> Data? {
     if compressedData.count == 0 { return nil }
 
@@ -125,6 +126,7 @@ struct AudioPackage {
     guard let data = try? Data(contentsOf: location) else {
       fatalError("Error reading data: \(url(forFilename: filename).absoluteString)")
     }
+    if #available(iOS 9.0, *) {
     guard let tarData = OfflineAudioViewController.decompressLZFSE(compressedData: data) else {
       fatalError("Error decompressing data: \(url(forFilename: filename).absoluteString)")
     }
@@ -143,6 +145,7 @@ struct AudioPackage {
     DispatchQueue.main.async {
       Settings.installedAudioPackages.insert(filename)
       self.markDownloadComplete(filename)
+    }
     }
   }
 

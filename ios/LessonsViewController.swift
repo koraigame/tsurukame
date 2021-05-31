@@ -201,19 +201,15 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
 
     return [
       UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [],
-                   action: #selector(prevPage),
-                   discoverabilityTitle: "Previous"),
+                   action: #selector(prevPage)),
       UIKeyCommand(input: "a", modifierFlags: [], action: #selector(prevPage)),
       UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [],
-                   action: #selector(nextPage),
-                   discoverabilityTitle: "Next"),
+                   action: #selector(nextPage)),
       UIKeyCommand(input: "d", modifierFlags: [], action: #selector(nextPage)),
       UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(nextPage)),
-      UIKeyCommand(input: " ", modifierFlags: [], action: #selector(playAudio),
-                   discoverabilityTitle: "Play reading"),
+      UIKeyCommand(input: " ", modifierFlags: [], action: #selector(playAudio)),
       UIKeyCommand(input: "j", modifierFlags: [], action: #selector(playAudio)),
-      UIKeyCommand(input: "q", modifierFlags: [], action: #selector(jumpToQuiz),
-                   discoverabilityTitle: "Jump to quiz"),
+      UIKeyCommand(input: "q", modifierFlags: [], action: #selector(jumpToQuiz)),
     ]
   }
 

@@ -414,22 +414,24 @@ class SettingsViewController: UITableViewController {
       }
     }
 
-    let center = UNUserNotificationCenter.current()
-    center.getNotificationSettings { settings in
-      switch settings.authorizationStatus {
-      case .authorized, .provisional, .ephemeral:
-        self.notificationHandler?(true)
-      case .notDetermined:
-        center.requestAuthorization(options: [.badge, .alert]) { granted, _ in
-          self.notificationHandler?(granted)
+    if #available(iOS 10.0, *) {
+      let center = UNUserNotificationCenter.current()
+      center.getNotificationSettings { settings in
+        switch settings.authorizationStatus {
+        case .authorized, .provisional, .ephemeral:
+          self.notificationHandler?(true)
+        case .notDetermined:
+          center.requestAuthorization(options: [.badge, .alert]) { granted, _ in
+            self.notificationHandler?(granted)
+          }
+        case .denied:
+          DispatchQueue.main.async {
+            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:],
+                                      completionHandler: nil)
+          }
+        default:
+          break
         }
-      case .denied:
-        DispatchQueue.main.async {
-          UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:],
-                                    completionHandler: nil)
-        }
-      default:
-        break
       }
     }
   }
@@ -438,13 +440,17 @@ class SettingsViewController: UITableViewController {
     if notificationHandler == nil {
       return
     }
-    let center = UNUserNotificationCenter.current()
-    center.getNotificationSettings { settings in
-      var granted = settings.authorizationStatus == .authorized
-      if #available(iOS 12.0, *) {
-        granted = granted || settings.authorizationStatus == .provisional
+    if #available(iOS 10.0, *) {
+      let center = UNUserNotificationCenter.current()
+      center.getNotificationSettings { settings in
+        var granted = settings.authorizationStatus == .authorized
+        if #available(iOS 12.0, *) {
+          granted = granted || settings.authorizationStatus == UNAuthorizationStatus(rawValue: 3)!
+        }
+        self.notificationHandler?(granted)
       }
-      self.notificationHandler?(granted)
+    } else {
+      return
     }
   }
 

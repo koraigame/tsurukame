@@ -254,7 +254,13 @@ public extension TKMSubject {
 public extension TKMReading {
   func displayText(useKatakanaForOnyomi: Bool) -> String {
     if hasType, type == .onyomi, useKatakanaForOnyomi {
-      return reading.applyingTransform(.hiraganaToKatakana, reverse: false)!
+      if #available(iOS 9.0, *) {
+        return reading.applyingTransform(StringTransform.hiraganaToKatakana, reverse: false)!
+      } else {
+        let t = NSMutableString(string: reading) as CFMutableString
+        CFStringTransform(t, nil, kCFStringTransformHiraganaKatakana, false)
+        return String(t)
+      }
     }
     return reading
   }

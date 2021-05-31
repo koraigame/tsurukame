@@ -151,8 +151,6 @@ protocol ReviewViewControllerDelegate {
 
 class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelegate {
   private var kanaInput: TKMKanaInput!
-  private let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator
-    .FeedbackStyle.light)
   private let tickImage = UIImage(named: "checkmark.circle")
   private let forwardArrowImage = UIImage(named: "ic_arrow_forward_white")
   private let skipImage = UIImage(named: "goforward.plus")
@@ -1058,8 +1056,12 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     let correct = result == .Correct || result == .OverrideAnswerCorrect
 
     if correct {
-      hapticGenerator.impactOccurred()
-      hapticGenerator.prepare()
+      if #available(iOS 10.0, *) {
+        let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator
+          .FeedbackStyle.light)
+        hapticGenerator.impactOccurred()
+        hapticGenerator.prepare()
+      }
     }
 
     // Mark the task.
@@ -1270,20 +1272,17 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   override var keyCommands: [UIKeyCommand]? {
     let keyboardEnter = UIKeyCommand(input: "\r",
                                      modifierFlags: [],
-                                     action: #selector(enterKeyPressed),
-                                     discoverabilityTitle: "Continue")
+                                     action: #selector(enterKeyPressed))
     let numericKeyPadEnter = UIKeyCommand(input: "\u{3}",
                                           modifierFlags: [],
-                                          action: #selector(enterKeyPressed),
-                                          discoverabilityTitle: "Continue")
+                                          action: #selector(enterKeyPressed))
     var keyCommands: [UIKeyCommand] = []
 
     if !answerField.isEnabled, subjectDetailsView.isHidden {
       // Continue when a wrong answer has been entered but the subject details view is hidden.
       keyCommands.append(contentsOf: [UIKeyCommand(input: "\u{8}",
                                                    modifierFlags: [],
-                                                   action: #selector(backspaceKeyPressed),
-                                                   discoverabilityTitle: "Clear wrong answer"),
+                                                   action: #selector(backspaceKeyPressed)),
                                       keyboardEnter,
                                       numericKeyPadEnter])
     }
@@ -1292,22 +1291,18 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       // Key commands when showing the detail view
       keyCommands.append(contentsOf: [UIKeyCommand(input: " ",
                                                    modifierFlags: [],
-                                                   action: #selector(playAudio),
-                                                   discoverabilityTitle: "Play reading"),
+                                                   action: #selector(playAudio)),
                                       UIKeyCommand(input: "j", modifierFlags: [],
                                                    action: #selector(playAudio)),
                                       UIKeyCommand(input: "a",
                                                    modifierFlags: [.command],
-                                                   action: #selector(askAgain),
-                                                   discoverabilityTitle: "Ask again later"),
+                                                   action: #selector(askAgain)),
                                       UIKeyCommand(input: "c",
                                                    modifierFlags: [.command],
-                                                   action: #selector(markCorrect),
-                                                   discoverabilityTitle: "Mark correct"),
+                                                   action: #selector(markCorrect)),
                                       UIKeyCommand(input: "s",
                                                    modifierFlags: [.command],
-                                                   action: #selector(addSynonym),
-                                                   discoverabilityTitle: "Add as synonym"),
+                                                   action: #selector(addSynonym)),
                                       keyboardEnter,
                                       numericKeyPadEnter])
     }
@@ -1315,24 +1310,20 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     if Settings.selectedFonts.count > 0 {
       keyCommands.append(UIKeyCommand(input: "\t",
                                       modifierFlags: [],
-                                      action: #selector(toggleFont),
-                                      discoverabilityTitle: "Toggle font"))
+                                      action: #selector(toggleFont)))
       if #available(macOS 10.14, *) {
         keyCommands.append(UIKeyCommand(input: UIKeyInputRightArrow,
                                         modifierFlags: [],
-                                        action: #selector(showNextCustomFont),
-                                        discoverabilityTitle: "Next font"))
+                                        action: #selector(showNextCustomFont)))
         keyCommands.append(UIKeyCommand(input: UIKeyInputLeftArrow,
                                         modifierFlags: [],
-                                        action: #selector(showPreviousCustomFont),
-                                        discoverabilityTitle: "Previous font"))
+                                        action: #selector(showPreviousCustomFont)))
       }
     }
     if !previousSubjectButton.isHidden {
       keyCommands.append(UIKeyCommand(input: "p",
                                       modifierFlags: [.command],
-                                      action: #selector(previousSubjectButtonPressed(_:)),
-                                      discoverabilityTitle: "Previous subject"))
+                                      action: #selector(previousSubjectButtonPressed(_:))))
     }
     return keyCommands
   }

@@ -49,7 +49,12 @@ private func renderMeanings(subject: TKMSubject,
   for meaning in subject.meanings {
     if meaning.type != .primary, meaning.type != .blacklist,
        meaning.type != .auxiliaryWhitelist || !subject.hasRadical || Settings.showOldMnemonic {
-      let font = UIFont.systemFont(ofSize: kFontSize, weight: .light)
+      var font: UIFont
+      if #available(iOS 8.2, *) {
+        font = UIFont.systemFont(ofSize: kFontSize, weight: .light)
+      } else {
+        font = UIFont.systemFont(ofSize: kFontSize)
+      }
       strings.append(attrString(meaning.meaning, attrs: [.font: font]))
     }
   }
@@ -85,7 +90,7 @@ private func renderReadings(readings: [TKMReading], primaryOnly: Bool) -> NSAttr
 
 private func renderNotes(studyMaterials: TKMStudyMaterials?,
                          isMeaning: Bool) -> NSAttributedString? {
-  let font = UIFont.systemFont(ofSize: kFontSize, weight: .regular)
+  let font = UIFont.systemFont(ofSize: kFontSize)
   if let studyMaterials = studyMaterials {
     if isMeaning, studyMaterials.hasMeaningNote {
       return attrString(studyMaterials.meaningNote, attrs: [.font: font])

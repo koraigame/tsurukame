@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import CommonCrypto
+//import CommonCrypto
 import Foundation
 import os
 import WatchConnectivity
 #if os(watchOS)
-  import ClockKit
+import ClockKit
 #endif
 
 typealias ClientDelegateCallback = (([String: Any]) -> Void)
 typealias EpochTimeInt = Int64
 
+@available(iOS 9.3, *)
 class WatchConnectionServerDelegate: NSObject, WCSessionDelegate {
   func session(_: WCSession, activationDidCompleteWith _: WCSessionActivationState,
                error _: Error?) {}
@@ -34,6 +35,7 @@ class WatchConnectionServerDelegate: NSObject, WCSessionDelegate {
   #endif
 }
 
+@available(iOS 9.3, *)
 class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
   let callback: ClientDelegateCallback
 
@@ -42,7 +44,9 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
   }
 
   func session(_: WCSession, activationDidCompleteWith _: WCSessionActivationState, error: Error?) {
-    os_log("watch activationDidCompleteWith err=%{public}@", error?.localizedDescription ?? "none")
+    if #available(iOS 10.0, *) {
+      os_log("watch activationDidCompleteWith err=%{public}@", error?.localizedDescription ?? "none")
+    }
   }
 
   func session(_: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
@@ -64,6 +68,7 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
   #endif
 }
 
+@available(iOS 9.3, *)
 @objc class WatchHelper: NSObject {
   public static let keyReviewCount = "reviewCount"
   public static let keyReviewNextHourCount = "reviewHrCount"

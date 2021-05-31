@@ -164,7 +164,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updatingTableModel = true
 
     DispatchQueue.main.async {
-      WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      if #available(iOS 9.3, *) {
+        WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      }
       self.updatingTableModel = false
       self.recreateTableModel()
     }
@@ -349,12 +351,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let date = calendar
       .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
 
-    hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
-                                              repeats: false,
-                                              block: { [weak self] _ in
-                                                guard let self = self else { return }
-                                                self.hourlyTimerExpired()
-                                              })
+    hourlyRefreshTimer = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow,
+                                              target: self,
+                                              selector: #selector(hourlyTimerExpired),
+                                              userInfo: nil, repeats: false)
+    
   }
 
   func cancelHourlyTimer() {
@@ -362,7 +363,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     hourlyRefreshTimer = Timer()
   }
 
-  func hourlyTimerExpired() {
+  @objc func hourlyTimerExpired() {
     refresh(quick: true)
     updateHourlyTimer()
   }
@@ -504,29 +505,25 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     if hasLessons, !hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Continue lessons"))
+                              action: #selector(startLessons)))
     } else if hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Continue reviews"))
+                              action: #selector(startReviews)))
     }
 
     // Command L to start lessons, if any
     if hasLessons {
       ret.append(UIKeyCommand(input: "l",
                               modifierFlags: [.command],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Start lessons"))
+                              action: #selector(startLessons)))
     }
 
     // Command R to start reviews, if any
     if hasReviews {
       ret.append(UIKeyCommand(input: "r",
                               modifierFlags: [.command],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Start reviews"))
+                              action: #selector(startReviews)))
     }
 
     return ret

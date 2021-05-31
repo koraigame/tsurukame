@@ -127,7 +127,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
   // MARK: - Privacy policy
 
   @IBAction func didTapPrivacyPolicyButton() {
-    let url = URL(string: kPrivacyPolicyURL)!
-    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    UIApplication.shared.openURL(URL(string: kPrivacyPolicyURL)!)
   }
 }

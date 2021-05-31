@@ -189,7 +189,9 @@ class MainHeaderView: UIView {
     UIView.animate(withDuration: 0.2) {
       self.progressView.alpha = 1.0
     }
-    progressView.observedProgress = progress
+    if #available(iOS 9.0, *) {
+      progressView.observedProgress = progress
+    }
   }
 
   @IBAction func didTapSearchButton(_: Any) {

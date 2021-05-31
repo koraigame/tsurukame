@@ -53,7 +53,7 @@ class SubjectModelView: TKMModelCell {
   @IBOutlet var subjectLabel: UILabel!
   @IBOutlet var readingLabel: UILabel!
   @IBOutlet var meaningLabel: UILabel!
-  @IBOutlet var answerStack: UIStackView!
+  @IBOutlet var answerStack: OAStackView!
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
@@ -127,7 +127,7 @@ class SubjectModelView: TKMModelCell {
 
     readingLabel.font = item.readingWrong ? TKMStyle.japaneseFontBold(size: kFontSize)
       : TKMStyle.japaneseFont(size: kFontSize)
-    meaningLabel.font = item.meaningWrong ? UIFont.systemFont(ofSize: kFontSize, weight: .bold)
+    meaningLabel.font = item.meaningWrong ? UIFont.boldSystemFont(ofSize: kFontSize)
       : UIFont.systemFont(ofSize: kFontSize)
   }
 

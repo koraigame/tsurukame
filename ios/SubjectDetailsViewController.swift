@@ -98,12 +98,10 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
     return [
       UIKeyCommand(input: " ",
                    modifierFlags: [],
-                   action: #selector(playAudio),
-                   discoverabilityTitle: "Play reading"),
+                   action: #selector(playAudio)),
       UIKeyCommand(input: UIKeyInputLeftArrow,
                    modifierFlags: [],
-                   action: #selector(backButtonPressed),
-                   discoverabilityTitle: "Back"),
+                   action: #selector(backButtonPressed)),
     ]
   }
 

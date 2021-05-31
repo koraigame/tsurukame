@@ -44,6 +44,7 @@ class SiriShortcutHelper: NSObject {
     return activity
   }
 
+  @available(iOS 9.0, *)
   private func configureType(_ type: ShortcutType, activity: NSUserActivity) {
     let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
     switch type {
