@@ -43,6 +43,19 @@ private func setTableViewCellCount(_ item: TKMBasicModelItem, count: Int,
   return item.enabled
 }
 
+private extension UISearchBar {
+  var searchTextField: UITextField {
+    get {
+      for view in self.subviews[0].subviews {
+        if let field = view as? UITextField {
+          return field
+        }
+      }
+      return UITextField()
+    }
+  }
+}
+
 @objc
 class MainViewController: UITableViewController, LoginViewControllerDelegate,
   MainHeaderViewDelegate,

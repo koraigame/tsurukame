@@ -236,7 +236,7 @@ public class WaniKaniAPIClient: NSObject {
     var body = CreateReviewRequest(review: CreateReviewRequest
       .Review(assignment_id: progress.assignment.id,
               incorrect_meaning_answers: Int(progress.meaningWrongCount),
-              incorrect_reading_answers: Int(progress.readingWrongCount)))
+              incorrect_reading_answers: Int(progress.readingWrongCount), created_at: nil))
 
     // Don't set created_at if it's very recent to try to allow for some clock drift.
     if progress.hasCreatedAt, progress.createdAtDate.timeIntervalSinceNow < -900 {
@@ -268,8 +268,8 @@ public class WaniKaniAPIClient: NSObject {
       for synonym in pb.meaningSynonyms {
         synonyms.append(synonym)
       }
-      var body = StudyMaterialRequest(study_material: StudyMaterialRequest
-        .StudyMaterial(meaning_synonyms: synonyms))
+      let material = StudyMaterialRequest.StudyMaterial(subject_id: nil, meaning_note: nil, reading_note: nil, meaning_synonyms: synonyms)
+      var body = StudyMaterialRequest(study_material: material)
 
       var url: URL
       var method: String
@@ -464,7 +464,7 @@ func decodeJSON<T: Decodable>(_ data: Data, request: URLRequest,
 public struct WaniKaniDate: Codable {
   /** Formats a Date to a String suitable for use in the WaniKani API. */
   static func format(date: Date) -> String {
-    formatters.first!.string(from: date)
+    return formatters.first!.string(from: date)
   }
 
   public let date: Date

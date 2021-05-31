@@ -17,6 +17,7 @@
 		488536D12663D7C000DEE9D1 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CC2663D7C000DEE9D1 /* Regex.swift */; };
 		488536D22663D7C000DEE9D1 /* EFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CD2663D7C000DEE9D1 /* EFlags.swift */; };
 		488536D32663D7C000DEE9D1 /* String+Rexy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CE2663D7C000DEE9D1 /* String+Rexy.swift */; };
+		489BB2CE266525F500486B29 /* VocabularyHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */; };
 		48CCD3622664140C007E22C1 /* LinuxMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCD345266413FA007E22C1 /* LinuxMain.swift */; };
 		48CCD36326641410007E22C1 /* MarkupFormatterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCD347266413FA007E22C1 /* MarkupFormatterTest.swift */; };
 		48CCD36426641412007E22C1 /* APIClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CCD348266413FA007E22C1 /* APIClientTest.swift */; };
@@ -49,7 +50,6 @@
 		6335B46523CF0C820071671E /* AppStoreScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6335B46423CF0C820071671E /* AppStoreScreenshots.swift */; };
 		6335B4C823CF0D390071671E /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6335B48C23CF0D390071671E /* SnapshotHelper.swift */; };
 		6335B4E723CF14280071671E /* Screenshotter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6335B4E623CF14280071671E /* Screenshotter.swift */; };
-		633611DF2352B93900DD72A3 /* VocabularyHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */; };
 		633632EF201F3490006D582B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
 		633AFAE123516BE7004F732F /* SubjectDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AFAE023516BE7004F732F /* SubjectDetailsView.swift */; };
 		633DE9322094D22800AC25F4 /* ReviewOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 633DE9312094D22800AC25F4 /* ReviewOrderViewController.m */; };
@@ -321,7 +321,7 @@
 		6392DBA320D130FB003019EB /* TKMSubjectModelItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TKMSubjectModelItem.xib; sourceTree = "<group>"; };
 		639528EC25CC0688009845ED /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		639528FC25CC2F4F009845ED /* LessonOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonOrderViewController.swift; sourceTree = "<group>"; };
-		6398480D23D699E70077EB6B /* ContextSentenceModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContextSentenceModelItem.swift; path = Tables/ContextSentenceModelItem.swift; sourceTree = "<group>"; };
+		6398480D23D699E70077EB6B /* ContextSentenceModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextSentenceModelItem.swift; sourceTree = "<group>"; };
 		63A1676F253AD8AD00B5BCD6 /* CGContext+Blur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGContext+Blur.swift"; sourceTree = "<group>"; };
 		63A16770253AD8AD00B5BCD6 /* FMDatabase+Assert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FMDatabase+Assert.swift"; sourceTree = "<group>"; };
 		63A16785253AD8D200B5BCD6 /* LocalCachingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalCachingClient.swift; sourceTree = "<group>"; };
@@ -655,7 +655,6 @@
 				63F7F52D23D4C2CA006A31FB /* Audio.swift */,
 				C90846AD237F1C770068A272 /* Complication */,
 				C90846BC237F1C790068A272 /* ComplicationExtension */,
-				6398480D23D699E70077EB6B /* ContextSentenceModelItem.swift */,
 				636A63DD238A107A00902269 /* CurrentLevelChartItem.swift */,
 				481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */,
 				41897D93237228F100F6A0B7 /* Extensions */,
@@ -763,6 +762,7 @@
 			isa = PBXGroup;
 			children = (
 				63F7F52023D3F36E006A31FB /* AttributedModelItem.swift */,
+				6398480D23D699E70077EB6B /* ContextSentenceModelItem.swift */,
 				63F7F51E23D3F335006A31FB /* ReadingModelItem.swift */,
 				633DE94D20C5634900AC25F4 /* TKMBasicModelItem.h */,
 				633DE95220C5634A00AC25F4 /* TKMBasicModelItem.m */,
@@ -1407,6 +1407,7 @@
 				631CAD72234B4A96008CEA73 /* ReviewViewController.swift in Sources */,
 				63C74C8F25C970DA004F6C99 /* SubjectsByLevelViewController.swift in Sources */,
 				63F7F52923D42C6E006A31FB /* MainViewController.swift in Sources */,
+				489BB2CE266525F500486B29 /* VocabularyHighlighter.swift in Sources */,
 				636A63E1238A2B8200902269 /* SRSStageCategoryItem.swift in Sources */,
 				481B2FED23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift in Sources */,
 				488536D22663D7C000DEE9D1 /* EFlags.swift in Sources */,
@@ -1487,7 +1488,6 @@
 				48CCD36626641417007E22C1 /* XCTestManifests.swift in Sources */,
 				48CCD3622664140C007E22C1 /* LinuxMain.swift in Sources */,
 				63CAB3FB2604A1450057E1C2 /* URLRequest+SetBodyTest.swift in Sources */,
-				633611DF2352B93900DD72A3 /* VocabularyHighlighter.swift in Sources */,
 				48CCD36526641415007E22C1 /* WebClientTest.swift in Sources */,
 				48CCD3672664141A007E22C1 /* TestUtils.swift in Sources */,
 				4820306724D849E100B40FDD /* Settings.swift in Sources */,

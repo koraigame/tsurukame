@@ -14,12 +14,17 @@
 
 import Foundation
 
-fileprivate extension UITraitCollection {
+extension UITraitCollection {
   static var current: UITraitCollection = UITraitCollection()
+  
+  func performAsCurrent(f: () -> Void) {
+    f()
+  }
 }
 
-fileprivate extension UIColor {
+extension UIColor {
   static var label: UIColor = UIColor()
+  static var systemBackground: UIColor = UIColor()
 }
 
 class SRSStageCategoryItem: TKMBasicModelItem {

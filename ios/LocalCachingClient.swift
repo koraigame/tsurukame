@@ -56,6 +56,11 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     get { return _guruKanjiCount.wrappedValue }
   }
   
+  private var _apprenticeCount = Cached<Int>()
+  var apprenticeCount: Int {
+    get { return _apprenticeCount.wrappedValue }
+  }
+  
   private var _srsCategoryCounts = Cached<[Int]>(n: .lccSRSCategoryCountsChanged)
   var srsCategoryCounts: [Int] {
     get { return _srsCategoryCounts.wrappedValue }
@@ -97,6 +102,17 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     return db.inDatabase { db in
       let cursor = db.query("SELECT COUNT(*) FROM subject_progress " +
         "WHERE srs_stage >= 5 AND subject_type = \(TKMSubject.TypeEnum.kanji.rawValue)")
+      if cursor.next() {
+        return Int(cursor.int(forColumnIndex: 0))
+      }
+      return 0
+    }
+  }
+  
+  func updateApprenticeCount() -> Int {
+    return db.inDatabase { db in
+      let cursor = db.query("SELECT COUNT(*) FROM subject_progress " +
+        "WHERE srs_stage >= 1 AND srs_stage <= 4")
       if cursor.next() {
         return Int(cursor.int(forColumnIndex: 0))
       }
@@ -568,6 +584,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     _availableSubjects.invalidate()
     _srsCategoryCounts.invalidate()
     _guruKanjiCount.invalidate()
+    _apprenticeCount.invalidate()
 
     return sendPendingProgress(progress, progress: Progress(totalUnitCount: -1))
   }

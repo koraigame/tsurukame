@@ -48,8 +48,14 @@ class Audio: NSObject {
 
     // Set the audio session category.
     let session = AVAudioSession.sharedInstance()
+    var options: AVAudioSessionCategoryOptions = []
+    if #available(iOS 9.0, *) {
+      options = [.duckOthers, .interruptSpokenAudioAndMixWithOthers]
+    } else {
+      options = [.duckOthers]
+    }
     try? session
-      .setCategory(.playback, options: [.duckOthers, .interruptSpokenAudioAndMixWithOthers])
+      .setCategory(AVAudioSessionCategoryPlayback as String, with: options)
 
     // Listen for when playback of any item finished.
     let nc = NotificationCenter.default

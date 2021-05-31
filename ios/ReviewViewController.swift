@@ -306,7 +306,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   @objc public var activeQueueLength: Int {
-    activeQueue.count
+    return activeQueue.count
   }
 
   // MARK: - UIViewController
@@ -1138,7 +1138,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         }
       }
 
-      services.localCachingClient!.sendProgress([activeTask.answer])
+      _ = services.localCachingClient!.sendProgress([activeTask.answer])
 
       reviewsCompleted += 1
       completedReviews.append(activeTask)
@@ -1244,7 +1244,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       activeStudyMaterials!.subjectID = activeSubject.id
     }
     activeStudyMaterials!.meaningSynonyms.append(answerField.text!)
-    services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
+    _ = services.localCachingClient?.updateStudyMaterial(activeStudyMaterials!)
     markAnswer(.OverrideAnswerCorrect)
   }
 
@@ -1252,7 +1252,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // means that holding down the command key after (say) pressing ⌘C does not
   // repeat the action continuously on all subsequent reviews
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    super.canPerformAction(action, withSender: sender)
+    return super.canPerformAction(action, withSender: sender)
   }
 
   // MARK: - SubjectDelegate
@@ -1264,7 +1264,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // MARK: - Keyboard navigation
 
   override var canBecomeFirstResponder: Bool {
-    true
+    return true
   }
 
   override var keyCommands: [UIKeyCommand]? {

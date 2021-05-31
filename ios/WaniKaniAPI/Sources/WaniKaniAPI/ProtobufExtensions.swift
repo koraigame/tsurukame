@@ -19,15 +19,15 @@ import UIKit
 @objcMembers
 public class ProtobufExtensionsObjectiveC: NSObject {
   public static func srsStageCategoryName(_ value: Int) -> String {
-    SRSStageCategory(rawValue: value)!.description
+    return SRSStageCategory(rawValue: value)!.description
   }
 
   public static func srsStageName(_ value: Int) -> String {
-    SRSStage(rawValue: value)!.description
+    return SRSStage(rawValue: value)!.description
   }
 
   public static func subjectTypeName(_ value: Int) -> String {
-    TKMSubject.TypeEnum(rawValue: value)!.description
+    return TKMSubject.TypeEnum(rawValue: value)!.description
   }
 }
 
@@ -40,15 +40,15 @@ public enum SRSStageCategory: Int, CustomStringConvertible, Comparable, Strideab
   case burned = 4
 
   public static func < (lhs: SRSStageCategory, rhs: SRSStageCategory) -> Bool {
-    lhs.rawValue < rhs.rawValue
+    return lhs.rawValue < rhs.rawValue
   }
 
   public func distance(to other: SRSStageCategory) -> SRSStageCategory.Stride {
-    Stride(other.rawValue) - Stride(rawValue)
+    return Stride(other.rawValue) - Stride(rawValue)
   }
 
   public func advanced(by n: SRSStageCategory.Stride) -> SRSStageCategory {
-    SRSStageCategory(rawValue: Int(Stride(rawValue) + n))!
+    return SRSStageCategory(rawValue: Int(Stride(rawValue) + n))!
   }
 
   public typealias Stride = Int
@@ -88,11 +88,11 @@ public enum SRSStage: Int, CustomStringConvertible, Comparable, Strideable {
   case burned = 9
 
   public static func < (lhs: SRSStage, rhs: SRSStage) -> Bool {
-    lhs.rawValue < rhs.rawValue
+    return lhs.rawValue < rhs.rawValue
   }
 
   public func distance(to other: SRSStage) -> SRSStage.Stride {
-    Stride(other.rawValue) - Stride(rawValue)
+    return Stride(other.rawValue) - Stride(rawValue)
   }
 
   public func advanced(by n: SRSStage.Stride) -> SRSStage {
@@ -103,8 +103,8 @@ public enum SRSStage: Int, CustomStringConvertible, Comparable, Strideable {
 
   public typealias Stride = Int
 
-  public var next: SRSStage { advanced(by: 1) }
-  public var previous: SRSStage { advanced(by: -1) }
+  public var next: SRSStage { return advanced(by: 1) }
+  public var previous: SRSStage { return advanced(by: -1) }
 
   public var description: String {
     switch self {
@@ -196,7 +196,7 @@ public extension TKMSubject {
     return NSAttributedString(attachment: imageAttachment)
   }
 
-  var japaneseText: NSAttributedString { japaneseText(imageSize: 0) }
+  var japaneseText: NSAttributedString { return japaneseText(imageSize: 0) }
 
   var primaryMeaning: String {
     for meaning in meanings {
@@ -217,8 +217,8 @@ public extension TKMSubject {
     return ret
   }
 
-  var primaryReadings: [TKMReading] { readings(primary: true) }
-  var alternateReadings: [TKMReading] { readings(primary: false) }
+  var primaryReadings: [TKMReading] { return readings(primary: true) }
+  var alternateReadings: [TKMReading] { return readings(primary: false) }
 
   func commaSeparatedMeanings(showOldMnemonic: Bool) -> String {
     var strings = [String]()
@@ -239,8 +239,8 @@ public extension TKMSubject {
     return strings.joined(separator: ", ")
   }
 
-  var commaSeparatedReadings: String { commaSeparated(readings: readings) }
-  var commaSeparatedPrimaryReadings: String { commaSeparated(readings: primaryReadings) }
+  var commaSeparatedReadings: String { return commaSeparated(readings: readings) }
+  var commaSeparatedPrimaryReadings: String { return commaSeparated(readings: primaryReadings) }
 
   func randomAudioID() -> Int {
     if !hasVocabulary || vocabulary.audioIds.count < 1 {
@@ -319,14 +319,14 @@ public extension TKMVocabulary {
   }
 
   private func isA(partOfSpeech: TKMVocabulary.PartOfSpeech) -> Bool {
-    partsOfSpeech.contains(partOfSpeech)
+    return partsOfSpeech.contains(partOfSpeech)
   }
 
-  var isGodanVerb: Bool { isA(partOfSpeech: .godanVerb) }
-  var isSuruVerb: Bool { isA(partOfSpeech: .suruVerb) }
-  var isNoun: Bool { isA(partOfSpeech: .noun) }
+  var isGodanVerb: Bool { return isA(partOfSpeech: .godanVerb) }
+  var isSuruVerb: Bool { return isA(partOfSpeech: .suruVerb) }
+  var isNoun: Bool { return isA(partOfSpeech: .noun) }
   var isVerb: Bool {
-    isA(partOfSpeech: .godanVerb) ||
+    return isA(partOfSpeech: .godanVerb) ||
       isA(partOfSpeech: .ichidanVerb) ||
       isA(partOfSpeech: .suruVerb) ||
       isA(partOfSpeech: .transitiveVerb) ||
@@ -334,27 +334,27 @@ public extension TKMVocabulary {
   }
 
   var isAdjective: Bool {
-    isA(partOfSpeech: .adjective) ||
+    return isA(partOfSpeech: .adjective) ||
       isA(partOfSpeech: .iAdjective) ||
       isA(partOfSpeech: .naAdjective) ||
       isA(partOfSpeech: .noAdjective)
   }
 
-  var isPrefixOrSuffix: Bool { isA(partOfSpeech: .prefix) || isA(partOfSpeech: .suffix) }
+  var isPrefixOrSuffix: Bool { return isA(partOfSpeech: .prefix) || isA(partOfSpeech: .suffix) }
 }
 
 private let kGuruStage = 5
 
 public extension TKMAssignment {
-  var srsStage: SRSStage { SRSStage(rawValue: Int(srsStageNumber))! }
+  var srsStage: SRSStage { return SRSStage(rawValue: Int(srsStageNumber))! }
 
-  var isLessonStage: Bool { !isLocked && !hasStartedAt && srsStage == .unlocking }
-  var isReviewStage: Bool { !isLocked && hasAvailableAt }
-  var isBurned: Bool { srsStage == .burned }
-  var isLocked: Bool { !hasSrsStageNumber }
-  var availableAtDate: Date { Date(timeIntervalSince1970: TimeInterval(availableAt)) }
-  var startedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(startedAt)) }
-  var passedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(passedAt)) }
+  var isLessonStage: Bool { return !isLocked && !hasStartedAt && srsStage == .unlocking }
+  var isReviewStage: Bool { return !isLocked && hasAvailableAt }
+  var isBurned: Bool { return srsStage == .burned }
+  var isLocked: Bool { return !hasSrsStageNumber }
+  var availableAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(availableAt)) }
+  var startedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(startedAt)) }
+  var passedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(passedAt)) }
 
   var reviewDate: Date? {
     if isBurned || isLocked {
@@ -391,21 +391,21 @@ public extension TKMAssignment {
 }
 
 public extension TKMProgress {
-  var createdAtDate: Date { Date(timeIntervalSince1970: TimeInterval(createdAt)) }
+  var createdAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(createdAt)) }
 }
 
 public extension TKMUser {
-  var startedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(startedAt)) }
-  var currentLevel: Int32 { min(level, maxLevelGrantedBySubscription) }
+  var startedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(startedAt)) }
+  var currentLevel: Int32 { return min(level, maxLevelGrantedBySubscription) }
 }
 
 public extension TKMLevel {
-  var unlockedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(unlockedAt)) }
-  var startedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(startedAt)) }
-  var passedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(passedAt)) }
-  var abandonedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(abandonedAt)) }
-  var completedAtDate: Date { Date(timeIntervalSince1970: TimeInterval(completedAt)) }
-  var createdAtDate: Date { Date(timeIntervalSince1970: TimeInterval(createdAt)) }
+  var unlockedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(unlockedAt)) }
+  var startedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(startedAt)) }
+  var passedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(passedAt)) }
+  var abandonedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(abandonedAt)) }
+  var completedAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(completedAt)) }
+  var createdAtDate: Date { return Date(timeIntervalSince1970: TimeInterval(createdAt)) }
 
   var timeSpentCurrent: TimeInterval {
     if !hasUnlockedAt {

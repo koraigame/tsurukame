@@ -16,6 +16,11 @@ import Foundation
 import UIKit
 import UserNotifications
 
+@available(iOS 10.0, *)
+extension UNAuthorizationStatus {
+  static let ephemeral = UNAuthorizationStatus(rawValue: 4)!
+}
+
 class SettingsViewController: UITableViewController {
   private var services: TKMServices!
   private var model: TKMTableModel?

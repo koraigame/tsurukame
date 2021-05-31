@@ -115,14 +115,14 @@ class UpcomingReviewsChartCell: TKMModelCell {
       }
     }
 
-    let lineDataSet = LineChartDataSet(cumulativeData)
+    let lineDataSet = LineChartDataSet(values: cumulativeData, label: nil)
     lineDataSet.drawValuesEnabled = false
     lineDataSet.drawCircleHoleEnabled = false
     lineDataSet.circleRadius = 1.5
     lineDataSet.colors = [TKMStyle.vocabularyColor2]
     lineDataSet.circleColors = [TKMStyle.vocabularyColor2]
 
-    let barDataSet = BarChartDataSet(hourlyData)
+    let barDataSet = BarChartDataSet(values: hourlyData, label: nil)
     barDataSet.axisDependency = YAxis.AxisDependency.right
     barDataSet.colors = [TKMStyle.radicalColor2]
     barDataSet.valueFormatter = DefaultValueFormatter(decimals: 0)
