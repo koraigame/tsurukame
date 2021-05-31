@@ -103,7 +103,7 @@ private func attrString(_ string: String,
 }
 
 private func defaultStringAttrs() -> [NSAttributedString.Key: Any] {
-  [.foregroundColor: TKMStyle.Color.label,
+  return [.foregroundColor: TKMStyle.Color.label,
    .backgroundColor: TKMStyle.Color.cellBackground]
 }
 

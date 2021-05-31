@@ -325,7 +325,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectButton.layer.addSublayer(previousSubjectGradient)
 
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
-                                           name: UIResponder.keyboardWillShowNotification,
+                                           name: NSNotification.Name.UIKeyboardWillShow,
                                            object: nil)
 
     subjectDetailsView.setup(services: services, delegate: self)
@@ -411,18 +411,18 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    UIStatusBarStyle.lightContent
+    return UIStatusBarStyle.lightContent
   }
 
   // MARK: - Event handlers
 
   @objc private func keyboardWillShow(notification: NSNotification) {
     guard let keyboardFrame = notification
-      .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+      .userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
       let animationDuration = notification
-      .userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+        .userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double,
       let animationCurve = notification
-      .userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int
+        .userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int
     else {
       return
     }
@@ -781,7 +781,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectButton.alpha = shown ? 0.0 : 1.0
 
     // Change the foreground color of the answer field.
-    answerField.textColor = shown ? UIColor.systemRed : TKMStyle.Color.label
+    answerField.textColor = shown ? UIColor.red : TKMStyle.Color.label
 
     // Scroll to the top.
     subjectDetailsView
@@ -934,7 +934,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   private var _isWrappingUp = false
   @objc public var wrappingUp: Bool {
     get {
-      _isWrappingUp
+      return _isWrappingUp
     }
     set {
       _isWrappingUp = newValue
@@ -1064,7 +1064,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
     // Mark the task.
     var firstTimeAnswered = false
-    switch activeTaskType {
+    switch activeTaskType! {
     case .meaning:
       firstTimeAnswered = !activeTask.answer.hasMeaningWrong
       if firstTimeAnswered ||
@@ -1178,7 +1178,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       revealAnswerButton.isHidden = false
       UIView.animate(withDuration: animationDuration,
                      animations: {
-                       self.answerField.textColor = UIColor.systemRed
+                       self.answerField.textColor = UIColor.red
                        self.answerField.isEnabled = false
                        self.revealAnswerButton.alpha = 1.0
                        self.submitButton.setImage(self.forwardArrowImage, for: .normal)
@@ -1318,11 +1318,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
                                       action: #selector(toggleFont),
                                       discoverabilityTitle: "Toggle font"))
       if #available(macOS 10.14, *) {
-        keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputRightArrow,
+        keyCommands.append(UIKeyCommand(input: UIKeyInputRightArrow,
                                         modifierFlags: [],
                                         action: #selector(showNextCustomFont),
                                         discoverabilityTitle: "Next font"))
-        keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
+        keyCommands.append(UIKeyCommand(input: UIKeyInputLeftArrow,
                                         modifierFlags: [],
                                         action: #selector(showPreviousCustomFont),
                                         discoverabilityTitle: "Previous font"))

@@ -21,7 +21,7 @@ fileprivate var defaultStyle: UIUserInterfaceStyle = .unspecified
 
 extension UIWindow {
   @available(iOS 12.0, *)
-  var overrideUserInterfaceStyle: UIUserInterfaceStyle {
+  fileprivate var overrideUserInterfaceStyle: UIUserInterfaceStyle {
     get {return interfaceStyle[ObjectIdentifier(self)] ?? defaultStyle}
     set {interfaceStyle[ObjectIdentifier(self)] = newValue}
   }

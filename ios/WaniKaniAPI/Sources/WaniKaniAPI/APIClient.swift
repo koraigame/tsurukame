@@ -260,7 +260,7 @@ public class WaniKaniAPIClient: NSObject {
   // MARK: - Sending study material updates
 
   public func updateStudyMaterial(_ pb: TKMStudyMaterials) -> Promise<Void> {
-    firstly { () -> Promise<TKMStudyMaterials?> in
+    return firstly { () -> Promise<TKMStudyMaterials?> in
       // We need to check if a study material for the subject already exists.
       studyMaterial(subjectId: pb.subjectID, progress: Progress(totalUnitCount: 1))
     }.then { (existing: TKMStudyMaterials?) -> DataTaskPromise in
@@ -311,7 +311,7 @@ public class WaniKaniAPIClient: NSObject {
                                              results: Response<[DataType]>,
                                              progress: Progress)
     -> Promise<Response<[DataType]>> {
-    firstly {
+    return firstly {
       query(authorize(url))
     }.then { (response: PaginatedResponse<[DataType]>) -> Promise<Response<[DataType]>> in
       // Set the total progress unit count if this was the first page.
@@ -407,7 +407,7 @@ public class WaniKaniAPIClient: NSObject {
 
   /** Fetches a single URL from the WaniKani API and returns its data. */
   private func query<Type: Codable>(_ req: URLRequest) -> Promise<Type> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       NSLog("%@ %@", req.httpMethod!, req.url!.absoluteString)
       return session.dataTask(.promise, with: req)
     }.map { (data, response) -> Type in
@@ -471,7 +471,7 @@ public struct WaniKaniDate: Codable {
 
   /** Number of seconds since 1970. */
   public var seconds: Int32 {
-    Int32(date.timeIntervalSince1970)
+    return Int32(date.timeIntervalSince1970)
   }
 
   public init(date: Date) {

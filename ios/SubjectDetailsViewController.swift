@@ -37,9 +37,7 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
     self.index = index
   }
 
-  func canSwipeToGoBack() -> Bool {
-    true
-  }
+  func canSwipeToGoBack() -> Bool { return true }
 
   override func viewDidLoad() {
     super.viewDidLoad()

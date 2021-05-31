@@ -48,11 +48,11 @@ class UpcomingReviewsChartItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    UpcomingReviewsChartCell.self
+    return UpcomingReviewsChartCell.self
   }
 
   func rowHeight() -> CGFloat {
-    120
+    return 120
   }
 }
 
@@ -89,7 +89,7 @@ class UpcomingReviewsChartCell: TKMModelCell {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    view.frame = contentView.bounds.inset(by: layoutMargins)
+    view.frame = UIEdgeInsetsInsetRect(contentView.bounds, layoutMargins)
   }
 
   override func update(with baseItem: TKMModelItem!) {

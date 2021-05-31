@@ -14,6 +14,14 @@
 
 import Foundation
 
+fileprivate extension UITraitCollection {
+  static var current: UITraitCollection = UITraitCollection()
+}
+
+fileprivate extension UIColor {
+  static var label: UIColor = UIColor()
+}
+
 class SRSStageCategoryItem: TKMBasicModelItem {
   let stageCategory: SRSStageCategory
 

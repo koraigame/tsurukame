@@ -14,6 +14,7 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 class SettingsViewController: UITableViewController {
   private var services: TKMServices!
@@ -31,7 +32,7 @@ class SettingsViewController: UITableViewController {
     super.viewDidLoad()
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(applicationDidBecomeActive(_:)),
-                                           name: UIApplication.didBecomeActiveNotification,
+                                           name: NSNotification.Name.UIApplicationDidBecomeActive,
                                            object: nil)
   }
 
@@ -250,7 +251,7 @@ class SettingsViewController: UITableViewController {
                                        accessoryType: .none,
                                        target: self,
                                        action: #selector(didTapLogOut(_:)))
-    logOutItem.textColor = .systemRed
+    logOutItem.textColor = .red
     model.add(logOutItem)
 
     self.model = model
@@ -277,11 +278,11 @@ class SettingsViewController: UITableViewController {
   }
 
   private var reviewOrderValueText: String {
-    Settings.reviewOrder.description
+    return Settings.reviewOrder.description
   }
 
   private var taskOrderValueText: String {
-    Settings.meaningFirst ? "Meaning first" : "Reading first"
+    return Settings.meaningFirst ? "Meaning first" : "Reading first"
   }
 
   private var fontSizeValueText: String {
@@ -419,7 +420,7 @@ class SettingsViewController: UITableViewController {
         }
       case .denied:
         DispatchQueue.main.async {
-          UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:],
+          UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:],
                                     completionHandler: nil)
         }
       default:

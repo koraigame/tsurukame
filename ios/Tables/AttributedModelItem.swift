@@ -27,7 +27,7 @@ class AttributedModelItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    AttributedModelCell.self
+    return AttributedModelCell.self
   }
 }
 

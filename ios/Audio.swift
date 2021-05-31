@@ -24,7 +24,7 @@ protocol AudioDelegate: NSObject {
 class Audio: NSObject {
   // Returns the local directory that contains cached audio files.
   static var cacheDirectoryPath: String {
-    "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/audio"
+    return "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/audio"
   }
 
   private let kURLPattern = "https://cdn.wanikani.com/audios/%d-subject-%d.mp3"
@@ -67,9 +67,9 @@ class Audio: NSObject {
       let session = AVAudioSession.sharedInstance()
       switch currentState {
       case .playing:
-        try? session.setActive(true, options: [])
+        try? session.setActive(true, with: [])
       case .finished:
-        try? session.setActive(false, options: [.notifyOthersOnDeactivation])
+        try? session.setActive(false, with: [.notifyOthersOnDeactivation])
       default:
         break
       }

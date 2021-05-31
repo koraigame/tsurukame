@@ -328,7 +328,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   private func getAllAssignments(transaction db: FMDatabase) -> [TKMAssignment] {
     var ret = [TKMAssignment]()
     for cursor in db.query("SELECT pb FROM assignments") {
-      ret.append(cursor.proto(forColumnIndex: 0, TKMAssignment.self)!)
+      ret.append(cursor.proto(forColumnIndex: 0)!)
     }
     return ret
   }
@@ -342,7 +342,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   private func getAllPendingProgress(transaction db: FMDatabase) -> [TKMProgress] {
     var ret = [TKMProgress]()
     for cursor in db.query("SELECT pb FROM pending_progress") {
-      ret.append(cursor.proto(forColumnIndex: 0, TKMProgress.self)!)
+      ret.append(cursor.proto(forColumnIndex: 0)!)
     }
     return ret
   }
@@ -351,7 +351,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM study_materials WHERE id = ?", args: [subjectId])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0, TKMStudyMaterials.self)
+        return cursor.proto(forColumnIndex: 0)
       }
       return nil
     }
@@ -361,7 +361,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM user")
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0, TKMUser.self)
+        return cursor.proto(forColumnIndex: 0)
       }
       return nil
     }
@@ -381,12 +381,12 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     return db.inDatabase { db in
       var cursor = db.query("SELECT pb FROM assignments WHERE subject_id = ?", args: [subjectId])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0, TKMAssignment.self)
+        return cursor.proto(forColumnIndex: 0)
       }
 
       cursor = db.query("SELECT pb FROM pending_progress WHERE id = ?", args: [subjectId])
       if cursor.next() {
-        let progress: TKMProgress = cursor.proto(forColumnIndex: 0, TKMProgress.self)!
+        let progress: TKMProgress = cursor.proto(forColumnIndex: 0)!
         return progress.assignment
       }
 
@@ -416,7 +416,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       "LEFT JOIN assignments AS a " +
       "ON p.id = a.subject_id " +
       "WHERE p.level = ?", args: [level]) {
-        var assignment: TKMAssignment? = cursor.proto(forColumnIndex: 4, TKMAssignment.self)
+        var assignment: TKMAssignment? = cursor.proto(forColumnIndex: 4)
         if assignment == nil {
           assignment = TKMAssignment()
           assignment!.subjectID = cursor.int(forColumnIndex: 0)
@@ -463,7 +463,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     var ret = [TKMSubject]()
     db.inDatabase { db in
       for cursor in db.query("SELECT pb FROM subjects") {
-        ret.append(cursor.proto(forColumnIndex: 0, TKMSubject.self)!)
+        ret.append(cursor.proto(forColumnIndex: 0)!)
       }
     }
     return ret
@@ -473,7 +473,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM subjects WHERE id = ?", args: [id])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0, TKMSubject.self)
+        return cursor.proto(forColumnIndex: 0)
       }
       return nil
     }
@@ -483,7 +483,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     return db.inDatabase { db in
       let cursor = db.query("SELECT pb FROM subjects WHERE japanese = ?", args: [japanese])
       if cursor.next() {
-        return cursor.proto(forColumnIndex: 0, TKMSubject.self)
+        return cursor.proto(forColumnIndex: 0)
       }
       return nil
     }
@@ -531,7 +531,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     return db.inDatabase { db in
       var ret = [TKMLevel]()
       for cursor in db.query("SELECT pb FROM level_progressions") {
-        ret.append(cursor.proto(forColumnIndex: 0, TKMLevel.self)!)
+        ret.append(cursor.proto(forColumnIndex: 0)!)
       }
       return ret
     }
@@ -635,7 +635,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       var ret = [TKMStudyMaterials]()
       for cursor in db
         .query("SELECT s.pb FROM study_materials AS s, pending_study_materials AS p ON s.id = p.id") {
-          ret.append(cursor.proto(forColumnIndex: 0, TKMStudyMaterials.self)!)
+          ret.append(cursor.proto(forColumnIndex: 0)!)
       }
       return ret
     }

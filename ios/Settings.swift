@@ -166,7 +166,7 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     set(n) {S.set(n, #keyPath(reviewBatchSize))}
   }
   static var apprenticeLessonsLimit: Int {
-    get {return S.get(5, #keyPath(apprenticeLessonsLimit))}
+    get {return S.get(Int.max, #keyPath(apprenticeLessonsLimit))}
     set(n) {S.set(n, #keyPath(apprenticeLessonsLimit))}
   }
   static var groupMeaningReading: Bool {

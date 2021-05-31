@@ -28,7 +28,7 @@ class ContextSentenceModelItem: AttributedModelItem {
        defaultAttributes: [NSAttributedString.Key: Any],
        fontSize: CGFloat) {
     func attr(_ text: String) -> NSAttributedString {
-      NSAttributedString(string: text, attributes: defaultAttributes)
+      return NSAttributedString(string: text, attributes: defaultAttributes)
     }
 
     // Build the attributed string normally.
@@ -56,7 +56,7 @@ class ContextSentenceModelItem: AttributedModelItem {
   }
 
   override func cellClass() -> AnyClass! {
-    ContextSentenceModelCell.self
+    return ContextSentenceModelCell.self
   }
 }
 

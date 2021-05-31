@@ -74,11 +74,11 @@ class CurrentLevelChartItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    CurrentLevelChartCell.self
+    return currentLevelChartCell.self
   }
 
   func rowHeight() -> CGFloat {
-    120
+    return 120
   }
 }
 
@@ -145,7 +145,7 @@ class CurrentLevelChartCell: TKMModelCell {
     insets.bottom = 0
     insets.top = 0
 
-    let frame = contentView.bounds.inset(by: insets)
+    let frame = UIEdgeInsetsInsetRect(contentView.bounds, insets)
     let width = frame.width / 3
     var x = frame.minX
     for chart in [radicalChart!, kanjiChart!, vocabularyChart!] {

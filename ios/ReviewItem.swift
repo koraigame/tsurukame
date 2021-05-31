@@ -19,7 +19,7 @@ enum TaskType {
   case meaning
 
   static func random() -> TaskType {
-    arc4random_uniform(2) == 0 ? .reading : .meaning
+    return arc4random_uniform(2) == 0 ? .reading : .meaning
   }
 }
 
