@@ -426,7 +426,8 @@ class SettingsViewController: UITableViewController {
           }
         case .denied:
           DispatchQueue.main.async {
-            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:],
+            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!,
+                                      options: [:],
                                       completionHandler: nil)
           }
         default:

@@ -418,9 +418,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     guard let keyboardFrame = notification
       .userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
       let animationDuration = notification
-        .userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double,
+      .userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double,
       let animationCurve = notification
-        .userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int
+      .userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int
     else {
       return
     }

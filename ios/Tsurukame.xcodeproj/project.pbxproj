@@ -1075,9 +1075,6 @@
 			);
 			mainGroup = 630FD60A1FC45BDF00D21C1F;
 			packageReferences = (
-				480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */,
-				637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */,
-				63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 			);
 			productRefGroup = 630FD60A1FC45BDF00D21C1F;
 			projectDirPath = "";

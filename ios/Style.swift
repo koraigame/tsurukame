@@ -15,7 +15,7 @@
 import Foundation
 
 private extension UIColor {
-  convenience init(f: (UITraitCollection) -> UIColor) {
+  convenience init(f _: (UITraitCollection) -> UIColor) {
     self.init()
   }
 }
@@ -80,7 +80,10 @@ class TKMStyle: NSObject {
   // The [Any] types force these to be exposed to objective-C as an untyped NSArray*.
   static var radicalGradient: [Any] { return [radicalColor1.cgColor, radicalColor2.cgColor] }
   static var kanjiGradient: [Any] { return [kanjiColor1.cgColor, kanjiColor2.cgColor] }
-  static var vocabularyGradient: [Any] { return [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
+  static var vocabularyGradient: [Any] {
+    return [vocabularyColor1.cgColor, vocabularyColor2.cgColor]
+  }
+
   static var lockedGradient: [Any] { return [lockedColor1.cgColor, lockedColor2.cgColor] }
   static var readingGradient: [Any] { return [readingColor1.cgColor, readingColor2.cgColor] }
   static var meaningGradient: [Any] { return [meaningColor1.cgColor, meaningColor2.cgColor] }
@@ -159,17 +162,17 @@ class TKMStyle: NSObject {
 
   class func japaneseFontLight(size: CGFloat) -> UIFont {
     return loadFont(["HiraginoSans-W3",
-              "HiraginoSans-W2",
-              "HiraginoSans-W1",
-              "HiraginoSans-W4",
-              "HiraginoSans-W5"], size: size)
+                     "HiraginoSans-W2",
+                     "HiraginoSans-W1",
+                     "HiraginoSans-W4",
+                     "HiraginoSans-W5"], size: size)
   }
 
   class func japaneseFontBold(size: CGFloat) -> UIFont {
     return loadFont(["HiraginoSans-W8",
-              "HiraginoSans-W7",
-              "HiraginoSans-W6",
-              "HiraginoSans-W5"], size: size)
+                     "HiraginoSans-W7",
+                     "HiraginoSans-W6",
+                     "HiraginoSans-W5"], size: size)
   }
 
   // MARK: - Dark mode aware UI colors
@@ -198,9 +201,7 @@ class TKMStyle: NSObject {
   // on iOS < 13.
   class func withTraitCollection(_ tc: UITraitCollection, f: () -> Void) {
     if #available(iOS 13.0, *) {
-      tc.performAsCurrent {
-        f()
-      }
+      tc.performAsCurrent(f: f)
     } else {
       f()
     }

@@ -52,8 +52,8 @@ extension CGContext {
 
   private class func makeVImageBuffer(_ ctx: CGContext) -> vImage_Buffer {
     return vImage_Buffer(data: ctx.data, height: vImagePixelCount(ctx.height),
-                  width: vImagePixelCount(ctx.width),
-                  rowBytes: ctx.bytesPerRow)
+                         width: vImagePixelCount(ctx.width),
+                         rowBytes: ctx.bytesPerRow)
   }
 
   private class func convolve(_ inBuf: inout vImage_Buffer, to outBuf: inout vImage_Buffer,

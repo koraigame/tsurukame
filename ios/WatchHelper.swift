@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//import CommonCrypto
+// import CommonCrypto
 import Foundation
 import os
 import WatchConnectivity
 #if os(watchOS)
-import ClockKit
+  import ClockKit
 #endif
 
 typealias ClientDelegateCallback = (([String: Any]) -> Void)
@@ -45,7 +45,8 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
 
   func session(_: WCSession, activationDidCompleteWith _: WCSessionActivationState, error: Error?) {
     if #available(iOS 10.0, *) {
-      os_log("watch activationDidCompleteWith err=%{public}@", error?.localizedDescription ?? "none")
+      os_log("watch activationDidCompleteWith err=%{public}@",
+             error?.localizedDescription ?? "none")
     }
   }
 

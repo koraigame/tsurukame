@@ -142,17 +142,17 @@ private class ConjugationGroup {
                        _ ta: String,
                        _ cha: String) -> ConjugationGroup {
     return verb(suffix: u,
-         te: te,
-         perfective: ta,
-         negative: a,
-         continuous: i,
-         potential: e,
-         passive: a,
-         causative: a,
-         provisionalConditional: e,
-         imperative: e,
-         volitional: o,
-         cha: cha)
+                te: te,
+                perfective: ta,
+                negative: a,
+                continuous: i,
+                potential: e,
+                passive: a,
+                causative: a,
+                provisionalConditional: e,
+                imperative: e,
+                volitional: o,
+                cha: cha)
   }
 
   static var godanVerbs: [Character: ConjugationGroup] = [
@@ -194,8 +194,7 @@ private class ConjugationGroup {
                              imperative: "しろ",
                              volitional: "しよ",
                              cha: "っち",
-                             extraConjugations: [""] // Allow the suru verb stem by itself.
-  )
+                             extraConjugations: [""]) // Allow the suru verb stem by itself.
 
   static var iAdjective = ConjugationGroup(suffix: "い",
                                            conjugations: [

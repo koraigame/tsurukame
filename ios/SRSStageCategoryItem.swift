@@ -15,16 +15,16 @@
 import Foundation
 
 extension UITraitCollection {
-  static var current: UITraitCollection = UITraitCollection()
-  
+  static var current = UITraitCollection()
+
   func performAsCurrent(f: () -> Void) {
     f()
   }
 }
 
 extension UIColor {
-  static var label: UIColor = UIColor()
-  static var systemBackground: UIColor = UIColor()
+  static var label = UIColor()
+  static var systemBackground = UIColor()
 }
 
 class SRSStageCategoryItem: TKMBasicModelItem {

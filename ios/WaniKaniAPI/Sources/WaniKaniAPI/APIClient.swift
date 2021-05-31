@@ -268,7 +268,9 @@ public class WaniKaniAPIClient: NSObject {
       for synonym in pb.meaningSynonyms {
         synonyms.append(synonym)
       }
-      let material = StudyMaterialRequest.StudyMaterial(subject_id: nil, meaning_note: nil, reading_note: nil, meaning_synonyms: synonyms)
+      let material = StudyMaterialRequest.StudyMaterial(subject_id: nil, meaning_note: nil,
+                                                        reading_note: nil,
+                                                        meaning_synonyms: synonyms)
       var body = StudyMaterialRequest(study_material: material)
 
       var url: URL

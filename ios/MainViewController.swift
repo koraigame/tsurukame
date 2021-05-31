@@ -45,14 +45,12 @@ private func setTableViewCellCount(_ item: TKMBasicModelItem, count: Int,
 
 private extension UISearchBar {
   var searchTextField: UITextField {
-    get {
-      for view in self.subviews[0].subviews {
-        if let field = view as? UITextField {
-          return field
-        }
+    for view in subviews[0].subviews {
+      if let field = view as? UITextField {
+        return field
       }
-      return UITextField()
     }
+    return UITextField()
   }
 }
 
@@ -355,7 +353,6 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                                               target: self,
                                               selector: #selector(hourlyTimerExpired),
                                               userInfo: nil, repeats: false)
-    
   }
 
   func cancelHourlyTimer() {

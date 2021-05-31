@@ -109,7 +109,7 @@ private func attrString(_ string: String,
 
 private func defaultStringAttrs() -> [NSAttributedString.Key: Any] {
   return [.foregroundColor: TKMStyle.Color.label,
-   .backgroundColor: TKMStyle.Color.cellBackground]
+          .backgroundColor: TKMStyle.Color.cellBackground]
 }
 
 private func dateFormatter(dateStyle: DateFormatter.Style,
