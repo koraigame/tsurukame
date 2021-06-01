@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   var model: TKMTableModel!
   @IBOutlet var headerView: MainHeaderView!
   var displayController: UISearchDisplayController!
-  private var _searchController: Any? = nil
+  private var _searchController: Any?
   @available(iOS 8.0, *) var searchController: UISearchController! {
     get {
       return _searchController as? UISearchController
@@ -53,6 +53,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       _searchController = newValue
     }
   }
+
   weak var searchResultsViewController: SearchResultViewController!
   var hourlyRefreshTimer = Timer()
   var isShowingUnauthorizedAlert = false
@@ -98,11 +99,12 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       searchController.delegate = self
       searchBar = searchController.searchBar
     } else {
-      displayController = UISearchDisplayController(searchBar: searchBar, contentsController: searchResultsViewController)
+      displayController = UISearchDisplayController(searchBar: searchBar,
+                                                    contentsController: searchResultsViewController)
       displayController.delegate = self
       displayController.searchResultsDataSource = self
     }
-    
+
     // Configure the search bar.
     searchBar.barTintColor = TKMStyle.radicalColor2
     searchBar.autocapitalizationType = .none
@@ -365,7 +367,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       var components = calendar.dateComponents([.year, .month, .day, .hour], from: Date())
       components.hour = components.hour! + 1
       let date = calendar.date(from: components)!
-      hourlyRefreshTimer = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow, target: self, selector: #selector(hourlyTimerExpired), userInfo: nil, repeats: false)
+      hourlyRefreshTimer = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow,
+                                                target: self,
+                                                selector: #selector(hourlyTimerExpired),
+                                                userInfo: nil, repeats: false)
     }
   }
 
@@ -414,8 +419,8 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
   func updateUserInfo() {
     guard let user = services.localCachingClient.getUserInfo(),
-      let email = Settings.userEmailAddress,
-      let headerView = headerView else {
+          let email = Settings.userEmailAddress,
+          let headerView = headerView else {
       return
     }
     let guruKanji = services.localCachingClient.getGuruKanjiCount()
@@ -449,18 +454,20 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     }
     isShowingUnauthorizedAlert = true
 
-    let message = "Your API Token expired - please log in again. You won't lose your review progress"
+    let message =
+      "Your API Token expired - please log in again. You won't lose your review progress"
     if #available(iOS 8.0, *) {
-    let ac = UIAlertController(title: "Logged out",
-                               message: message,
-                               preferredStyle: .alert)
+      let ac = UIAlertController(title: "Logged out",
+                                 message: message,
+                                 preferredStyle: .alert)
 
-    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-      self.loginAgain()
-    }))
-    present(ac, animated: true, completion: nil)
+      ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        self.loginAgain()
+      }))
+      present(ac, animated: true, completion: nil)
     } else {
-      let ac = AlertView(title: "Logged out", message: message, cancelButtonTitle: nil, "OK", self.loginAgain)
+      let ac = AlertView(title: "Logged out", message: message, cancelButtonTitle: nil, "OK",
+                         loginAgain)
       ac.show()
     }
   }
@@ -495,12 +502,12 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       .instantiateViewController(withIdentifier: "subjectDetailsViewController") as! SubjectDetailsViewController
     vc.setup(with: services, subject: subject, showHints: true, hideBackButton: false, index: 0)
     if #available(iOS 8.0, *) {
-    searchController.dismiss(animated: true) {
-      self.navigationController?.pushViewController(vc, animated: true)
-    }
+      searchController.dismiss(animated: true) {
+        self.navigationController?.pushViewController(vc, animated: true)
+      }
     } else {
       searchDisplayController?.setActive(false, animated: true)
-      self.navigationController?.pushViewController(vc, animated: true)
+      navigationController?.pushViewController(vc, animated: true)
     }
   }
 

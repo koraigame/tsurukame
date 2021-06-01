@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class SettingsController: WKInterfaceController, DataManagerDelegate {
     // This method is called when watch view controller is no longer visible
     super.didDeactivate()
     #if swift(>=5)
-    DataManager.sharedInstance.removeDelegate(self)
+      DataManager.sharedInstance.removeDelegate(self)
     #endif
 
     // If we've been viewing settings make sure we refresh complication

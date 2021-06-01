@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,8 +61,9 @@ class DataManager {
   }
 
   func dataStaleAfter() -> Date? { if let data = latestData,
-    let dataSentAt = data[WatchHelper.keySentAt] as? EpochTimeInt,
-    let nextReviewAt = data[WatchHelper.keyNextReviewAt] as? EpochTimeInt {
+                                      let dataSentAt = data[WatchHelper.keySentAt] as? EpochTimeInt,
+                                      let nextReviewAt =
+                                      data[WatchHelper.keyNextReviewAt] as? EpochTimeInt {
       let dataSent = Date(timeIntervalSince1970: TimeInterval(dataSentAt))
       let nextReview = Date(timeIntervalSince1970: TimeInterval(nextReviewAt))
       let nextStale = dataSent.addingTimeInterval(dataStaleLimit)
@@ -77,21 +78,21 @@ class DataManager {
 
   func dataIsStale() -> Bool {
     if let staleDate = dataStaleAfter() {
-        #if swift(>=5)
-      return Date().distance(to: staleDate) < 0
-        #endif
+      #if swift(>=5)
+        return Date().distance(to: staleDate) < 0
+      #endif
     }
     return false
   }
 
   func isDataOutOfDate(userData: UserData?) -> Bool {
     #if swift(>=5)
-    if let data = userData,
-      let dataSentAt = data[WatchHelper.keySentAt] as? EpochTimeInt {
-      let dataSent = Date(timeIntervalSince1970: TimeInterval(dataSentAt))
-      let bestBeforeDate = Date().addingTimeInterval(0 - dataStaleLimit)
-      return bestBeforeDate.distance(to: dataSent) < 0
-    }
+      if let data = userData,
+         let dataSentAt = data[WatchHelper.keySentAt] as? EpochTimeInt {
+        let dataSent = Date(timeIntervalSince1970: TimeInterval(dataSentAt))
+        let bestBeforeDate = Date().addingTimeInterval(0 - dataStaleLimit)
+        return bestBeforeDate.distance(to: dataSent) < 0
+      }
     #endif
     return true
   }
@@ -99,9 +100,10 @@ class DataManager {
   func addDelegate(_ delegate: DataManagerDelegate) {
     delegates.append(delegate)
   }
-    #if swift(>=5)
-  func removeDelegate(_ delegate: DataManagerDelegate) {
-    delegates.removeAll { $0 === delegate }
-  }
-    #endif
+
+  #if swift(>=5)
+    func removeDelegate(_ delegate: DataManagerDelegate) {
+      delegates.removeAll { $0 === delegate }
+    }
+  #endif
 }

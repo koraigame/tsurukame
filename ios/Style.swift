@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -79,7 +79,10 @@ class TKMStyle: NSObject {
   // The [Any] types force these to be exposed to objective-C as an untyped NSArray*.
   static var radicalGradient: [Any] { return [radicalColor1.cgColor, radicalColor2.cgColor] }
   static var kanjiGradient: [Any] { return [kanjiColor1.cgColor, kanjiColor2.cgColor] }
-  static var vocabularyGradient: [Any] { return [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
+  static var vocabularyGradient: [Any] {
+    return [vocabularyColor1.cgColor, vocabularyColor2.cgColor]
+  }
+
   static var lockedGradient: [Any] { return [lockedColor1.cgColor, lockedColor2.cgColor] }
   static var readingGradient: [Any] { return [readingColor1.cgColor, readingColor2.cgColor] }
   static var meaningGradient: [Any] { return [meaningColor1.cgColor, meaningColor2.cgColor] }
@@ -158,24 +161,25 @@ class TKMStyle: NSObject {
   }
 
   class func japaneseFont(size: CGFloat) -> UIFont {
-    return UIFont(name: japaneseFontName1, size: size) ?? UIFont(name: japaneseFontName2, size: size)!
+    return UIFont(name: japaneseFontName1, size: size) ??
+      UIFont(name: japaneseFontName2, size: size)!
   }
 
   class func japaneseFontLight(size: CGFloat) -> UIFont {
     return loadFont(["HiraginoSans-W3",
-              "HiraginoSans-W2",
-              "HiraginoSans-W1",
-              "HiraginoSans-W4",
-              "HiraginoSans-W5",
-              "HiraKakuProN-W3"], size: size)
+                     "HiraginoSans-W2",
+                     "HiraginoSans-W1",
+                     "HiraginoSans-W4",
+                     "HiraginoSans-W5",
+                     "HiraKakuProN-W3"], size: size)
   }
 
   class func japaneseFontBold(size: CGFloat) -> UIFont {
     return loadFont(["HiraginoSans-W8",
-              "HiraginoSans-W7",
-              "HiraginoSans-W6",
-              "HiraginoSans-W5",
-              "HiraKakuProN-W6"], size: size)
+                     "HiraginoSans-W7",
+                     "HiraginoSans-W6",
+                     "HiraginoSans-W5",
+                     "HiraKakuProN-W6"], size: size)
   }
 
   // MARK: - Dark mode aware UI colors

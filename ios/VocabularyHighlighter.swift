@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -142,17 +142,17 @@ private class ConjugationGroup {
                        _ ta: String,
                        _ cha: String) -> ConjugationGroup {
     return verb(suffix: u,
-         te: te,
-         perfective: ta,
-         negative: a,
-         continuous: i,
-         potential: e,
-         passive: a,
-         causative: a,
-         provisionalConditional: e,
-         imperative: e,
-         volitional: o,
-         cha: cha)
+                te: te,
+                perfective: ta,
+                negative: a,
+                continuous: i,
+                potential: e,
+                passive: a,
+                causative: a,
+                provisionalConditional: e,
+                imperative: e,
+                volitional: o,
+                cha: cha)
   }
 
   static var godanVerbs: [Character: ConjugationGroup] = [

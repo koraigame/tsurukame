@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -127,7 +127,7 @@ class Audio: NSObject {
                              context _: UnsafeMutableRawPointer?) {
     if keyPath == "currentItem.status" {
       guard let player = player,
-        let currentItem = player.currentItem else {
+            let currentItem = player.currentItem else {
         return
       }
 
@@ -151,7 +151,7 @@ class Audio: NSObject {
 
   private func showErrorDialog(_ error: Error) {
     guard let currentItem = player?.currentItem,
-      let asset = currentItem.asset as? AVURLAsset else {
+          let asset = currentItem.asset as? AVURLAsset else {
       return
     }
 

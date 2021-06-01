@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -162,17 +162,18 @@ struct AudioPackage {
 
   func didTapDeleteAllAudio(sender _: Any) {
     if #available(iOS 8.0, *) {
-    let c = UIAlertController(title: "Delete all offline audio", message: "Are you sure?",
-                              preferredStyle: UIAlertControllerStyle.alert)
-    c.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive) { _ in
-      self.deleteAllAudio()
-    })
-    c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
-    present(c, animated: true, completion: nil)
-    } else {
-      let c = AlertView(title: "Delete all offline audio", message: "Are you sure?", cancelButtonTitle: "Cancel", "Delete") {
+      let c = UIAlertController(title: "Delete all offline audio", message: "Are you sure?",
+                                preferredStyle: UIAlertControllerStyle.alert)
+      c.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive) { _ in
         self.deleteAllAudio()
-        }
+      })
+      c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+      present(c, animated: true, completion: nil)
+    } else {
+      let c = AlertView(title: "Delete all offline audio", message: "Are you sure?",
+                        cancelButtonTitle: "Cancel", "Delete") {
+        self.deleteAllAudio()
+      }
       c.show()
     }
   }

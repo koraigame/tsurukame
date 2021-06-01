@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ private func calculateCurrentLevelReviewTime(services: TKMServices,
       continue
     }
     guard let subject = services.dataLoader.load(subjectID: Int(assignment.subjectId)),
-      let guruDate = assignment.guruDate(for: subject) else {
+          let guruDate = assignment.guruDate(for: subject) else {
       continue
     }
     guruDates.append(guruDate)
@@ -80,28 +80,28 @@ private func calculateCurrentLevelReviewTime(services: TKMServices,
 
 private func intervalString(_ date: Date) -> String {
   if #available(iOS 8.0, *) {
-  let formatter = DateComponentsFormatter()
-  formatter.unitsStyle = DateComponentsFormatter.UnitsStyle.abbreviated
+    let formatter = DateComponentsFormatter()
+    formatter.unitsStyle = DateComponentsFormatter.UnitsStyle.abbreviated
 
-  let componentsBitMask: Set = [Calendar.Component.day, Calendar.Component.hour,
-                                Calendar.Component.minute]
-  var components = Calendar.current.dateComponents(componentsBitMask, from: Date(), to: date)
+    let componentsBitMask: Set = [Calendar.Component.day, Calendar.Component.hour,
+                                  Calendar.Component.minute]
+    var components = Calendar.current.dateComponents(componentsBitMask, from: Date(), to: date)
 
-  // Only show minutes after there are no hours left.
-  if let hour = components.hour, hour > 0 {
-    components.minute = 0
-  }
+    // Only show minutes after there are no hours left.
+    if let hour = components.hour, hour > 0 {
+      components.minute = 0
+    }
 
-  return formatter.string(from: components)!
+    return formatter.string(from: components)!
   } else {
-      let calendar = Calendar.current
-      let components = calendar.dateComponents([.day, .hour, .minute], from: date, to: Date())
-      if let day = components.day, day > 0 {
-        return "\(day)d"
-      } else if let hour = components.hour, hour > 0 {
-        return "\(hour)h"
-      } else {
-        return "\(components.minute ?? 0)m"
-      }
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.day, .hour, .minute], from: date, to: Date())
+    if let day = components.day, day > 0 {
+      return "\(day)d"
+    } else if let hour = components.hour, hour > 0 {
+      return "\(hour)h"
+    } else {
+      return "\(components.minute ?? 0)m"
+    }
   }
 }

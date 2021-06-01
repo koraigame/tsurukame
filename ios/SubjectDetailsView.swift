@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ private func renderMeanings(subject: TKMSubject,
   }
   for meaning in subject.meaningsArray as! [TKMMeaning] {
     if meaning.type != .primary, meaning.type != .blacklist,
-      meaning.type != .auxiliaryWhitelist || !subject.hasRadical || Settings.showOldMnemonic {
+       meaning.type != .auxiliaryWhitelist || !subject.hasRadical || Settings.showOldMnemonic {
       var font: UIFont
       if #available(iOS 8.2, *) {
         font = UIFont.systemFont(ofSize: kFontSize, weight: .light)
@@ -106,7 +106,7 @@ private func attrString(_ string: String,
 
 private func defaultStringAttrs() -> [NSAttributedStringKey: Any] {
   return [.foregroundColor: TKMStyle.Color.label,
-   .backgroundColor: TKMStyle.Color.cellBackground]
+          .backgroundColor: TKMStyle.Color.cellBackground]
 }
 
 private func dateFormatter(dateStyle: DateFormatter.Style,

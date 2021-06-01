@@ -177,7 +177,7 @@ func convertSubjectIDArray(c []int) []int32 {
 func convertPartOfSpeech(p string) (pb.Vocabulary_PartOfSpeech, bool) {
 	p = strings.Replace(p, " ", "_", -1)
 	switch p {
-	case "noun":
+	case "noun", "independent_noun", "in_compounds":
 		return pb.Vocabulary_NOUN, true
 	case "numeral":
 		return pb.Vocabulary_NUMERAL, true

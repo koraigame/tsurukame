@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@ extension UIWindow {
     #if swift(>=5)
       switch style {
       case .system:
-        self.overrideUserInterfaceStyle = .unspecified
+        overrideUserInterfaceStyle = .unspecified
       case .dark:
-        self.overrideUserInterfaceStyle = .dark
+        overrideUserInterfaceStyle = .dark
       case .light:
-        self.overrideUserInterfaceStyle = .light
+        overrideUserInterfaceStyle = .light
       }
     #endif
   }

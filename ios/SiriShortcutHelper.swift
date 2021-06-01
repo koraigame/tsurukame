@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 import CoreSpotlight
 import Foundation
 #if canImport(Intents)
-import Intents
+  import Intents
 #endif
 import MobileCoreServices
 

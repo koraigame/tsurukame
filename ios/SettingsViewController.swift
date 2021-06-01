@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ class AlertView: UIAlertView {
   var button1Handler: AlertHandler?
   var button2Handler: AlertHandler?
   var button3Handler: AlertHandler?
-  override func dismiss(withClickedButtonIndex buttonIndex: Int, animated: Bool) {
+  override func dismiss(withClickedButtonIndex buttonIndex: Int, animated _: Bool) {
     if buttonIndex == 1 {
       button1Handler?()
     } else if buttonIndex == 2 {
@@ -32,25 +32,31 @@ class AlertView: UIAlertView {
       button3Handler?()
     }
   }
+
   convenience init(title: String, message: String?, cancelButtonTitle: String?,
                    _ button1Title: String?, _ button1Handler: @escaping AlertHandler) {
-    self.init(title: title, message: message ?? "", delegate: nil, cancelButtonTitle: cancelButtonTitle)
-    self.addButton(withTitle: button1Title)
+    self.init(title: title, message: message ?? "", delegate: nil,
+              cancelButtonTitle: cancelButtonTitle)
+    addButton(withTitle: button1Title)
     self.button1Handler = button1Handler
   }
+
   convenience init(title: String, message: String?, cancelButtonTitle: String?,
                    _ button1Title: String?, _ button1Handler: @escaping AlertHandler,
                    _ button2Title: String?, _ button2Handler: @escaping AlertHandler) {
-    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title, button1Handler)
-    self.addButton(withTitle: button2Title)
+    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title,
+              button1Handler)
+    addButton(withTitle: button2Title)
     self.button2Handler = button2Handler
   }
+
   convenience init(title: String, message: String?, cancelButtonTitle: String?,
                    _ button1Title: String?, _ button1Handler: @escaping AlertHandler,
                    _ button2Title: String?, _ button2Handler: @escaping AlertHandler,
                    _ button3Title: String?, _ button3Handler: @escaping AlertHandler) {
-    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title, button1Handler, button2Title, button2Handler)
-    self.addButton(withTitle: button3Title)
+    self.init(title: title, message: message, cancelButtonTitle: cancelButtonTitle, button1Title,
+              button1Handler, button2Title, button2Handler)
+    addButton(withTitle: button3Title)
     self.button3Handler = button3Handler
   }
 }
@@ -216,8 +222,17 @@ class AlertView: UIAlertView {
     model.addSection("Tsurukame")
     model.add(TKMBasicModelItem(style: .subtitle, title: "Export local database",
                                 subtitle: "To attach to bug reports or email to the developer",
-                                accessoryType: disclosureIndicator, target: self,
+                                accessoryType: .disclosureIndicator,
+                                target: self,
                                 action: #selector(didTapExportDatabase(sender:))))
+    let coreVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+    if coreVersion != "", build != "" {
+      let version = "\(coreVersion).\(build)"
+      model
+        .add(TKMBasicModelItem(style: .value1, title: "Version", subtitle: version,
+                               accessoryType: .none))
+    }
     let logOutItem = TKMBasicModelItem(style: .default,
                                        title: "Log out", subtitle: nil,
                                        accessoryType: UITableViewCellAccessoryType.none,
@@ -247,7 +262,8 @@ class AlertView: UIAlertView {
     var lessonItemOrderText: [String] = []
     for i in Settings.lessonOrder {
       if Int32(truncating: i) == TKMSubject_Type.unknown.rawValue { continue }
-      lessonItemOrderText.append(TKMSubjectTypeName(TKMSubject_Type(rawValue: Int32(truncating: i))!))
+      lessonItemOrderText
+        .append(TKMSubjectTypeName(TKMSubject_Type(rawValue: Int32(truncating: i))!))
     }
     if lessonItemOrderText.count < 3 { lessonItemOrderText.append("Random") }
     return lessonItemOrderText.joined(separator: ", ")
@@ -307,7 +323,7 @@ class AlertView: UIAlertView {
           var granted: Bool = settings.authorizationStatus == UNAuthorizationStatus.authorized
           if #available(iOS 12.0, *) {
             #if swift(>=5)
-            granted = granted || settings.authorizationStatus == UNAuthorizationStatus.provisional
+              granted = granted || settings.authorizationStatus == UNAuthorizationStatus.provisional
             #endif
           }
           notificationHandler(granted)
@@ -339,29 +355,29 @@ class AlertView: UIAlertView {
 
     let notificationHandler: NotificationPermissionHandler = self.notificationHandler!
     if #available(iOS 10.0, *) {
-    let center = UNUserNotificationCenter.current()
-    let options: UNAuthorizationOptions = [.badge, .alert]
+      let center = UNUserNotificationCenter.current()
+      let options: UNAuthorizationOptions = [.badge, .alert]
       #if swift(>=5)
-    center.getNotificationSettings { (settings: UNNotificationSettings) in
-      switch settings.authorizationStatus {
-      case .authorized:
-        fallthrough
-      case .provisional:
-        notificationHandler(true)
-      case .notDetermined:
-        center.requestAuthorization(options: options,
-                                    completionHandler: { granted, _ in
-                                      notificationHandler(granted)
-                                    })
-      case .denied:
-        DispatchQueue.main.async {
-          UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
-                                    options: Dictionary(), completionHandler: nil)
+        center.getNotificationSettings { (settings: UNNotificationSettings) in
+          switch settings.authorizationStatus {
+          case .authorized:
+            fallthrough
+          case .provisional:
+            notificationHandler(true)
+          case .notDetermined:
+            center.requestAuthorization(options: options,
+                                        completionHandler: { granted, _ in
+                                          notificationHandler(granted)
+                                        })
+          case .denied:
+            DispatchQueue.main.async {
+              UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
+                                        options: Dictionary(), completionHandler: nil)
+            }
+          default:
+            fatalError()
+          }
         }
-      default:
-        fatalError()
-      }
-    }
       #endif
     }
   }
@@ -466,12 +482,13 @@ class AlertView: UIAlertView {
       Open Settings then "General ⮕ Keyboard ⮕ Keyboards ⮕ Add New Keyboard."
       """
       if #available(iOS 8.0, *) {
-      let alert = UIAlertController(title: "No Japanese Keyboard", message: message,
-                                    preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
-      present(alert, animated: true, completion: nil)
+        let alert = UIAlertController(title: "No Japanese Keyboard", message: message,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
       } else {
-        let alert = AlertView(title: "No Japanese Keyboard", message: message, delegate: nil, cancelButtonTitle: "Close")
+        let alert = AlertView(title: "No Japanese Keyboard", message: message, delegate: nil,
+                              cancelButtonTitle: "Close")
         alert.show()
       }
       switchView.isOn = false
@@ -522,21 +539,23 @@ class AlertView: UIAlertView {
 
   func didTapLogOut(sender _: Any?) {
     if #available(iOS 8.0, *) {
-    let c = UIAlertController(title: "Are you sure?", message: nil,
-                              preferredStyle: UIAlertControllerStyle.alert)
-    c.addAction(UIAlertAction(title: "Log out", style: UIAlertActionStyle.destructive,
-                              handler: { (_: UIAlertAction) in
-                                NotificationCenter.default
-                                  .post(name: NSNotification
-                                    .Name(rawValue: "kLogoutNotification"),
-                                    object: self)
-                              }))
-    c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
-    present(c, animated: true, completion: nil)
+      let c = UIAlertController(title: "Are you sure?", message: nil,
+                                preferredStyle: UIAlertControllerStyle.alert)
+      c.addAction(UIAlertAction(title: "Log out", style: UIAlertActionStyle.destructive,
+                                handler: { (_: UIAlertAction) in
+                                  NotificationCenter.default
+                                    .post(name: NSNotification
+                                      .Name(rawValue: "kLogoutNotification"),
+                                      object: self)
+                                }))
+      c.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+      present(c, animated: true, completion: nil)
     } else {
-      let c = AlertView(title: "Are you sure?", message: nil, cancelButtonTitle: "Cancel", "Log out") {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "kLogoutNotification"), object: self)
-        }
+      let c = AlertView(title: "Are you sure?", message: nil, cancelButtonTitle: "Cancel",
+                        "Log out") {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "kLogoutNotification"),
+                                        object: self)
+      }
       c.show()
     }
   }

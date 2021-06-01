@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -143,16 +143,16 @@ class CurrentLevelChartCell: TKMModelCell {
 
   override func layoutSubviews() {
     if #available(iOS 8.0, *) {
-    var insets = layoutMargins
-    insets.bottom = 0
-    insets.top = 0
-    let frame = contentView.bounds.inset(by: insets)
-    let width = frame.width / 3
-    var x = frame.minX
-    for chart in [radicalChart!, kanjiChart!, vocabularyChart!] {
-      chart.frame = CGRect(x: x, y: frame.minY, width: width, height: frame.height)
-      x += width
-    }
+      var insets = layoutMargins
+      insets.bottom = 0
+      insets.top = 0
+      let frame = contentView.bounds.inset(by: insets)
+      let width = frame.width / 3
+      var x = frame.minX
+      for chart in [radicalChart!, kanjiChart!, vocabularyChart!] {
+        chart.frame = CGRect(x: x, y: frame.minY, width: width, height: frame.height)
+        x += width
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -299,7 +299,7 @@ private class SyncProgressTracker {
 
     // Don't bother logging these errors.
     if let urlErr = error as? URLError,
-      urlErr.code == .timedOut || urlErr.code == .notConnectedToInternet { return }
+       urlErr.code == .timedOut || urlErr.code == .notConnectedToInternet { return }
     else if let posixErr = error as? POSIXError, posixErr.errorCode == ECONNABORTED { return }
 
     db.inTransaction { (db: FMDatabase, _: UnsafeMutablePointer<ObjCBool>) in
@@ -551,13 +551,13 @@ private class SyncProgressTracker {
   func updateAvailableSubjectCountsIfStale() {
     let now = Date()
     if !isCachedAvailableSubjectCountsStale,
-      !LocalCachingClient.datesAreSameHour(now, cachedAvailableSubjectCountsUpdated) {
+       !LocalCachingClient.datesAreSameHour(now, cachedAvailableSubjectCountsUpdated) {
       invalidateCachedAvailableSubjectCounts()
     }
     if !isCachedAvailableSubjectCountsStale { return }
 
     var assignments = getAllAssignments(), lessons: Int32 = 0, reviews: Int32 = 0,
-      upcomingReviews: [Int32] = Array(repeating: 0, count: 24 * 7)
+        upcomingReviews: [Int32] = Array(repeating: 0, count: 24 * 7)
     let userInfo = getUserInfo()
 
     for assignment in assignments {
@@ -618,8 +618,8 @@ private class SyncProgressTracker {
       """)
       while r.next() {
         let srsStage = r.int(forColumnIndex: 0),
-          count = r.int(forColumnIndex: 1),
-          stageCategory = TKMSRSStageCategoryForStage(srsStage)
+            count = r.int(forColumnIndex: 1),
+            stageCategory = TKMSRSStageCategoryForStage(srsStage)
         cachedSRSLevelCounts[Int(stageCategory.rawValue)] += count
       }
     }

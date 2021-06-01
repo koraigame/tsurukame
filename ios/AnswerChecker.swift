@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -154,7 +154,7 @@ import Foundation
         }
       }
       if subject.hasVocabulary, subject.japanese.count == 1,
-        subject.componentSubjectIdsArray_Count == 1 {
+         subject.componentSubjectIdsArray_Count == 1 {
         // If the vocabulary is made up of only one Kanji, check whether the user wrote the Kanji
         // reading instead of the vocabulary reading.
         if let kanji = dataLoader

@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import Foundation
 
     #if swift(>=5.0)
       if #available(iOS 13.0, *), stageCategory == .burned,
-        UITraitCollection.current.userInterfaceStyle == .dark {
+         UITraitCollection.current.userInterfaceStyle == .dark {
         color = UIColor.label
       }
     #endif

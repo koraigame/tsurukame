@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -166,7 +166,8 @@ protocol ReviewViewControllerDelegate {
 class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDelegate {
   private var kanaInput: TKMKanaInput!
   #if swift(>=5)
-  private let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator.FeedbackStyle.light)
+    private let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator
+      .FeedbackStyle.light)
   #endif
   private let tickImage = UIImage(named: "checkmark")
   private let forwardArrowImage = UIImage(named: "ic_arrow_forward_white")
@@ -509,7 +510,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
   private func randomTask() {
     func performRandomTask() {
-		  if activeQueue.count == 0 {
+      if activeQueue.count == 0 {
         delegate.reviewViewControllerFinishedAllReviewItems(self)
         return
       }
@@ -712,7 +713,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
   func nextCustomFont(thatCanRenderText _: String) -> String? {
     if let availableFonts = self.availableFonts,
-      let index = availableFonts.index(of: currentFontName) {
+       let index = availableFonts.index(of: currentFontName) {
       if index + 1 >= availableFonts.count {
         return availableFonts.first
       } else {
@@ -724,7 +725,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
   func previousCustomFont(thatCanRenderText _: String) -> String? {
     if let availableFonts = self.availableFonts,
-      let index = availableFonts.index(of: currentFontName) {
+       let index = availableFonts.index(of: currentFontName) {
       if index == 0 {
         return availableFonts.last
       } else {
@@ -861,9 +862,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
 
     var newGradient: [CGColor]!
     if #available(iOS 8.0, *) {
-    TKMStyle.withTraitCollection(traitCollection) {
-      newGradient = (TKMStyle.gradient(forSubject: previousSubject) as! [CGColor])
-    }
+      TKMStyle.withTraitCollection(traitCollection) {
+        newGradient = (TKMStyle.gradient(forSubject: previousSubject) as! [CGColor])
+      }
     } else {
       newGradient = (TKMStyle.gradient(forSubject: previousSubject) as! [CGColor])
     }
@@ -1016,7 +1017,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
     // Keep the cursor in the text field on OtherKanjiReading or ContainsInvalidCharacters
     // AnswerCheckerResult cases except when subject details are displayed.
     if subjectDetailsView.isHidden,
-      activeTask.answer.hasMeaningWrong || activeTask.answer.hasReadingWrong {
+       activeTask.answer.hasMeaningWrong || activeTask.answer.hasReadingWrong {
       return false
     }
 
@@ -1028,7 +1029,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
       return
     }
     if Settings.allowSkippingReviews,
-      answerField.text!.trimmingCharacters(in: .whitespaces).isEmpty {
+       answerField.text!.trimmingCharacters(in: .whitespaces).isEmpty {
       markAnswer(.AskAgainLater)
       return
     }
@@ -1181,7 +1182,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
     // Show a new task if it was correct.
     if result != .Incorrect {
       if Settings.playAudioAutomatically, activeTaskType == .reading,
-        activeSubject.hasVocabulary, activeSubject.vocabulary.audioIdsArray_Count > 0 {
+         activeSubject.hasVocabulary, activeSubject.vocabulary.audioIdsArray_Count > 0 {
         services.audio.play(subjectID: Int(activeSubject!.id_p), delegate: nil)
       }
 
@@ -1239,35 +1240,39 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, TKMSubjectDel
   @IBAction func addSynonymButtonPressed(_: Any) {
     let message = "Don't cheat! Only use this if you promise you knew the correct answer."
     if #available(iOS 8.0, *) {
-    let c = UIAlertController(title: "Ignore incorrect answer?",
-                              message: message,
-                              preferredStyle: .actionSheet)
-    c.popoverPresentationController?.sourceView = addSynonymButton
-    c.popoverPresentationController?.sourceRect = addSynonymButton.bounds
+      let c = UIAlertController(title: "Ignore incorrect answer?",
+                                message: message,
+                                preferredStyle: .actionSheet)
+      c.popoverPresentationController?.sourceView = addSynonymButton
+      c.popoverPresentationController?.sourceRect = addSynonymButton.bounds
 
-    c.addAction(UIAlertAction(title: "My answer was correct",
-                              style: .default,
-                              handler: { _ in self.markCorrect() }))
-    c.addAction(UIAlertAction(title: "Ask again later",
-                              style: .default,
-                              handler: { _ in self.askAgain() }))
-
-    if activeTaskType == .meaning {
-      c.addAction(UIAlertAction(title: "Add synonym",
+      c.addAction(UIAlertAction(title: "My answer was correct",
                                 style: .default,
-                                handler: { _ in self.addSynonym() }))
-    }
+                                handler: { _ in self.markCorrect() }))
+      c.addAction(UIAlertAction(title: "Ask again later",
+                                style: .default,
+                                handler: { _ in self.askAgain() }))
 
-    c.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    present(c, animated: true, completion: nil)
+      if activeTaskType == .meaning {
+        c.addAction(UIAlertAction(title: "Add synonym",
+                                  style: .default,
+                                  handler: { _ in self.addSynonym() }))
+      }
+
+      c.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+      present(c, animated: true, completion: nil)
     } else {
       var c: AlertView
       if activeTaskType == .meaning {
-        c = AlertView(title: "Ignore incorrect answer?", message: message, cancelButtonTitle: "Cancel",
-                      "My answer was correct", {self.markCorrect()}, "Ask again later", {self.askAgain()}, "Add synonym", {self.addSynonym()})
+        c = AlertView(title: "Ignore incorrect answer?", message: message,
+                      cancelButtonTitle: "Cancel",
+                      "My answer was correct", { self.markCorrect() }, "Ask again later",
+                      { self.askAgain() }, "Add synonym", { self.addSynonym() })
       } else {
-        c = AlertView(title: "Ignore incorrect answer?", message: message, cancelButtonTitle: "Cancel",
-                      "My answer was correct", {self.markCorrect()}, "Ask again later", {self.askAgain()})
+        c = AlertView(title: "Ignore incorrect answer?", message: message,
+                      cancelButtonTitle: "Cancel",
+                      "My answer was correct", { self.markCorrect() }, "Ask again later",
+                      { self.askAgain() })
       }
       c.show()
     }

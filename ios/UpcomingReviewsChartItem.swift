@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ class UpcomingReviewsXAxisValueFormatter: IAxisValueFormatter {
     if #available(iOS 8.0, *) {
       dateFormatter.setLocalizedDateFormatFromTemplate("ha")
     } else {
-      dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ha", options: 0, locale: dateFormatter.locale)
+      dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ha", options: 0,
+                                                          locale: dateFormatter.locale)
     }
   }
 

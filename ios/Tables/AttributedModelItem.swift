@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ private let kEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
 private let kMinimumHeight: CGFloat = 44
 
 #if swift(>=4.1)
-extension CGRect {
-  func inset(by insets: UIEdgeInsets) -> CGRect {
-    return UIEdgeInsetsInsetRect(self, insets)
+  extension CGRect {
+    func inset(by insets: UIEdgeInsets) -> CGRect {
+      return UIEdgeInsetsInsetRect(self, insets)
+    }
   }
-}
 #endif
 
 @objc(TKMAttributedModelItem)

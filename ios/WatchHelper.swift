@@ -1,4 +1,4 @@
-// Copyright 2020 David Sansome
+// Copyright 2021 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//import CommonCrypto
+// import CommonCrypto
 import Foundation
 import os
 import WatchConnectivity
@@ -43,10 +43,10 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
     self.callback = callback
   }
 
-
   func session(_: WCSession, activationDidCompleteWith _: WCSessionActivationState, error: Error?) {
     if #available(iOS 10.0, *) {
-    os_log("watch activationDidCompleteWith err=%{public}@", error?.localizedDescription ?? "none")
+      os_log("watch activationDidCompleteWith err=%{public}@",
+             error?.localizedDescription ?? "none")
     }
   }
 
@@ -114,8 +114,8 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
       // If the user is in the vocab and technically levels up but has 0
       // learned treat it as the prior level and set halfLevel=true
       if learnedCount == 0,
-        let assignment = assignmentsAtCurrentLevel.first,
-        assignment.level > 0 {
+         let assignment = assignmentsAtCurrentLevel.first,
+         assignment.level > 0 {
         halfLevel = true
         assignmentsAtCurrentLevel = client.getAssignments(level: assignment.level - 1)
         learnedCount = assignmentsAtCurrentLevel.filter { (assignment) -> Bool in
@@ -180,7 +180,7 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
 
   func shouldSendPacket(packet: [String: Any]) -> Bool {
     guard let lastSignature = lastPacketSignature,
-      let lastSent = lastPacketSentAt else {
+          let lastSent = lastPacketSentAt else {
       // The first one's always free.
       return true
     }
