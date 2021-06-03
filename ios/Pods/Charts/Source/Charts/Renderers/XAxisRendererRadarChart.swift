@@ -12,6 +12,10 @@
 import Foundation
 import CoreGraphics
 
+#if !os(OSX)
+    import UIKit
+#endif
+
 open class XAxisRendererRadarChart: XAxisRenderer
 {
     @objc open weak var chart: RadarChartView?
@@ -60,7 +64,7 @@ open class XAxisRendererRadarChart: XAxisRenderer
                       formattedLabel: label,
                       x: p.x,
                       y: p.y - xAxis.labelRotatedHeight / 2.0,
-                      attributes: [NSAttributedString.Key.font: labelFont, NSAttributedString.Key.foregroundColor: labelTextColor],
+                      attributes: [NSAttributedStringKey.font: labelFont, NSAttributedStringKey.foregroundColor: labelTextColor],
                       anchor: drawLabelAnchor,
                       angleRadians: labelRotationAngleRadians)
         }
@@ -71,7 +75,7 @@ open class XAxisRendererRadarChart: XAxisRenderer
         formattedLabel: String,
         x: CGFloat,
         y: CGFloat,
-        attributes: [NSAttributedString.Key : Any],
+        attributes: [NSAttributedStringKey : Any],
         anchor: CGPoint,
         angleRadians: CGFloat)
     {

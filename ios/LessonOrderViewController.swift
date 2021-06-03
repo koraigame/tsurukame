@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class LessonOrderViewController: UITableViewController {
   override func viewDidLoad() {
@@ -22,7 +21,7 @@ class LessonOrderViewController: UITableViewController {
   }
 
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-    Settings.lessonOrder.count
+    return Settings.lessonOrder.count
   }
 
   override func tableView(_ tableView: UITableView,
@@ -35,11 +34,11 @@ class LessonOrderViewController: UITableViewController {
 
   override func tableView(_: UITableView, editingStyleForRowAt _: IndexPath) -> UITableViewCell
     .EditingStyle {
-    .none
+    return .none
   }
 
   override func tableView(_: UITableView, shouldIndentWhileEditingRowAt _: IndexPath) -> Bool {
-    false
+    return false
   }
 
   override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath,

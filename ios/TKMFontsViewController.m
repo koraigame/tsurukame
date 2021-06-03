@@ -84,7 +84,7 @@ static NSString *const kURLPattern = @"https://tsurukame.app/fonts/%@";
                                    accessoryType:UITableViewCellAccessoryNone
                                           target:self
                                           action:@selector(didTapDeleteAllFonts:)];
-    deleteItem.textColor = [UIColor systemRedColor];
+    deleteItem.textColor = [UIColor redColor];
     [model addItem:deleteItem];
   }
 }

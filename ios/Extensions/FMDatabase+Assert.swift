@@ -78,7 +78,7 @@ extension FMResultSet: Sequence {
   }
 
   public __consuming func makeIterator() -> FMResultSet.Iterator {
-    Iterator(resultSet: self)
+    return Iterator(resultSet: self)
   }
 }
 

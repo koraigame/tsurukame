@@ -27,7 +27,7 @@ class SubjectCollectionModelItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    SubjectCollectionModelView.self
+    return SubjectCollectionModelView.self
   }
 }
 

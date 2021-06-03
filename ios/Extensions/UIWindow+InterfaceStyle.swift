@@ -14,7 +14,17 @@
 
 import Foundation
 
+@available(iOS 12.0, *)
+private var interfaceStyle: [ObjectIdentifier: UIUserInterfaceStyle] = [:]
+@available(iOS 12.0, *)
+private var defaultStyle: UIUserInterfaceStyle = .unspecified
+
 extension UIWindow {
+  @available(iOS 12.0, *) override open var overrideUserInterfaceStyle: UIUserInterfaceStyle {
+    get { return interfaceStyle[ObjectIdentifier(self)] ?? defaultStyle }
+    set { interfaceStyle[ObjectIdentifier(self)] = newValue }
+  }
+
   @objc func setInterfaceStyle(_ style: InterfaceStyle) {
     if #available(iOS 13.0, *) {
       switch style {

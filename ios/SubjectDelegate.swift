@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 protocol SubjectDelegate: AnyObject {
   func didTapSubject(_ subject: TKMSubject)

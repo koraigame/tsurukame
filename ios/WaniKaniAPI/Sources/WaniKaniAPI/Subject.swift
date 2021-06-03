@@ -15,7 +15,7 @@
 import UIKit
 
 private func jsonFromBundle<T>(_ fileName: String) -> T {
-  let path = Bundle.module.path(forResource: fileName, ofType: nil)
+  let path = Bundle.main.path(forResource: fileName, ofType: nil)
   let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
   return try! JSONSerialization.jsonObject(with: data, options: []) as! T
 }

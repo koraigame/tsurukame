@@ -22,10 +22,9 @@ open class BubbleChartDataEntry: ChartDataEntry
         super.init()
     }
     
-    /// - Parameters:
-    ///   - x: The index on the x-axis.
-    ///   - y: The value on the y-axis.
-    ///   - size: The size of the bubble.
+    /// - parameter x: The index on the x-axis.
+    /// - parameter y: The value on the y-axis.
+    /// - parameter size: The size of the bubble.
     @objc public init(x: Double, y: Double, size: CGFloat)
     {
         super.init(x: x, y: y)
@@ -33,46 +32,45 @@ open class BubbleChartDataEntry: ChartDataEntry
         self.size = size
     }
     
-    /// - Parameters:
-    ///   - x: The index on the x-axis.
-    ///   - y: The value on the y-axis.
-    ///   - size: The size of the bubble.
-    ///   - data: Spot for additional data this Entry represents.
-    @objc public convenience init(x: Double, y: Double, size: CGFloat, data: Any?)
+    /// - parameter x: The index on the x-axis.
+    /// - parameter y: The value on the y-axis.
+    /// - parameter size: The size of the bubble.
+    /// - parameter data: Spot for additional data this Entry represents.
+    @objc public init(x: Double, y: Double, size: CGFloat, data: AnyObject?)
     {
-        self.init(x: x, y: y, size: size)
-        self.data = data
+        super.init(x: x, y: y, data: data)
+        
+        self.size = size
     }
     
-    /// - Parameters:
-    ///   - x: The index on the x-axis.
-    ///   - y: The value on the y-axis.
-    ///   - size: The size of the bubble.
-    ///   - icon: icon image
-    @objc public convenience init(x: Double, y: Double, size: CGFloat, icon: NSUIImage?)
+    /// - parameter x: The index on the x-axis.
+    /// - parameter y: The value on the y-axis.
+    /// - parameter size: The size of the bubble.
+    /// - parameter icon: icon image
+    @objc public init(x: Double, y: Double, size: CGFloat, icon: NSUIImage?)
     {
-        self.init(x: x, y: y, size: size)
-        self.icon = icon
+        super.init(x: x, y: y, icon: icon)
+        
+        self.size = size
     }
     
-    /// - Parameters:
-    ///   - x: The index on the x-axis.
-    ///   - y: The value on the y-axis.
-    ///   - size: The size of the bubble.
-    ///   - icon: icon image
-    ///   - data: Spot for additional data this Entry represents.
-    @objc public convenience init(x: Double, y: Double, size: CGFloat, icon: NSUIImage?, data: Any?)
+    /// - parameter x: The index on the x-axis.
+    /// - parameter y: The value on the y-axis.
+    /// - parameter size: The size of the bubble.
+    /// - parameter icon: icon image
+    /// - parameter data: Spot for additional data this Entry represents.
+    @objc public init(x: Double, y: Double, size: CGFloat, icon: NSUIImage?, data: AnyObject?)
     {
-        self.init(x: x, y: y, size: size)
-        self.icon = icon
-        self.data = data
+        super.init(x: x, y: y, icon: icon, data: data)
+        
+        self.size = size
     }
     
     // MARK: NSCopying
     
-    open override func copy(with zone: NSZone? = nil) -> Any
+    open override func copyWithZone(_ zone: NSZone?) -> AnyObject
     {
-        let copy = super.copy(with: zone) as! BubbleChartDataEntry
+        let copy = super.copyWithZone(zone) as! BubbleChartDataEntry
         copy.size = size
         return copy
     }

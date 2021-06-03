@@ -48,11 +48,11 @@ class UpcomingReviewsChartItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    UpcomingReviewsChartCell.self
+    return UpcomingReviewsChartCell.self
   }
 
   func rowHeight() -> CGFloat {
-    120
+    return 120
   }
 }
 
@@ -89,7 +89,7 @@ class UpcomingReviewsChartCell: TKMModelCell {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    view.frame = contentView.bounds.inset(by: layoutMargins)
+    view.frame = UIEdgeInsetsInsetRect(contentView.bounds, layoutMargins)
   }
 
   override func update(with baseItem: TKMModelItem!) {
@@ -115,14 +115,14 @@ class UpcomingReviewsChartCell: TKMModelCell {
       }
     }
 
-    let lineDataSet = LineChartDataSet(cumulativeData)
+    let lineDataSet = LineChartDataSet(values: cumulativeData, label: nil)
     lineDataSet.drawValuesEnabled = false
     lineDataSet.drawCircleHoleEnabled = false
     lineDataSet.circleRadius = 1.5
     lineDataSet.colors = [TKMStyle.vocabularyColor2]
     lineDataSet.circleColors = [TKMStyle.vocabularyColor2]
 
-    let barDataSet = BarChartDataSet(hourlyData)
+    let barDataSet = BarChartDataSet(values: hourlyData, label: nil)
     barDataSet.axisDependency = YAxis.AxisDependency.right
     barDataSet.colors = [TKMStyle.radicalColor2]
     barDataSet.valueFormatter = DefaultValueFormatter(decimals: 0)

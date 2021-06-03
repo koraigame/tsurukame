@@ -16,22 +16,22 @@ final class URLSessionHook: HTTPClientHook {
   func load() {
     guard let method = class_getInstanceMethod(originalClass(), originalSelector()),
           let stub = class_getInstanceMethod(URLSessionHook.self, #selector(protocolClasses)) else {
-      fatalError("Could not load URLSessionHook")
+      fatalError("Couldn't load URLSessionHook")
     }
     method_exchangeImplementations(method, stub)
   }
 
   private func originalClass() -> AnyClass? {
-    NSClassFromString("__NSCFURLSessionConfiguration") ?? NSClassFromString("NSURLSessionConfiguration")
+    return NSClassFromString("__NSCFURLSessionConfiguration") ?? NSClassFromString("NSURLSessionConfiguration")
   }
 
   private func originalSelector() -> Selector {
-    #selector(getter: URLSessionConfiguration.protocolClasses)
+    return #selector(getter: URLSessionConfiguration.protocolClasses)
   }
 
   @objc
   private func protocolClasses() -> [AnyClass] {
-    [HTTPStubURLProtocol.self]
+    return [HTTPStubURLProtocol.self]
   }
 
   func unload() {

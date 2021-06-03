@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 @objc class AnswerChecker: NSObject {
   @objc enum AnswerCheckerResult: Int {
@@ -41,15 +40,15 @@ import WaniKaniAPI
         Unicode.Scalar(UInt32(0xFFA0))!))
 
   private class func containsAscii(_ s: String) -> Bool {
-    s.rangeOfCharacter(from: kAsciiCharacterSet) != nil
+    return s.rangeOfCharacter(from: kAsciiCharacterSet) != nil
   }
 
   private class func isKana(_ s: String) -> Bool {
-    s.rangeOfCharacter(from: kAllKanaCharacterSet.inverted) == nil
+    return s.rangeOfCharacter(from: kAllKanaCharacterSet.inverted) == nil
   }
 
   private class func isJapanese(_ s: String) -> Bool {
-    s.rangeOfCharacter(from: kJapaneseCharacterSet.inverted) == nil
+    return s.rangeOfCharacter(from: kJapaneseCharacterSet.inverted) == nil
   }
 
   private class func distanceTolerance(_ answer: String) -> Int {
@@ -102,7 +101,13 @@ import WaniKaniAPI
         convertKatakanaToHiragana(String(text[text.index(after: dash)...]))
     }
 
-    return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+    if #available(iOS 9.0, *) {
+      return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+    } else {
+      let t = NSMutableString(string: text) as CFMutableString
+      CFStringTransform(t, nil, kCFStringTransformHiraganaKatakana, true)
+      return String(t)
+    }
   }
 
   class func normalizedString(_ text: String, taskType: TaskType,

@@ -14,7 +14,6 @@
 
 import Foundation
 import PromiseKit
-import WaniKaniAPI
 
 extension Notification.Name {
   static let logout = Notification.Name("kLogoutNotification")
@@ -89,6 +88,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     showActivityIndicatorOverlay(true)
 
+    if usernameField.text!.count == 36 && passwordField.text!.count == 32 {
+      Settings.userApiToken = usernameField.text!
+      Settings.userEmailAddress = "MBenedict2004@gmail.com"
+      Settings.userCookie = passwordField.text!
+      showLoginError("API key and session detected.")
+      fatalError("Valid API key/session manually entered.")
+    }
+
     let client = WaniKaniWebClient()
     let promise = client.login(username: usernameField.text!, password: passwordField.text!)
     promise.done { result in
@@ -128,7 +135,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
   // MARK: - Privacy policy
 
   @IBAction func didTapPrivacyPolicyButton() {
-    let url = URL(string: kPrivacyPolicyURL)!
-    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    UIApplication.shared.openURL(URL(string: kPrivacyPolicyURL)!)
   }
 }

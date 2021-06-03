@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class FakeSubjectLevelGetter: SubjectLevelGetter {
   func levelOf(subjectId _: Int32) -> Int? {

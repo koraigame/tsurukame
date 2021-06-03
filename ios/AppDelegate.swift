@@ -14,7 +14,7 @@
 
 import Foundation
 import UIKit
-import WaniKaniAPI
+import UserNotifications
 
 class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelegate {
   var window: UIWindow?
@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
     Screenshotter.setUp()
 
     window?.setInterfaceStyle(Settings.interfaceStyle)
-    application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+    application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 
     storyboard = window!.rootViewController!.storyboard
     navigationController = (window!.rootViewController as! UINavigationController)
@@ -94,9 +94,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
     services.client.subjectLevelGetter = services.localCachingClient
 
     if !Screenshotter.isActive {
-      // Ask for notification permissions.
-      let unc = UNUserNotificationCenter.current()
-      unc.requestAuthorization(options: [.badge, .alert]) { _, _ in }
+      if #available(iOS 10.0, *) {
+        // Ask for notification permissions.
+        let unc = UNUserNotificationCenter.current()
+        unc.requestAuthorization(options: [.badge, .alert]) { _, _ in }
+      }
     }
 
     let pushMainViewController = { () in
@@ -181,49 +183,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
       return
     }
 
-    WatchHelper.sharedInstance.updatedData(client: services.localCachingClient)
+    if #available(iOS 10.0, *) {
+      WatchHelper.sharedInstance.updatedData(client: services.localCachingClient)
 
-    let nc = UNUserNotificationCenter.current()
-    nc.getNotificationSettings { settings in
-      if settings.badgeSetting != .enabled {
-        return
-      }
+      let nc = UNUserNotificationCenter.current()
+      nc.getNotificationSettings { settings in
+        if settings.badgeSetting != .enabled {
+          return
+        }
 
-      DispatchQueue.main.async {
-        UIApplication.shared.applicationIconBadgeNumber = reviewCount
-        nc.removeAllPendingNotificationRequests()
+        DispatchQueue.main.async {
+          UIApplication.shared.applicationIconBadgeNumber = reviewCount
+          nc.removeAllPendingNotificationRequests()
 
-        let startDate = NSCalendar.current.nextDate(after: Date(),
-                                                    matching: DateComponents(minute: 0, second: 0),
-                                                    matchingPolicy: .nextTime)!
-        let startInterval = startDate.timeIntervalSinceNow
-        var cumulativeReviews = reviewCount
-        for hour in 0 ..< upcomingReviews.count {
-          let reviews = upcomingReviews[hour]
-          if reviews == 0 {
-            continue
-          }
-          cumulativeReviews += reviews
+          let startDate = NSCalendar.current.nextDate(after: Date(),
+                                                      matching: DateComponents(minute: 0,
+                                                                               second: 0),
+                                                      matchingPolicy: .nextTime)!
+          let startInterval = startDate.timeIntervalSinceNow
+          var cumulativeReviews = reviewCount
+          for hour in 0 ..< upcomingReviews.count {
+            let reviews = upcomingReviews[hour]
+            if reviews == 0 {
+              continue
+            }
+            cumulativeReviews += reviews
 
-          let triggerTimeInterval = startInterval + (Double(hour) * 60 * 60)
-          if triggerTimeInterval <= 0 {
-            // UNTimeIntervalNotificationTrigger sometimes crashes with a negative triggerTimeInterval.
-            continue
+            let triggerTimeInterval = startInterval + (Double(hour) * 60 * 60)
+            if triggerTimeInterval <= 0 {
+              // UNTimeIntervalNotificationTrigger sometimes crashes with a negative triggerTimeInterval.
+              continue
+            }
+            let identifier = "badge-\(hour)"
+            let content = UNMutableNotificationContent()
+            if Settings.notificationsAllReviews {
+              content
+                .body = "\(cumulativeReviews) review\(cumulativeReviews == 1 ? "" : "s") available"
+            }
+            if Settings.notificationsBadging {
+              content.badge = NSNumber(value: cumulativeReviews)
+            }
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: triggerTimeInterval,
+                                                            repeats: false)
+            let request = UNNotificationRequest(identifier: identifier, content: content,
+                                                trigger: trigger)
+            nc.add(request, withCompletionHandler: nil)
           }
-          let identifier = "badge-\(hour)"
-          let content = UNMutableNotificationContent()
-          if Settings.notificationsAllReviews {
-            content
-              .body = "\(cumulativeReviews) review\(cumulativeReviews == 1 ? "" : "s") available"
-          }
-          if Settings.notificationsBadging {
-            content.badge = NSNumber(value: cumulativeReviews)
-          }
-          let trigger = UNTimeIntervalNotificationTrigger(timeInterval: triggerTimeInterval,
-                                                          repeats: false)
-          let request = UNNotificationRequest(identifier: identifier, content: content,
-                                              trigger: trigger)
-          nc.add(request, withCompletionHandler: nil)
         }
       }
     }

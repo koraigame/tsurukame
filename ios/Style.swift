@@ -13,7 +13,12 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
+
+private extension UIColor {
+  convenience init(f _: (UITraitCollection) -> UIColor) {
+    self.init()
+  }
+}
 
 private func UIColorFromHex(_ hexColor: Int32) -> UIColor {
   let red = (CGFloat)((hexColor & 0xFF0000) >> 16) / 255
@@ -37,7 +42,7 @@ private func AdaptiveColor(light: UIColor, dark: UIColor) -> UIColor {
 }
 
 private func AdaptiveColorHex(light: Int32, dark: Int32) -> UIColor {
-  AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
+  return AdaptiveColor(light: UIColorFromHex(light), dark: UIColorFromHex(dark))
 }
 
 @objc
@@ -73,12 +78,15 @@ class TKMStyle: NSObject {
                                            dark: UIColor(white: 0.682, alpha: 1))
 
   // The [Any] types force these to be exposed to objective-C as an untyped NSArray*.
-  static var radicalGradient: [Any] { [radicalColor1.cgColor, radicalColor2.cgColor] }
-  static var kanjiGradient: [Any] { [kanjiColor1.cgColor, kanjiColor2.cgColor] }
-  static var vocabularyGradient: [Any] { [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
-  static var lockedGradient: [Any] { [lockedColor1.cgColor, lockedColor2.cgColor] }
-  static var readingGradient: [Any] { [readingColor1.cgColor, readingColor2.cgColor] }
-  static var meaningGradient: [Any] { [meaningColor1.cgColor, meaningColor2.cgColor] }
+  static var radicalGradient: [Any] { return [radicalColor1.cgColor, radicalColor2.cgColor] }
+  static var kanjiGradient: [Any] { return [kanjiColor1.cgColor, kanjiColor2.cgColor] }
+  static var vocabularyGradient: [Any] {
+    return [vocabularyColor1.cgColor, vocabularyColor2.cgColor]
+  }
+
+  static var lockedGradient: [Any] { return [lockedColor1.cgColor, lockedColor2.cgColor] }
+  static var readingGradient: [Any] { return [readingColor1.cgColor, readingColor2.cgColor] }
+  static var meaningGradient: [Any] { return [meaningColor1.cgColor, meaningColor2.cgColor] }
 
   class func color(forSRSStageCategory srsStageCategory: SRSStageCategory) -> UIColor {
     switch srsStageCategory {
@@ -149,22 +157,22 @@ class TKMStyle: NSObject {
   }
 
   class func japaneseFont(size: CGFloat) -> UIFont {
-    UIFont(name: japaneseFontName, size: size)!
+    return UIFont(name: japaneseFontName, size: size) ?? UIFont.systemFont(ofSize: size)
   }
 
   class func japaneseFontLight(size: CGFloat) -> UIFont {
-    loadFont(["HiraginoSans-W3",
-              "HiraginoSans-W2",
-              "HiraginoSans-W1",
-              "HiraginoSans-W4",
-              "HiraginoSans-W5"], size: size)
+    return loadFont(["HiraginoSans-W3",
+                     "HiraginoSans-W2",
+                     "HiraginoSans-W1",
+                     "HiraginoSans-W4",
+                     "HiraginoSans-W5"], size: size)
   }
 
   class func japaneseFontBold(size: CGFloat) -> UIFont {
-    loadFont(["HiraginoSans-W8",
-              "HiraginoSans-W7",
-              "HiraginoSans-W6",
-              "HiraginoSans-W5"], size: size)
+    return loadFont(["HiraginoSans-W8",
+                     "HiraginoSans-W7",
+                     "HiraginoSans-W6",
+                     "HiraginoSans-W5"], size: size)
   }
 
   // MARK: - Dark mode aware UI colors
@@ -193,9 +201,7 @@ class TKMStyle: NSObject {
   // on iOS < 13.
   class func withTraitCollection(_ tc: UITraitCollection, f: () -> Void) {
     if #available(iOS 13.0, *) {
-      tc.performAsCurrent {
-        f()
-      }
+      tc.performAsCurrent(f: f)
     } else {
       f()
     }

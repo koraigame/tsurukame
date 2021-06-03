@@ -17,16 +17,16 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.23</string>
+	<string>822+13</string>
 	<key>CFBundleVersion</key>
-	<string>810</string>
+	<string>0</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.davidsansome.wanikani</string>
+	<string>com.matthewbenedict.wanikani</string>
 	<key>WKWatchKitApp</key>
 	<true/>
 </dict>

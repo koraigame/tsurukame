@@ -13,7 +13,19 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
+
+extension UITraitCollection {
+  static var current = UITraitCollection()
+
+  func performAsCurrent(f: () -> Void) {
+    f()
+  }
+}
+
+extension UIColor {
+  static var label = UIColor()
+  static var systemBackground = UIColor()
+}
 
 class SRSStageCategoryItem: TKMBasicModelItem {
   let stageCategory: SRSStageCategory

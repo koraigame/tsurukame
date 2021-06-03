@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 @objc
 class SubjectsByLevelViewController: UITableViewController, SubjectDelegate {
@@ -29,9 +28,7 @@ class SubjectsByLevelViewController: UITableViewController, SubjectDelegate {
   }
 
   // Only for objective-c compatibility.
-  @objc func getLevel() -> Int {
-    level
-  }
+  @objc func getLevel() -> Int { return level }
 
   override func viewDidLoad() {
     super.viewDidLoad()

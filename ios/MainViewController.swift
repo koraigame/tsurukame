@@ -14,7 +14,6 @@
 
 import Foundation
 import PromiseKit
-import WaniKaniAPI
 
 private let kDefaultProfileImageURL =
   "https://cdn.wanikani.com/default-avatar-300x300-20121121.png"
@@ -42,6 +41,17 @@ private func setTableViewCellCount(_ item: TKMBasicModelItem, count: Int,
   }
 
   return item.enabled
+}
+
+private extension UISearchBar {
+  var searchTextField: UITextField {
+    for view in subviews[0].subviews {
+      if let field = view as? UITextField {
+        return field
+      }
+    }
+    return UITextField()
+  }
 }
 
 @objc
@@ -104,7 +114,6 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
     if #available(iOS 13, *) {
       let searchTextField = searchBar.searchTextField
-      searchTextField.backgroundColor = .systemBackground
       searchTextField.tintColor = originalSearchBarTintColor
     } else {
       for view in searchBar.subviews[0].subviews {
@@ -137,11 +146,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationDidEnterBackground),
-                   name: UIApplication.didEnterBackgroundNotification,
+                   name: NSNotification.Name.UIApplicationDidEnterBackground,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationWillEnterForeground),
-                   name: UIApplication.willEnterForegroundNotification,
+                   name: NSNotification.Name.UIApplicationWillEnterForeground,
                    object: nil)
   }
 
@@ -152,7 +161,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updatingTableModel = true
 
     DispatchQueue.main.async {
-      WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      if #available(iOS 9.3, *) {
+        WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      }
       self.updatingTableModel = false
       self.recreateTableModel()
     }
@@ -247,14 +258,14 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
-    .lightContent
+    return .lightContent
   }
 
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
 
     // Bring the refresh control above the gradient.
-    refreshControl?.superview?.bringSubviewToFront(refreshControl!)
+    refreshControl?.superview?.bringSubview(toFront: refreshControl!)
 
     let headerSize = headerView.sizeThatFits(CGSize(width: view.bounds.size.width, height: 0))
     headerView.frame = CGRect(origin: headerView.frame.origin, size: headerSize)
@@ -337,12 +348,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let date = calendar
       .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
 
-    hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
-                                              repeats: false,
-                                              block: { [weak self] _ in
-                                                guard let self = self else { return }
-                                                self.hourlyTimerExpired()
-                                              })
+    hourlyRefreshTimer = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow,
+                                              target: self,
+                                              selector: #selector(hourlyTimerExpired),
+                                              userInfo: nil, repeats: false)
   }
 
   func cancelHourlyTimer() {
@@ -350,7 +359,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     hourlyRefreshTimer = Timer()
   }
 
-  func hourlyTimerExpired() {
+  @objc func hourlyTimerExpired() {
     refresh(quick: true)
     updateHourlyTimer()
   }
@@ -375,7 +384,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
     let progress = Progress(totalUnitCount: -1)
     headerView.setProgress(progress: progress)
-    services.localCachingClient.sync(quick: quick, progress: progress)
+    _ = services.localCachingClient.sync(quick: quick, progress: progress)
   }
 
   @objc func availableItemsChanged() {
@@ -492,29 +501,25 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     if hasLessons, !hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Continue lessons"))
+                              action: #selector(startLessons)))
     } else if hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Continue reviews"))
+                              action: #selector(startReviews)))
     }
 
     // Command L to start lessons, if any
     if hasLessons {
       ret.append(UIKeyCommand(input: "l",
                               modifierFlags: [.command],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Start lessons"))
+                              action: #selector(startLessons)))
     }
 
     // Command R to start reviews, if any
     if hasReviews {
       ret.append(UIKeyCommand(input: "r",
                               modifierFlags: [.command],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Start reviews"))
+                              action: #selector(startReviews)))
     }
 
     return ret

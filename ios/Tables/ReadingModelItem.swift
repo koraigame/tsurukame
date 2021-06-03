@@ -32,7 +32,7 @@ class ReadingModelItem: AttributedModelItem {
   }
 
   override func cellClass() -> AnyClass! {
-    ReadingModelCell.self
+    return ReadingModelCell.self
   }
 
   func playAudio() {

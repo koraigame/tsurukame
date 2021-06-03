@@ -27,7 +27,7 @@ class AttributedModelItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    AttributedModelCell.self
+    return AttributedModelCell.self
   }
 }
 
@@ -56,7 +56,7 @@ class AttributedModelCell: TKMModelCell {
   }
 
   override func sizeThatFits(_ size: CGSize) -> CGSize {
-    var availableRect = CGRect(origin: .zero, size: size).inset(by: kEdgeInsets)
+    var availableRect = UIEdgeInsetsInsetRect(CGRect(origin: .zero, size: size), kEdgeInsets)
     let textViewSize = textView.sizeThatFits(availableRect.size)
 
     availableRect.size.height = max(kMinimumHeight,
@@ -67,7 +67,7 @@ class AttributedModelCell: TKMModelCell {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    var availableRect = bounds.inset(by: kEdgeInsets)
+    var availableRect = UIEdgeInsetsInsetRect(bounds, kEdgeInsets)
 
     if let rightButton = rightButton {
       let buttonSize = rightButton.intrinsicContentSize

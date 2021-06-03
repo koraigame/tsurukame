@@ -69,7 +69,10 @@ open class Transformer: NSObject
     open func pointValuesToPixel(_ points: inout [CGPoint])
     {
         let trans = valueToPixelMatrix
-        points = points.map { $0.applying(trans) }
+        for i in 0 ..< points.count
+        {
+            points[i] = points[i].applying(trans)
+        }
     }
     
     open func pointValueToPixel(_ point: inout CGPoint)
@@ -123,14 +126,22 @@ open class Transformer: NSObject
     open func rectValuesToPixel(_ rects: inout [CGRect])
     {
         let trans = valueToPixelMatrix
-        rects = rects.map { $0.applying(trans) }
+        
+        for i in 0 ..< rects.count
+        {
+            rects[i] = rects[i].applying(trans)
+        }
     }
     
     /// Transforms the given array of touch points (pixels) into values on the chart.
     open func pixelsToValues(_ pixels: inout [CGPoint])
     {
         let trans = pixelToValueMatrix
-        pixels = pixels.map { $0.applying(trans) }
+        
+        for i in 0 ..< pixels.count
+        {
+            pixels[i] = pixels[i].applying(trans)
+        }
     }
     
     /// Transforms the given touch point (pixels) into a value on the chart.
@@ -139,7 +150,7 @@ open class Transformer: NSObject
         pixel = pixel.applying(pixelToValueMatrix)
     }
     
-    /// - Returns: The x and y values in the chart at the given touch point
+    /// - returns: The x and y values in the chart at the given touch point
     /// (encapsulated in a CGPoint). This method transforms pixel coordinates to
     /// coordinates / values in the chart.
     @objc open func valueForTouchPoint(_ point: CGPoint) -> CGPoint
@@ -147,7 +158,7 @@ open class Transformer: NSObject
         return point.applying(pixelToValueMatrix)
     }
     
-    /// - Returns: The x and y values in the chart at the given touch point
+    /// - returns: The x and y values in the chart at the given touch point
     /// (x/y). This method transforms pixel coordinates to
     /// coordinates / values in the chart.
     @objc open func valueForTouchPoint(x: CGFloat, y: CGFloat) -> CGPoint

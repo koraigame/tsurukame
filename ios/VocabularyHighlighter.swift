@@ -13,9 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
-
-import Rexy
 
 private class ConjugationGroup {
   public let prefix: String
@@ -59,7 +56,7 @@ private class ConjugationGroup {
                           volitional: String,
                           cha: String,
                           extraConjugations: [String] = []) -> ConjugationGroup {
-    ConjugationGroup(suffix: suffix, conjugations: [
+    return ConjugationGroup(suffix: suffix, conjugations: [
       suffix,
       continuous,
       continuous + "ます",
@@ -144,18 +141,18 @@ private class ConjugationGroup {
                        _ te: String,
                        _ ta: String,
                        _ cha: String) -> ConjugationGroup {
-    verb(suffix: u,
-         te: te,
-         perfective: ta,
-         negative: a,
-         continuous: i,
-         potential: e,
-         passive: a,
-         causative: a,
-         provisionalConditional: e,
-         imperative: e,
-         volitional: o,
-         cha: cha)
+    return verb(suffix: u,
+                te: te,
+                perfective: ta,
+                negative: a,
+                continuous: i,
+                potential: e,
+                passive: a,
+                causative: a,
+                provisionalConditional: e,
+                imperative: e,
+                volitional: o,
+                cha: cha)
   }
 
   static var godanVerbs: [Character: ConjugationGroup] = [
@@ -197,8 +194,7 @@ private class ConjugationGroup {
                              imperative: "しろ",
                              volitional: "しよ",
                              cha: "っち",
-                             extraConjugations: [""] // Allow the suru verb stem by itself.
-  )
+                             extraConjugations: [""]) // Allow the suru verb stem by itself.
 
   static var iAdjective = ConjugationGroup(suffix: "い",
                                            conjugations: [
@@ -295,7 +291,7 @@ func highlightOccurrences(of subject: TKMSubject,
   let ret = NSMutableAttributedString(attributedString: text)
   for match in matches {
     let range = NSRange(match.startIndex ..< match.endIndex, in: text.string)
-    ret.addAttribute(.foregroundColor, value: UIColor.systemRed, range: range)
+    ret.addAttribute(.foregroundColor, value: UIColor.red, range: range)
   }
 
   return ret

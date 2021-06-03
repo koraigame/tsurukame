@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Hippolyte
-import WaniKaniAPI
 
 import XCTest
 

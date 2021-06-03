@@ -15,8 +15,6 @@
 #import "SuccessAnimation.h"
 #import "Tsurukame-Swift.h"
 
-@import WaniKaniAPI;
-
 static CGFloat RandFloat(CGFloat min, CGFloat max) {
   return ((CGFloat)arc4random()) / ((CGFloat)UINT32_MAX) * (max - min) + min;
 }

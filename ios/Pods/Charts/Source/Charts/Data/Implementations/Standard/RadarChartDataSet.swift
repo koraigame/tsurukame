@@ -26,9 +26,9 @@ open class RadarChartDataSet: LineRadarChartDataSet, IRadarChartDataSet
         initialize()
     }
     
-    public required override init(entries: [ChartDataEntry]?, label: String?)
+    public required override init(values: [ChartDataEntry]?, label: String?)
     {
-        super.init(entries: entries, label: label)
+        super.init(values: values, label: label)
         initialize()
     }
     
@@ -40,7 +40,7 @@ open class RadarChartDataSet: LineRadarChartDataSet, IRadarChartDataSet
     /// **default**: false
     open var drawHighlightCircleEnabled: Bool = false
     
-    /// `true` if highlight circle should be drawn, `false` ifnot
+    /// - returns: `true` if highlight circle should be drawn, `false` ifnot
     open var isDrawHighlightCircleEnabled: Bool { return drawHighlightCircleEnabled }
     
     open var highlightCircleFillColor: NSUIColor? = NSUIColor.white

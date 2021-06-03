@@ -43,6 +43,7 @@ struct AudioPackage {
     AudioPackage("a-levels-51-60.tar.lzfse", "Levels 51-60", 18_827_575),
   ]
 
+  @available(iOS 9.0, *)
   static func decompressLZFSE(compressedData: Data) -> Data? {
     if compressedData.count == 0 { return nil }
 
@@ -112,37 +113,39 @@ struct AudioPackage {
                                          accessoryType: UITableViewCell.AccessoryType.none,
                                          target: self,
                                          action: #selector(didTapDeleteAllAudio(sender:)))
-      deleteItem.textColor = UIColor.systemRed
+      deleteItem.textColor = UIColor.red
       model.add(deleteItem)
     }
   }
 
   override func url(forFilename filename: String) -> URL {
-    URL(string: "https://tsurukame.app/audio/\(filename)")!
+    return URL(string: "https://tsurukame.app/audio/\(filename)")!
   }
 
   override func didFinishDownload(for filename: String, at location: URL) {
     guard let data = try? Data(contentsOf: location) else {
       fatalError("Error reading data: \(url(forFilename: filename).absoluteString)")
     }
-    guard let tarData = OfflineAudioViewController.decompressLZFSE(compressedData: data) else {
-      fatalError("Error decompressing data: \(url(forFilename: filename).absoluteString)")
-    }
-    do {
-      try fileManager.untar(at: Audio.cacheDirectoryPath, tarData: tarData,
-                            progressBlock: { (progress: Float) in
-                              self.updateProgress(onMainThread: filename) {
-                                $0.state = TKMDownloadModelItemInstalling
-                                $0.installingProgress = progress
-                              }
-                            })
-    } catch {
-      fatalError("Error extracting data: \(url(forFilename: filename).absoluteString)")
-    }
+    if #available(iOS 9.0, *) {
+      guard let tarData = OfflineAudioViewController.decompressLZFSE(compressedData: data) else {
+        fatalError("Error decompressing data: \(url(forFilename: filename).absoluteString)")
+      }
+      do {
+        try fileManager.untar(at: Audio.cacheDirectoryPath, tarData: tarData,
+                              progressBlock: { (progress: Float) in
+                                self.updateProgress(onMainThread: filename) {
+                                  $0.state = TKMDownloadModelItemInstalling
+                                  $0.installingProgress = progress
+                                }
+                              })
+      } catch {
+        fatalError("Error extracting data: \(url(forFilename: filename).absoluteString)")
+      }
 
-    DispatchQueue.main.async {
-      Settings.installedAudioPackages.insert(filename)
-      self.markDownloadComplete(filename)
+      DispatchQueue.main.async {
+        Settings.installedAudioPackages.insert(filename)
+        self.markDownloadComplete(filename)
+      }
     }
   }
 

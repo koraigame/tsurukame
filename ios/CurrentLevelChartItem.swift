@@ -14,7 +14,6 @@
 
 import Charts
 import Foundation
-import WaniKaniAPI
 
 enum PieSlice: Int {
   case Locked = 0
@@ -61,7 +60,7 @@ enum PieSlice: Int {
 
 func unsetAllLabels(view: ChartViewBase) {
   let dataSet = view.data!.dataSets[0] as! PieChartDataSet
-  for other in dataSet.entries as! [PieChartDataEntry] {
+  for other in dataSet.values as! [PieChartDataEntry] {
     other.label = nil
   }
 }
@@ -75,11 +74,11 @@ class CurrentLevelChartItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    CurrentLevelChartCell.self
+    return CurrentLevelChartCell.self
   }
 
   func rowHeight() -> CGFloat {
-    120
+    return 120
   }
 }
 
@@ -146,7 +145,7 @@ class CurrentLevelChartCell: TKMModelCell {
     insets.bottom = 0
     insets.top = 0
 
-    let frame = contentView.bounds.inset(by: insets)
+    let frame = UIEdgeInsetsInsetRect(contentView.bounds, insets)
     let width = frame.width / 3
     var x = frame.minX
     for chart in [radicalChart!, kanjiChart!, vocabularyChart!] {
@@ -194,11 +193,11 @@ class CurrentLevelChartCell: TKMModelCell {
       if sliceSizes[i] <= 0 {
         continue
       }
-      values.append(PieChartDataEntry(value: Double(sliceSizes[i]), data: i))
+      values.append(PieChartDataEntry(value: Double(sliceSizes[i]), data: i as AnyObject))
       colors.append(PieSlice(rawValue: i)!.color(baseColor: baseColor))
     }
 
-    let dataSet = PieChartDataSet(values)
+    let dataSet = PieChartDataSet(values: values, label: nil)
     dataSet.valueTextColor = TKMStyle.Color.label
     dataSet.entryLabelColor = TKMStyle.Color.grey33
     dataSet.valueFont = UIFont.systemFont(ofSize: 10.0)

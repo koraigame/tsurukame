@@ -15,11 +15,37 @@
 import ClockKit
 import os
 
+private extension CLKTextProvider {
+  convenience init(format _: String, _: CVarArg, _: CVarArg, _: CVarArg, _: CVarArg) {
+    self.init()
+  }
+
+  convenience init(format _: String, _: CVarArg, _: CVarArg, _: CVarArg) {
+    self.init()
+  }
+
+  convenience init(format _: String, _: CVarArg, _: CVarArg) {
+    self.init()
+  }
+
+  convenience init(format _: String, _: CVarArg) {
+    self.init()
+  }
+
+  convenience init(format _: String) {
+    self.init()
+  }
+}
+
 class ComplicationController: NSObject, CLKComplicationDataSource {
   let tsurukameHighlightColor = UIColor.red
   // Ignore next review dates father in the future. We show the durations in
   // hours and these large values look incorrect.
   let farFutureReviewDate = TimeInterval(60 * 60 * 24)
+
+  func relativeDateProvider(date _: Date) -> CLKTextProvider! {
+    return nil
+  }
 
   // MARK: - Timeline Configuration
 
@@ -104,13 +130,17 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         }
       }
       handler(entries)
-    } else if let staleDate = DataManager.sharedInstance.dataStaleAfter(),
-              after.distance(to: staleDate) >= 0,
-              let staleEntry = staleTimelineEntry(complication: complication) {
-      handler([staleEntry])
-    } else {
-      handler(nil)
     }
+    /*
+     else if let staleDate = DataManager.sharedInstance.dataStaleAfter(),
+     after.distance(to: staleDate) >= 0,
+     let staleEntry = staleTimelineEntry(complication: complication) {
+     handler([staleEntry])
+     }
+     else {
+     handler(nil)
+     }
+     */
   }
 
   func staleTimelineEntry(complication: CLKComplication) -> CLKComplicationTimelineEntry? {
@@ -153,10 +183,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     switch dataSource {
     case .ReviewCounts:
       return templateForReviewCount(complication, userData: userData)
-    case .Level:
-      return templateForLevel(complication, userData: userData)
+    case .Level: fallthrough
     case .Character:
-      return templateForCharacter(complication, userData: userData)
+      return templateForLevel(complication, userData: userData)
     }
   }
 
@@ -247,72 +276,75 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         template.textProvider = CLKTextProvider(format: "%d REVIEWS", reviewsPending)
       }
       return template
-    case .graphicCorner:
-      let template = CLKComplicationTemplateGraphicCornerStackText()
-      template.outerTextProvider = CLKTextProvider(format: "%d NOW", reviewsPending)
-      if nextHour > 0 || nextReview == nil {
-        template.innerTextProvider = CLKTextProvider(format: "%d next hour", nextHour)
-      } else {
-        template
-          .innerTextProvider = CLKTextProvider(format: "%@ until next",
-                                               relativeDateProvider(date: nextReview!))
-      }
-      return template
-    case .graphicCircular:
-      if reviewsPending > 0 {
-        let template = CLKComplicationTemplateGraphicCircularStackImage()
-        template.line2TextProvider = CLKTextProvider(format: "%d", reviewsPending)
-        if let img = UIImage(named: "miniCrab") {
-          template.line1ImageProvider = CLKFullColorImageProvider(fullColorImage: img)
+    #if swift(>=5)
+      case .graphicCorner:
+        let template = CLKComplicationTemplateGraphicCornerStackText()
+        template.outerTextProvider = CLKTextProvider(format: "%d NOW", reviewsPending)
+        if nextHour > 0 || nextReview == nil {
+          template.innerTextProvider = CLKTextProvider(format: "%d next hour", nextHour)
+        } else {
+          template
+            .innerTextProvider = CLKTextProvider(format: "%@ until next",
+                                                 relativeDateProvider(date: nextReview!))
         }
         return template
-      } else if nextHour > 0 || nextReview == nil {
-        let template = CLKComplicationTemplateGraphicCircularStackText()
-        template.line1TextProvider = CLKSimpleTextProvider(text: "next")
-        template.line2TextProvider = CLKTextProvider(format: "%d", nextHour)
+      case .graphicCircular:
+        if reviewsPending > 0 {
+          let template = CLKComplicationTemplateGraphicCircularStackImage()
+          template.line2TextProvider = CLKTextProvider(format: "%d", reviewsPending)
+          if let img = UIImage(named: "miniCrab") {
+            template.line1ImageProvider = CLKFullColorImageProvider(fullColorImage: img)
+          }
+          return template
+        } else if nextHour > 0 || nextReview == nil {
+          let template = CLKComplicationTemplateGraphicCircularStackText()
+          template.line1TextProvider = CLKSimpleTextProvider(text: "next")
+          template.line2TextProvider = CLKTextProvider(format: "%d", nextHour)
+          return template
+        } else {
+          let template = CLKComplicationTemplateGraphicCircularStackText()
+          template.line1TextProvider = CLKSimpleTextProvider(text: "next")
+          template.line2TextProvider = relativeDateProvider(date: nextReview!)
+          return template
+        }
+      case .graphicBezel:
+        let template = CLKComplicationTemplateGraphicBezelCircularText()
+        if let img = UIImage(named: "miniCrab") {
+          let circularTemplate = CLKComplicationTemplateGraphicCircularImage()
+          circularTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: img)
+          template.circularTemplate = circularTemplate
+        } else {
+          let circularTemplate = CLKComplicationTemplateGraphicCircularStackText()
+          circularTemplate.line1TextProvider = CLKSimpleTextProvider(text: "")
+          circularTemplate.line2TextProvider = CLKSimpleTextProvider(text: "")
+          template.circularTemplate = circularTemplate
+        }
+        if nextHour > 0 || nextReview == nil {
+          template
+            .textProvider = CLKTextProvider(format: "%d NOW • %d next hour", reviewsPending,
+                                            nextHour)
+        } else {
+          template.textProvider = relativeDateProvider(date: nextReview!)
+        }
         return template
-      } else {
-        let template = CLKComplicationTemplateGraphicCircularStackText()
-        template.line1TextProvider = CLKSimpleTextProvider(text: "next")
-        template.line2TextProvider = relativeDateProvider(date: nextReview!)
-        return template
-      }
-    case .graphicBezel:
-      let template = CLKComplicationTemplateGraphicBezelCircularText()
-      if let img = UIImage(named: "miniCrab") {
-        let circularTemplate = CLKComplicationTemplateGraphicCircularImage()
-        circularTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: img)
-        template.circularTemplate = circularTemplate
-      } else {
-        let circularTemplate = CLKComplicationTemplateGraphicCircularStackText()
-        circularTemplate.line1TextProvider = CLKSimpleTextProvider(text: "")
-        circularTemplate.line2TextProvider = CLKSimpleTextProvider(text: "")
-        template.circularTemplate = circularTemplate
-      }
-      if nextHour > 0 || nextReview == nil {
-        template
-          .textProvider = CLKTextProvider(format: "%d NOW • %d next hour", reviewsPending, nextHour)
-      } else {
-        template.textProvider = relativeDateProvider(date: nextReview!)
-      }
-      return template
-    case .graphicRectangular:
-      let template = CLKComplicationTemplateGraphicRectangularStandardBody()
-      template.headerTextProvider = CLKTextProvider(format: "Reviews")
-      template.body1TextProvider = CLKTextProvider(format: "%d now", reviewsPending)
-      if nextHour > 0 || nextReview == nil {
-        template.body2TextProvider = CLKTextProvider(format: "%d next hour", nextHour)
-      } else {
-        template
-          .body2TextProvider = CLKTextProvider(format: "%@ until next",
-                                               relativeDateProvider(date: nextReview!))
-      }
+      case .graphicRectangular:
+        let template = CLKComplicationTemplateGraphicRectangularStandardBody()
+        template.headerTextProvider = CLKTextProvider(format: "Reviews")
+        template.body1TextProvider = CLKTextProvider(format: "%d now", reviewsPending)
+        if nextHour > 0 || nextReview == nil {
+          template.body2TextProvider = CLKTextProvider(format: "%d next hour", nextHour)
+        } else {
+          template
+            .body2TextProvider = CLKTextProvider(format: "%@ until next",
+                                                 relativeDateProvider(date: nextReview!))
+        }
 
-      if let img = UIImage(named: "miniCrab") {
-        template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
-      }
-      return template
-    @unknown default:
+        if let img = UIImage(named: "miniCrab") {
+          template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
+        }
+        return template
+    #endif
+    default:
       return nil
     }
     return nil
@@ -380,56 +412,58 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     case .utilitarianLarge:
       let template = CLKComplicationTemplateUtilitarianLargeFlat()
       if fillFraction > 0.8 {
-        template
-          .textProvider = CLKTextProvider(format: "%@ • %d left", levelTextProvider,
-                                          total - learned)
+        // template
+        //  .textProvider = CLKTextProvider(format: "%@ • %d left", levelTextProvider,
+        //                                  total - learned)
       } else {
+        // template
+        // .textProvider = CLKTextProvider(format: "%@ • %d/%d", levelTextProvider, learned, total)
+      }
+      return template
+    #if swift(>=5)
+      case .graphicCorner:
+        let template = CLKComplicationTemplateGraphicCornerGaugeText()
+        template.outerTextProvider = levelShortTextProvider
         template
-          .textProvider = CLKTextProvider(format: "%@ • %d/%d", levelTextProvider, learned, total)
-      }
-      return template
-    case .graphicCorner:
-      let template = CLKComplicationTemplateGraphicCornerGaugeText()
-      template.outerTextProvider = levelShortTextProvider
-      template
-        .gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: tsurukameHighlightColor,
-                                                fillFraction: fillFraction)
-      template.trailingTextProvider = CLKTextProvider(format: "→%d", total - learned)
-      return template
-    case .graphicCircular:
-      let template = CLKComplicationTemplateGraphicCircularOpenGaugeRangeText()
-      template.centerTextProvider = CLKTextProvider(format: "%d", learned)
-      template
-        .gaugeProvider = CLKSimpleGaugeProvider(style: .ring, gaugeColor: tsurukameHighlightColor,
-                                                fillFraction: fillFraction)
-      template.leadingTextProvider = CLKSimpleTextProvider(text: "0")
-      template.trailingTextProvider = CLKTextProvider(format: "%d", total)
-      return template
-    case .graphicBezel:
-      let circleTemplate = CLKComplicationTemplateGraphicCircularOpenGaugeRangeText()
-      circleTemplate.centerTextProvider = CLKTextProvider(format: "%d", learned)
-      circleTemplate
-        .gaugeProvider = CLKSimpleGaugeProvider(style: .ring, gaugeColor: tsurukameHighlightColor,
-                                                fillFraction: fillFraction)
-      circleTemplate.leadingTextProvider = CLKSimpleTextProvider(text: "0")
-      circleTemplate.trailingTextProvider = CLKTextProvider(format: "%d", total)
-      let template = CLKComplicationTemplateGraphicBezelCircularText()
-      template
-        .textProvider = CLKTextProvider(format: "%@ • %.0f%% complete", levelTextProvider,
-                                        (Float(learned) / Float(total)) * 100.0)
-      template.circularTemplate = circleTemplate
-      return template
-    case .graphicRectangular:
-      let template = CLKComplicationTemplateGraphicRectangularTextGauge()
-      template.headerTextProvider = levelTextProvider
-      template.body1TextProvider = CLKTextProvider(format: "%d of %d learned", learned, total)
-      if let img = UIImage(named: "miniCrab") {
-        template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
-      }
-      template
-        .gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: tsurukameHighlightColor,
-                                                fillFraction: fillFraction)
-      return template
+          .gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: tsurukameHighlightColor,
+                                                  fillFraction: fillFraction)
+        template.trailingTextProvider = CLKTextProvider(format: "→%d", total - learned)
+        return template
+      case .graphicCircular:
+        let template = CLKComplicationTemplateGraphicCircularOpenGaugeRangeText()
+        template.centerTextProvider = CLKTextProvider(format: "%d", learned)
+        template
+          .gaugeProvider = CLKSimpleGaugeProvider(style: .ring, gaugeColor: tsurukameHighlightColor,
+                                                  fillFraction: fillFraction)
+        template.leadingTextProvider = CLKSimpleTextProvider(text: "0")
+        template.trailingTextProvider = CLKTextProvider(format: "%d", total)
+        return template
+      case .graphicBezel:
+        let circleTemplate = CLKComplicationTemplateGraphicCircularOpenGaugeRangeText()
+        circleTemplate.centerTextProvider = CLKTextProvider(format: "%d", learned)
+        circleTemplate
+          .gaugeProvider = CLKSimpleGaugeProvider(style: .ring, gaugeColor: tsurukameHighlightColor,
+                                                  fillFraction: fillFraction)
+        circleTemplate.leadingTextProvider = CLKSimpleTextProvider(text: "0")
+        circleTemplate.trailingTextProvider = CLKTextProvider(format: "%d", total)
+        let template = CLKComplicationTemplateGraphicBezelCircularText()
+        template
+          .textProvider = CLKTextProvider(format: "%@ • %.0f%% complete", levelTextProvider,
+                                          (Float(learned) / Float(total)) * 100.0)
+        template.circularTemplate = circleTemplate
+        return template
+      case .graphicRectangular:
+        let template = CLKComplicationTemplateGraphicRectangularTextGauge()
+        template.headerTextProvider = levelTextProvider
+        template.body1TextProvider = CLKTextProvider(format: "%d of %d learned", learned, total)
+        if let img = UIImage(named: "miniCrab") {
+          template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
+        }
+        template
+          .gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: tsurukameHighlightColor,
+                                                  fillFraction: fillFraction)
+        return template
+    #endif
     default:
       return nil
     }
@@ -476,40 +510,42 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       let template = CLKComplicationTemplateUtilitarianLargeFlat()
       template.textProvider = CLKSimpleTextProvider(text: "data stale")
       return template
-    case .graphicCorner:
-      let template = CLKComplicationTemplateGraphicCornerStackText()
-      template.outerTextProvider = CLKSimpleTextProvider(text: "stale")
-      template.innerTextProvider = CLKSimpleTextProvider(text: "open phone app")
-      return template
-    case .graphicCircular:
-      let template = CLKComplicationTemplateGraphicCircularStackText()
-      template.line1TextProvider = CLKSimpleTextProvider(text: "next")
-      template.line2TextProvider = dashTextProvider
-    case .graphicBezel:
-      let template = CLKComplicationTemplateGraphicBezelCircularText()
-      if let img = UIImage(named: "miniCrab") {
-        let circularTemplate = CLKComplicationTemplateGraphicCircularImage()
-        circularTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: img)
-        template.circularTemplate = circularTemplate
-      } else {
-        let circularTemplate = CLKComplicationTemplateGraphicCircularStackText()
-        circularTemplate.line1TextProvider = CLKSimpleTextProvider(text: "")
-        circularTemplate.line2TextProvider = CLKSimpleTextProvider(text: "")
-        template.circularTemplate = circularTemplate
-      }
-      template.textProvider = dashTextProvider
-      return template
-    case .graphicRectangular:
-      let template = CLKComplicationTemplateGraphicRectangularStandardBody()
-      template.headerTextProvider = CLKTextProvider(format: "Reviews")
-      template.body1TextProvider = dashTextProvider
-      template.body2TextProvider = dashTextProvider
+    #if swift(>=5)
+      case .graphicCorner:
+        let template = CLKComplicationTemplateGraphicCornerStackText()
+        template.outerTextProvider = CLKSimpleTextProvider(text: "stale")
+        template.innerTextProvider = CLKSimpleTextProvider(text: "open phone app")
+        return template
+      case .graphicCircular:
+        let template = CLKComplicationTemplateGraphicCircularStackText()
+        template.line1TextProvider = CLKSimpleTextProvider(text: "next")
+        template.line2TextProvider = dashTextProvider
+      case .graphicBezel:
+        let template = CLKComplicationTemplateGraphicBezelCircularText()
+        if let img = UIImage(named: "miniCrab") {
+          let circularTemplate = CLKComplicationTemplateGraphicCircularImage()
+          circularTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: img)
+          template.circularTemplate = circularTemplate
+        } else {
+          let circularTemplate = CLKComplicationTemplateGraphicCircularStackText()
+          circularTemplate.line1TextProvider = CLKSimpleTextProvider(text: "")
+          circularTemplate.line2TextProvider = CLKSimpleTextProvider(text: "")
+          template.circularTemplate = circularTemplate
+        }
+        template.textProvider = dashTextProvider
+        return template
+      case .graphicRectangular:
+        let template = CLKComplicationTemplateGraphicRectangularStandardBody()
+        template.headerTextProvider = CLKTextProvider(format: "Reviews")
+        template.body1TextProvider = dashTextProvider
+        template.body2TextProvider = dashTextProvider
 
-      if let img = UIImage(named: "miniCrab") {
-        template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
-      }
-      return template
-    @unknown default:
+        if let img = UIImage(named: "miniCrab") {
+          template.headerImageProvider = CLKFullColorImageProvider(fullColorImage: img)
+        }
+        return template
+    #endif
+    default:
       return nil
     }
     return nil
@@ -546,12 +582,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
           .gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: tsurukameHighlightColor,
                                                   fillFraction: 3 / 10)
         return template
-      } else {
-        let template = CLKComplicationTemplateGraphicCircularStackText()
-        template.line1TextProvider = CLKSimpleTextProvider(text: "")
-        template.line2TextProvider = CLKSimpleTextProvider(text: character)
-        return template
-      }
+      } else { return nil }
+    /* else {
+       let template = CLKComplicationTemplateGraphicCircularStackText()
+       template.line1TextProvider = CLKSimpleTextProvider(text: "")
+       template.line2TextProvider = CLKSimpleTextProvider(text: character)
+       return template
+     }*/
     default:
       return nil
     }
@@ -560,7 +597,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   func relativeDateProvider(date: Date) -> CLKRelativeDateTextProvider {
     // Always use hour because the complication cache does not call often enough
     // to vary this unit.
-    CLKRelativeDateTextProvider(date: date, style: .offsetShort, units: .hour)
+    return CLKRelativeDateTextProvider(date: date, style: .offset, units: .hour)
   }
 
   /**
@@ -576,12 +613,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 
     let textStyle = NSMutableParagraphStyle()
     textStyle.alignment = .center
-
-    let textFontAttributes = [
-      NSAttributedString.Key.font: textFont,
-      NSAttributedString.Key.foregroundColor: textColor,
-      NSAttributedString.Key.paragraphStyle: textStyle,
-    ] as [NSAttributedString.Key: Any]
+    #if swift(>=5)
+      let textFontAttributes = [
+        NSAttributedString.Key.font: textFont,
+        NSAttributedString.Key.foregroundColor: textColor,
+        NSAttributedString.Key.paragraphStyle: textStyle,
+      ] as [NSAttributedString.Key: Any]
+    #else
+      let textFontAttributes: [NSAttributedStringKey: Any] = [:]
+    #endif
 
     let textHeight = textFont.lineHeight
     let textY = (size.height - textHeight) / 2

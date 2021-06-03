@@ -13,14 +13,13 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 enum TaskType {
   case reading
   case meaning
 
   static func random() -> TaskType {
-    arc4random_uniform(2) == 0 ? .reading : .meaning
+    return arc4random_uniform(2) == 0 ? .reading : .meaning
   }
 }
 
@@ -48,16 +47,16 @@ class ReviewItem: NSObject {
 
   class func readyForReview(assignments: [TKMAssignment],
                             localCachingClient: LocalCachingClient) -> [ReviewItem] {
-    filterReadyItems(assignments: assignments,
-                     localCachingClient: localCachingClient) { (assignment) -> Bool in
+    return filterReadyItems(assignments: assignments,
+                            localCachingClient: localCachingClient) { (assignment) -> Bool in
       assignment.isReviewStage && assignment.availableAtDate.timeIntervalSinceNow < 0
     }
   }
 
   class func readyForLessons(assignments: [TKMAssignment],
                              localCachingClient: LocalCachingClient) -> [ReviewItem] {
-    filterReadyItems(assignments: assignments,
-                     localCachingClient: localCachingClient) { (assignment) -> Bool in
+    return filterReadyItems(assignments: assignments,
+                            localCachingClient: localCachingClient) { (assignment) -> Bool in
       assignment.isLessonStage
     }
   }

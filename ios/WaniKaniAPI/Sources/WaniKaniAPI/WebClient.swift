@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import PMKFoundation
 import PromiseKit
 
 @objc
@@ -122,7 +121,7 @@ public class WaniKaniWebClient: NSObject {
   }
 
   private func getApiToken(cookie: String) -> Promise<String> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       let req = authorize(kAccessTokenUrl, cookie: cookie)
       return request(req, session: URLSession.shared)
     }.then { (arg) -> Promise<String> in
@@ -136,7 +135,7 @@ public class WaniKaniWebClient: NSObject {
   }
 
   private func createApiToken(cookie: String) -> Promise<String> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       let req = authorize(kAccessTokenUrl, cookie: cookie)
       return request(req)
     }.then { (arg) -> DataTaskPromise in
@@ -167,7 +166,7 @@ public class WaniKaniWebClient: NSObject {
   }
 
   private func getEmailAddress(cookie: String) -> Promise<String> {
-    firstly { () -> DataTaskPromise in
+    return firstly { () -> DataTaskPromise in
       let req = authorize(kAccountUrl, cookie: cookie)
       return request(req, session: URLSession.shared)
     }.map { (arg) -> String in

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 protocol SubjectChipDelegate: NSObject {
   func didTapSubjectChip(_ subjectChip: SubjectChip)
@@ -24,7 +23,7 @@ class SubjectChip: UIView {
 
   var isDimmed: Bool {
     get {
-      (gradientView?.alpha ?? 0.0) < 0.75
+      return (gradientView?.alpha ?? 0.0) < 0.75
     }
     set {
       gradientView?.alpha = newValue ? 0.5 : 1.0
