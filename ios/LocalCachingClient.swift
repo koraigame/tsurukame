@@ -1011,7 +1011,7 @@ struct Cached<T> {
   var wrappedValue: T {
     mutating get {
       if stale {
-        value = updateBlock!()
+        value = updateBlock?() ?? (0 as! T)
         stale = false
       }
       return value!

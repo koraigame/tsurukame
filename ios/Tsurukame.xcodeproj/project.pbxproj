@@ -78,7 +78,6 @@
 		636A63E7238A607A00902269 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636A63E6238A607A00902269 /* MainHeaderView.swift */; };
 		637CA11525D7E48A0082580E /* LessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA11425D7E48A0082580E /* LessonsViewController.swift */; };
 		637CA12C25D7EDFF0082580E /* ReviewSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA12B25D7EDFE0082580E /* ReviewSummaryViewController.swift */; };
-		637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6364A10A242DFB6F000ABF32 /* Intents.framework */; };
 		638A5C4E25A471F9001A7AEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A5C4D25A471F9001A7AEE /* AppDelegate.swift */; };
 		638A5C6C25ADBB86001A7AEE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A5C6B25ADBB86001A7AEE /* main.swift */; };
 		638D197525C6AA4B00B80544 /* MarkupModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638D197425C6AA4B00B80544 /* MarkupModelItem.swift */; };
@@ -426,7 +425,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */,
 				63CAAB111FD7FACD00E09DA1 /* SystemConfiguration.framework in Frameworks */,
 				0A943349E17FA7889EFEE41F /* Pods_Tsurukame.framework in Frameworks */,
 			);
@@ -890,7 +888,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				63EF56FD26060BE50038551A /* PBXTargetDependency */,
 				C90846C7237F1C790068A272 /* PBXTargetDependency */,
 			);
 			name = Tsurukame;
@@ -1524,9 +1521,6 @@
 			target = 630FD6121FC45BDF00D21C1F /* Tsurukame */;
 			targetProxy = 63E9A8E721199C8500418CE1 /* PBXContainerItemProxy */;
 		};
-		63EF56FD26060BE50038551A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-		};
 		63EF57A826061C540038551A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 		};
@@ -1757,6 +1751,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = AppStoreScreenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1766,7 +1761,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.AppStoreScreenshots;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.AppStoreScreenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1782,6 +1777,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = AppStoreScreenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1790,7 +1786,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.AppStoreScreenshots;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.AppStoreScreenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.0;
@@ -1866,7 +1862,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotterUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.FontScreenshotterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1891,7 +1887,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotterUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.FontScreenshotterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1916,7 +1912,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wk.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wk.Tests;
 				PRODUCT_MODULE_NAME = Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -1944,7 +1940,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wk.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wk.Tests;
 				PRODUCT_MODULE_NAME = Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -2148,33 +2144,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/vadymmarkov/Rexy";
-			requirement = {
-				kind = exactVersion;
-				version = 1.0.1;
-			};
-		};
-		637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-protobuf";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.15.0;
-			};
-		};
-		63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mxcl/PromiseKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.13.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		63EF56E126060BA70038551A /* WaniKaniAPI */ = {

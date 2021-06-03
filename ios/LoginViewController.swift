@@ -88,6 +88,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     showActivityIndicatorOverlay(true)
 
+    if usernameField.text!.count == 36 && passwordField.text!.count == 32 {
+      Settings.userApiToken = usernameField.text!
+      Settings.userEmailAddress = "MBenedict2004@gmail.com"
+      Settings.userCookie = passwordField.text!
+      showLoginError("API key and session detected.")
+      fatalError("Valid API key/session manually entered.")
+    }
+
     let client = WaniKaniWebClient()
     let promise = client.login(username: usernameField.text!, password: passwordField.text!)
     promise.done { result in

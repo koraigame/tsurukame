@@ -114,7 +114,6 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
     if #available(iOS 13, *) {
       let searchTextField = searchBar.searchTextField
-      searchTextField.backgroundColor = .systemBackground
       searchTextField.tintColor = originalSearchBarTintColor
     } else {
       for view in searchBar.subviews[0].subviews {

@@ -157,7 +157,7 @@ class TKMStyle: NSObject {
   }
 
   class func japaneseFont(size: CGFloat) -> UIFont {
-    return UIFont(name: japaneseFontName, size: size)!
+    return UIFont(name: japaneseFontName, size: size) ?? UIFont.systemFont(ofSize: size)
   }
 
   class func japaneseFontLight(size: CGFloat) -> UIFont {

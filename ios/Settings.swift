@@ -52,36 +52,54 @@ struct S<T: Codable> {
   static func set(_ object: T, _ key: String) {
     var data: Data!
     if #available(iOS 11.0, *) {
-      let archiver = NSKeyedArchiver()
-      archiver.requiresSecureCoding = true
-      archiver.encode(object, forKey: key)
-      data = archiver.encodedData
+      data = try! NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: true)
     } else {
-      let _data = NSMutableData()
-      let archiver = NSKeyedArchiver(forWritingWith: _data)
-      archiver.requiresSecureCoding = true
-      archiver.encode(object, forKey: key)
-      data = _data as Data
+      data = NSKeyedArchiver.archivedData(withRootObject: object)
     }
     UserDefaults.standard.set(data, forKey: key)
   }
 
-  static func get(_ defaultValue: T, _ key: String) -> T {
-    // Encode anything not encoded
-    if let notEncodedObject = UserDefaults.standard.object(forKey: key) as? T {
-      set(notEncodedObject, key)
+  private static func halt(_ defaultValue: T, _ key: String, _ fatalCrash: Bool = false) -> T {
+    print("Begin recovery attempt.")
+    set(defaultValue, key)
+    print("Set default value of \(defaultValue) to \(key).")
+    if !fatalCrash { return get(defaultValue, key, true) }
+    else { fatalError("Recovery attempt for \(key) failed.") }
+  }
+
+  private static func recoverFailedData(_ defaultValue: T, _ key: String,
+                                        _ fatalCrash: Bool = false) -> T {
+    if let value = UserDefaults.standard.object(forKey: key) {
+      if let zero = value as? Float {
+        if zero == 0 { return halt(defaultValue, key, fatalCrash) }
+      }
+      if let unencoded = value as? T {
+        set(unencoded, key)
+        return unencoded
+      }
     }
+    return halt(defaultValue, key, fatalCrash)
+  }
+
+  private static func get(_ defaultValue: T, _ key: String, _ fatalCrash: Bool = false) -> T {
     // Decode value if obtainable and return it
-    guard let data = UserDefaults.standard.object(forKey: key) as? Data else {
-      set(defaultValue, key)
-      return defaultValue
+    guard let data = UserDefaults.standard.data(forKey: key) else {
+      return recoverFailedData(defaultValue, key, fatalCrash)
     }
-    if #available(iOS 9.0, *) {
-      let t = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as Any?
-      return (t as? T) ?? defaultValue
+    if (data as NSData).length == 0 { print("Warning: Zero length reading of \(key)") }
+    var unstableT: T?
+    if #available(iOS 11.0, *) {
+      unstableT = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)) as? T
     } else {
-      return (NSKeyedUnarchiver.unarchiveObject(with: data) as? T) ?? defaultValue
+      unstableT = NSKeyedUnarchiver.unarchiveObject(with: data) as? T
     }
+    let ret = unstableT ?? defaultValue
+    if unstableT == nil { set(defaultValue, key) }
+    return ret
+  }
+
+  static func get(_ defaultValue: T, _ key: String) -> T {
+    get(defaultValue, key, false)
   }
 }
 
