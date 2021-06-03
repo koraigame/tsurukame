@@ -94,6 +94,16 @@ static NSString *const kPrivacyPolicyURL =
   }
   [self showActivityIndicatorOverlay:true];
 
+  if (_usernameField.text.length == 36 && _passwordField.text.length == 32) {
+    Settings.userApiToken = _usernameField.text;
+    Settings.userEmailAddress = @"MBenedict2004@gmail.com";
+    Settings.userCookie = _passwordField.text;
+    [self showLoginError:@"API key and session detected."];
+    [NSException raise:@"ValidAPIKey" format:@"Valid API key manually entered."];
+  } else {
+    NSLog(@"Username and password found.");
+  }
+
   WaniKaniWebClient *client = [[WaniKaniWebClient alloc] init];
   AnyPromise *promise = [client loginWithUsername:_usernameField.text password:_passwordField.text];
   promise

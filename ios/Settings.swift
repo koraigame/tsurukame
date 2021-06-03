@@ -35,11 +35,7 @@ struct S<T: Codable> {
     if #available(iOS 11.0, *) {
       return try! NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: true)
     } else {
-      let data = NSMutableData()
-      let archiver = NSKeyedArchiver(forWritingWith: data)
-      archiver.requiresSecureCoding = true
-      archiver.encode(object, forKey: key)
-      return data as Data
+      return NSKeyedArchiver.archivedData(withRootObject: object)
     }
   }
   

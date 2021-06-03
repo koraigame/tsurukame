@@ -127,7 +127,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       }
       handler(entries)
     }
-    #if swift(>=5)
+    /*
     else if let staleDate = DataManager.sharedInstance.dataStaleAfter(),
       after.distance(to: staleDate) >= 0,
       let staleEntry = staleTimelineEntry(complication: complication) {
@@ -136,7 +136,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     else {
       handler(nil)
     }
-    #endif
+    */
   }
 
   func staleTimelineEntry(complication: CLKComplication) -> CLKComplicationTimelineEntry? {
@@ -407,12 +407,12 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     case .utilitarianLarge:
       let template = CLKComplicationTemplateUtilitarianLargeFlat()
       if fillFraction > 0.8 {
-        template
-          .textProvider = CLKTextProvider(format: "%@ • %d left", levelTextProvider,
-                                          total - learned)
+        //template
+        //  .textProvider = CLKTextProvider(format: "%@ • %d left", levelTextProvider,
+        //                                  total - learned)
       } else {
-        template
-          .textProvider = CLKTextProvider(format: "%@ • %d/%d", levelTextProvider, learned, total)
+        //template
+         // .textProvider = CLKTextProvider(format: "%@ • %d/%d", levelTextProvider, learned, total)
       }
       return template
         #if swift(>=5)

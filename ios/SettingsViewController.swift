@@ -218,6 +218,14 @@ class AlertView: UIAlertView {
                                 subtitle: "To attach to bug reports or email to the developer",
                                 accessoryType: disclosureIndicator, target: self,
                                 action: #selector(didTapExportDatabase(sender:))))
+    let coreVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+    if coreVersion != "", build != "" {
+      let version = "\(coreVersion).\(build)"
+      model
+        .add(TKMBasicModelItem(style: .value1, title: "Version", subtitle: version,
+                               accessoryType: .none))
+    }
     let logOutItem = TKMBasicModelItem(style: .default,
                                        title: "Log out", subtitle: nil,
                                        accessoryType: UITableViewCellAccessoryType.none,
@@ -247,7 +255,7 @@ class AlertView: UIAlertView {
     var lessonItemOrderText: [String] = []
     for i in Settings.lessonOrder {
       if Int32(i) == TKMSubject_Type.unknown.rawValue { continue }
-      lessonItemOrderText.append(TKMSubject_Type(rawValue: Settings.lessonOrder[Int(i)])!.description)
+      lessonItemOrderText.append(TKMSubject_Type(rawValue: i)!.description)
     }
     if lessonItemOrderText.count < 3 { lessonItemOrderText.append("Random") }
     return lessonItemOrderText.joined(separator: ", ")
