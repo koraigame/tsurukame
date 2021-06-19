@@ -98,20 +98,32 @@ class SettingsViewController: UITableViewController {
                                 accessoryType: .disclosureIndicator,
                                 target: self,
                                 action: #selector(didTapApprenticeLessonsLimit(_:))))
+
+    model.addSection("Reviews")
     model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Show stats section",
                                  subtitle: "Show section with level, SRS stage, and more",
                                  on: Settings.showStatsSection,
                                  target: self,
                                  action: #selector(showStatsSectionChanged(_:))))
-
-    model.addSection("Reviews")
     model.add(TKMSwitchModelItem(style: .default,
                                  title: "Show edit notes",
                                  subtitle: nil,
                                  on: Settings.showEditNotes,
                                  target: self,
                                  action: #selector(showEditNotesChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .default,
+                                 title: "Always show arrow",
+                                 subtitle: nil,
+                                 on: Settings.alwaysShowArrow,
+                                 target: self,
+                                 action: #selector(alwaysShowArrowChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .default,
+                                 title: "Expand submit button",
+                                 subtitle: nil,
+                                 on: Settings.expandSubmitButton,
+                                 target: self,
+                                 action: #selector(expandSubmitButtonChanged(_:))))
     model.add(TKMBasicModelItem(style: .value1,
                                 title: "Review order",
                                 subtitle: reviewOrderValueText,
@@ -169,12 +181,18 @@ class SettingsViewController: UITableViewController {
                                 target: self,
                                 action: #selector(fontSizeChanged(_:))))
 
-    model.add(TKMSwitchModelItem(style: .subtitle,
-                                 title: "Allow cheating",
-                                 subtitle: "Ignore Typos and Add Synonym",
-                                 on: Settings.enableCheats,
+    model.add(TKMSwitchModelItem(style: .default,
+                                 title: "Ignore Typos",
+                                 subtitle: nil,
+                                 on: Settings.ignoreTypos,
                                  target: self,
-                                 action: #selector(enableCheatsSwitchChanged(_:))))
+                                 action: #selector(ignoreTyposSwitchChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .default,
+                                 title: "Add Synonyms",
+                                 subtitle: nil,
+                                 on: Settings.addSynonyms,
+                                 target: self,
+                                 action: #selector(addSynonymsSwitchChanged(_:))))
     model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Show old mnemonics",
                                  subtitle: "Display old mnemonics alongside new ones",
@@ -383,6 +401,18 @@ class SettingsViewController: UITableViewController {
     Settings.typeOrderPrecedence = switchView.isOn
   }
 
+  @objc private func showEditNotesChanged(_ switchView: UISwitch) {
+    Settings.showEditNotes = switchView.isOn
+  }
+
+  @objc private func alwaysShowArrowChanged(_ switchView: UISwitch) {
+    Settings.alwaysShowArrow = switchView.isOn
+  }
+
+  @objc private func expandSubmitButtonChanged(_ switchView: UISwitch) {
+    Settings.expandSubmitButton = switchView.isOn
+  }
+
   @objc private func groupMeaningReadingSwitchChanged(_ switchView: UISwitch) {
     Settings.groupMeaningReading = switchView.isOn
     if let groupMeaningReadingIndexPath = groupMeaningReadingIndexPath {
@@ -402,8 +432,12 @@ class SettingsViewController: UITableViewController {
     Settings.minimizeReviewPenalty = switchView.isOn
   }
 
-  @objc private func enableCheatsSwitchChanged(_ switchView: UISwitch) {
-    Settings.enableCheats = switchView.isOn
+  @objc private func ignoreTyposSwitchChanged(_ switchView: UISwitch) {
+    Settings.ignoreTypos = switchView.isOn
+  }
+
+  @objc private func addSynonymsSwitchChanged(_ switchView: UISwitch) {
+    Settings.addSynonyms = switchView.isOn
   }
 
   @objc private func showOldMnemonicSwitchChanged(_ switchView: UISwitch) {
