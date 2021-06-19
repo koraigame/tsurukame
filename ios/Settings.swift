@@ -190,6 +190,11 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     set(n) { S.set(n, #keyPath(showStatsSection)) }
   }
 
+  static var showEditNotes: Bool {
+    get { return S.get(true, #keyPath(showStatsSection)) }
+    set(n) { S.set(n, #keyPath(showStatsSection)) }
+  }
+
   static var reviewOrder: ReviewOrder {
     get { return E.get(ReviewOrder.random, #keyPath(reviewOrder)) }
     set(n) { E.set(n, #keyPath(reviewOrder)) }
@@ -235,6 +240,11 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     set(n) { S.set(n, #keyPath(exactMatch)) }
   }
 
+  static var exactRisingBurnsOnly: Bool {
+    get { return S.get(false, #keyPath(exactRisingBurnsOnly)) }
+    set(n) { S.set(n, #keyPath(exactRisingBurnsOnly)) }
+  }
+
   static var enableCheats: Bool {
     get { return S.get(true, #keyPath(enableCheats)) }
     set(n) { S.set(n, #keyPath(exactMatch)) }
@@ -273,6 +283,16 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
   static var minimizeReviewPenalty: Bool {
     get { return S.get(true, #keyPath(minimizeReviewPenalty)) }
     set(n) { S.set(n, #keyPath(minimizeReviewPenalty)) }
+  }
+
+  static var pausePartiallyCorrect: Bool {
+    get { return S.get(false, #keyPath(pausePartiallyCorrect)) }
+    set(n) { S.set(n, #keyPath(pausePartiallyCorrect)) }
+  }
+
+  static var ankiMode: Bool {
+    get { return S.get(false, #keyPath(ankiMode)) }
+    set(n) { S.set(n, #keyPath(ankiMode)) }
   }
 
   static var playAudioAutomatically: Bool {

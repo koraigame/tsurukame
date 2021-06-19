@@ -25,6 +25,7 @@ class SettingsViewController: UITableViewController {
   private var services: TKMServices!
   private var model: TKMTableModel?
   private var groupMeaningReadingIndexPath: IndexPath?
+  private var exactRisingBurnsOnlyIndexPath: IndexPath?
   private var notificationHandler: ((Bool) -> Void)?
 
   func setup(services: TKMServices) {
@@ -107,6 +108,12 @@ class SettingsViewController: UITableViewController {
                                  action: #selector(showStatsSectionChanged(_:))))
 
     model.addSection("Reviews")
+    model.add(TKMSwitchModelItem(style: .default,
+                                 title: "Show edit notes",
+                                 subtitle: nil,
+                                 on: Settings.showEditNotes,
+                                 target: self,
+                                 action: #selector(showEditNotesChanged(_:))))
     model.add(TKMBasicModelItem(style: .value1,
                                 title: "Review order",
                                 subtitle: reviewOrderValueText,
@@ -208,6 +215,31 @@ class SettingsViewController: UITableViewController {
                                                        action: #selector(minimizeReviewPenaltySwitchChanged(_:)))
     minimizeReviewPenaltyItem.numberOfSubtitleLines = 0
     model.add(minimizeReviewPenaltyItem)
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Exact match",
+                                 subtitle: "Requires typing in answers exactly correct",
+                                 on: Settings.exactMatch,
+                                 target: self,
+                                 action: #selector(exactMatchSwitchChanged(_:))))
+    exactRisingBurnsOnlyIndexPath = model.add(TKMSwitchModelItem(style: .default,
+                                                                 title: "Apply to potential burns only",
+                                                                 subtitle: nil,
+                                                                 on: Settings.exactRisingBurnsOnly,
+                                                                 target: self,
+                                                                 action: #selector(exactRisingBurnsOnlySwitchChanged(_:))),
+                                              hidden: !Settings.exactMatch)
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Pause on partially correct answers",
+                                 subtitle: "Allows making sure answer was correct",
+                                 on: Settings.pausePartiallyCorrect,
+                                 target: self,
+                                 action: #selector(partiallyCorrectSwitchChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Anki mode",
+                                 subtitle: "Allows doing reviews without typing answers",
+                                 on: Settings.ankiMode,
+                                 target: self,
+                                 action: #selector(ankiModeSwitchChanged(_:))))
 
     model.addSection("Audio")
     model.add(TKMSwitchModelItem(style: .subtitle,
@@ -380,6 +412,25 @@ class SettingsViewController: UITableViewController {
 
   @objc private func showAllReadingsSwitchChanged(_ switchView: UISwitch) {
     Settings.showAllReadings = switchView.isOn
+  }
+
+  @objc private func exactMatchSwitchChanged(_ switchView: UISwitch) {
+    Settings.exactMatch = switchView.isOn
+    if let exactRisingBurnsOnlyIndexPath = exactRisingBurnsOnlyIndexPath {
+      model?.setIndexPath(exactRisingBurnsOnlyIndexPath, isHidden: !switchView.isOn)
+    }
+  }
+
+  @objc private func exactRisingBurnsOnlySwitchChanged(_ switchView: UISwitch) {
+    Settings.exactRisingBurnsOnly = switchView.isOn
+  }
+
+  @objc private func partiallyCorrectSwitchChanged(_ switchView: UISwitch) {
+    Settings.pausePartiallyCorrect = switchView.isOn
+  }
+
+  @objc private func ankiModeSwitchChanged(_ switchView: UISwitch) {
+    Settings.ankiMode = switchView.isOn
   }
 
   @objc private func playAudioAutomaticallySwitchChanged(_ switchView: UISwitch) {
