@@ -80,6 +80,9 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     _guruKanjiCount.updateBlock = {
       self.updateGuruKanjiCount()
     }
+    _apprenticeCount.updateBlock = {
+      self.updateApprenticeCount()
+    }
     _srsCategoryCounts.updateBlock = {
       self.updateSrsCategoryCounts()
     }

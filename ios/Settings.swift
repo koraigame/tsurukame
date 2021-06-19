@@ -99,7 +99,7 @@ struct S<T: Codable> {
   }
 
   static func get(_ defaultValue: T, _ key: String) -> T {
-    get(defaultValue, key, false)
+    return get(defaultValue, key, false)
   }
 }
 
