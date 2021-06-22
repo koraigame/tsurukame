@@ -314,12 +314,27 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         if !Settings.typeOrderPrecedence, let sort = sortTypeOrder(a, b) { return sort }
         return false
       }
+    case .longestRelativeWait:
+      reviewQueue.sort { (a, b: ReviewItem) -> Bool in
+        if Settings.typeOrderPrecedence, let sort = sortTypeOrder(a, b) { return sort }
+        if availableRatio(a.assignment) < availableRatio(b.assignment) { return false }
+        if availableRatio(a.assignment) > availableRatio(b.assignment) { return true }
+        if !Settings.typeOrderPrecedence, let sort = sortTypeOrder(a, b) { return sort }
+        return false
+      }
     case .random:
       break
 
     @unknown default:
       fatalError()
     }
+  }
+
+  private func availableRatio(_ assignment: TKMAssignment) -> TimeInterval {
+    let truncatedDate =
+      Date(timeIntervalSince1970: Double((Int(Date().timeIntervalSince1970) / 3600) * 3600))
+    return truncatedDate.timeIntervalSince(assignment.availableAtDate) /
+      SRSStage.duration(assignment.srsStage, assignment.level <= 2)
   }
 
   @objc public var activeQueueLength: Int {

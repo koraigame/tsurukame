@@ -20,6 +20,7 @@
   case newestAvailableFirst = 5
   case oldestAvailableFirst = 6
   case descendingSRSStage = 7
+  case longestRelativeWait = 8
 
   var description: String {
     switch self {
@@ -30,6 +31,7 @@
     case .lowestLevelFirst: return "Lowest level first"
     case .newestAvailableFirst: return "Newest available first"
     case .oldestAvailableFirst: return "Oldest available first"
+    case .longestRelativeWait: return "Longest relative wait"
     }
   }
 }
