@@ -12,6 +12,7 @@
 		4820306724D849E100B40FDD /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
 		482D7C0F261CC29900104F69 /* ApprenticeLimitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482D7C0E261CC29900104F69 /* ApprenticeLimitViewController.swift */; };
 		483EBFDC261DD7190043C804 /* FontScreenshotterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */; };
+		486C8EB5268A1E37001F754B /* UpcomingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486C8EB4268A1E37001F754B /* UpcomingReviewsViewController.swift */; };
 		488536CF2663D7C000DEE9D1 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CA2663D7C000DEE9D1 /* Error.swift */; };
 		488536D02663D7C000DEE9D1 /* CFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CB2663D7C000DEE9D1 /* CFlags.swift */; };
 		488536D12663D7C000DEE9D1 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CC2663D7C000DEE9D1 /* Regex.swift */; };
@@ -236,6 +237,7 @@
 		481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLevelReviewTimeItem.swift; sourceTree = "<group>"; };
 		4826740B23ECE46900F704E4 /* TKMReviewBatchSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMReviewBatchSizeViewController.h; sourceTree = "<group>"; };
 		482D7C0E261CC29900104F69 /* ApprenticeLimitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApprenticeLimitViewController.swift; sourceTree = "<group>"; };
+		486C8EB4268A1E37001F754B /* UpcomingReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsViewController.swift; sourceTree = "<group>"; };
 		4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontScreenshotterUITests.swift; sourceTree = "<group>"; };
 		4874562E261DD28E00F33AA3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		488536CA2663D7C000DEE9D1 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 				63C42A4421B6A703008CA938 /* Tsurukame-Bridging-Header.h */,
 				6319C9B520441DE200C31F87 /* Tsurukame.app */,
 				93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */,
+				486C8EB4268A1E37001F754B /* UpcomingReviewsViewController.swift */,
 				633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */,
 				48CCD343266413FA007E22C1 /* WaniKaniAPI */,
 				C92AB96E237F280300F79904 /* WatchHelper.swift */,
@@ -1357,6 +1360,7 @@
 				638A5C6C25ADBB86001A7AEE /* main.swift in Sources */,
 				6398480E23D699E70077EB6B /* ContextSentenceModelItem.swift in Sources */,
 				48CCD36A26641428007E22C1 /* NSRegularExpression+Matches.swift in Sources */,
+				486C8EB5268A1E37001F754B /* UpcomingReviewsViewController.swift in Sources */,
 				48CCD36C2664142E007E22C1 /* ProtobufExtensions.swift in Sources */,
 				63BDA9A7200E04E500D75DA2 /* NavigationController.m in Sources */,
 				63E9A8D72111BFCD00418CE1 /* SubjectCatalogueViewController.m in Sources */,
@@ -1687,7 +1691,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
@@ -1722,7 +1726,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
@@ -1803,7 +1807,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1831,7 +1835,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1963,7 +1967,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
@@ -1992,7 +1996,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
@@ -2018,7 +2022,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2050,7 +2054,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

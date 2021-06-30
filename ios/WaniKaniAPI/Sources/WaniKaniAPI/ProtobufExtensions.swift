@@ -131,6 +131,8 @@ public enum SRSStage: Int, CustomStringConvertible, Comparable, Strideable {
     }
   }
 
+  public static let maxHours = 2879
+
   public static func duration(_ stage: SRSStage, _ accelerated: Bool) -> TimeInterval {
     return TimeInterval(hours(stage, accelerated) * 60 * 60)
   }

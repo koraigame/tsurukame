@@ -58,6 +58,18 @@ class SettingsViewController: UITableViewController {
                                 accessoryType: .disclosureIndicator,
                                 target: self,
                                 action: #selector(didTapInterfaceStyle(_:))))
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Upcoming type over SRS",
+                                 subtitle: "In the upcoming reviews list, break down item type instead of SRS.",
+                                 on: Settings.upcomingTypeOverSRS,
+                                 target: self,
+                                 action: #selector(upcomingTypeOverSRSChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Add prospective reviews",
+                                 subtitle: "Add reviews that would appear if you do your reviews immediately and correctly.",
+                                 on: Settings.addProspectiveReviews,
+                                 target: self,
+                                 action: #selector(addProspectiveReviewsChanged(_:))))
 
     model.addSection("Notifications")
     model.add(TKMSwitchModelItem(style: .default,
@@ -493,6 +505,14 @@ class SettingsViewController: UITableViewController {
 
   @objc private func playAudioAutomaticallySwitchChanged(_ switchView: UISwitch) {
     Settings.playAudioAutomatically = switchView.isOn
+  }
+
+  @objc private func upcomingTypeOverSRSChanged(_ switchView: UISwitch) {
+    Settings.upcomingTypeOverSRS = switchView.isOn
+  }
+
+  @objc private func addProspectiveReviewsChanged(_ switchView: UISwitch) {
+    Settings.addProspectiveReviews = switchView.isOn
   }
 
   @objc private func allReviewsSwitchChanged(_ switchView: UISwitch) {
