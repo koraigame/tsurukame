@@ -152,7 +152,7 @@
 		C90846C0237F1C790068A272 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90846BF237F1C790068A272 /* ExtensionDelegate.swift */; };
 		C90846C2237F1C790068A272 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90846C1237F1C790068A272 /* ComplicationController.swift */; };
 		C90846C4237F1C790068A272 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C90846C3237F1C790068A272 /* Assets.xcassets */; };
-		C90846C8237F1C790068A272 /* Tsurukame Complication.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C90846AC237F1C770068A272 /* Tsurukame Complication.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C90846C8237F1C790068A272 /* Tsurukame Complication.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C90846AC237F1C770068A272 /* Tsurukame Complication.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C9164D3923D0CFCF00B6D93A /* InterfaceStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9164D3823D0CFCF00B6D93A /* InterfaceStyleViewController.swift */; };
 		C92AB96F237F280300F79904 /* WatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB96E237F280300F79904 /* WatchHelper.swift */; };
 		C92AB970237F2DB600F79904 /* WatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB96E237F280300F79904 /* WatchHelper.swift */; };
@@ -1535,6 +1535,7 @@
 		};
 		C90846C7237F1C790068A272 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = C90846AB237F1C770068A272 /* Tsurukame Complication */;
 			targetProxy = C90846C6237F1C790068A272 /* PBXContainerItemProxy */;
 		};
@@ -1691,7 +1692,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
@@ -1726,7 +1727,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
@@ -1807,7 +1808,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1835,7 +1836,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1967,7 +1968,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
@@ -1996,7 +1997,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
@@ -2022,7 +2023,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2054,7 +2055,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
