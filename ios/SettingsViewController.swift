@@ -51,14 +51,12 @@ class SettingsViewController: UITableViewController {
     let model = TKMMutableTableModel(tableView: tableView)
 
     model.addSection("App")
-    if #available(iOS 13.0, *) {
-      model.add(TKMBasicModelItem(style: .value1,
-                                  title: "UI Appearance",
-                                  subtitle: Settings.interfaceStyle.description,
-                                  accessoryType: .disclosureIndicator,
-                                  target: self,
-                                  action: #selector(didTapInterfaceStyle(_:))))
-    }
+    model.add(TKMBasicModelItem(style: .value1,
+                                title: "UI Appearance",
+                                subtitle: Settings.interfaceStyle.description,
+                                accessoryType: .disclosureIndicator,
+                                target: self,
+                                action: #selector(didTapInterfaceStyle(_:))))
     model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Upcoming type over SRS",
                                  subtitle: "In the upcoming reviews list, break down item type instead of SRS.",
