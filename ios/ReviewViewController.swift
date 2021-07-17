@@ -151,9 +151,9 @@ protocol ReviewViewControllerDelegate {
 
 class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelegate {
   private var kanaInput: TKMKanaInput!
-  private let tickImage = UIImage(named: "checkmark.circle")
+  private let tickImage = Settings.alwaysShowArrow ? nil : UIImage(named: "checkmark.circle")
   private let forwardArrowImage = UIImage(named: "ic_arrow_forward_white")
-  private let skipImage = UIImage(named: "goforward.plus")
+  private let skipImage = Settings.alwaysShowArrow ? nil : UIImage(named: "goforward.plus")
 
   private var services: TKMServices!
   private var showMenuButton: Bool!
@@ -762,7 +762,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     }
 
     // Change the submit button icon.
-    let submitButtonImage = shown ? forwardArrowImage :
+    let submitButtonImage = shown || Settings.alwaysShowArrow ? forwardArrowImage :
       (Settings.allowSkippingReviews ? skipImage : tickImage)
     submitButton.setImage(submitButtonImage, for: .normal)
 
@@ -1266,7 +1266,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     c.popoverPresentationController?.sourceView = addSynonymButton
     c.popoverPresentationController?.sourceRect = addSynonymButton.bounds
 
-    if !Settings.pausePartiallyCorrect || Settings.ankiMode {
+    if !Settings.pausePartiallyCorrect && Settings.ignoreTypos || Settings.ankiMode {
       c.addAction(UIAlertAction(title: "My answer was correct",
                                 style: .default,
                                 handler: { _ in self.markCorrect() }))
@@ -1276,11 +1276,13 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
                                 style: .default,
                                 handler: { _ in self.markIncorrect() }))
     }
-    c.addAction(UIAlertAction(title: "Ask again later",
-                              style: .default,
-                              handler: { _ in self.askAgain() }))
+    if Settings.ignoreTypos {
+      c.addAction(UIAlertAction(title: "Ask again later",
+                                style: .default,
+                                handler: { _ in self.askAgain() }))
+    }
 
-    if activeTaskType == .meaning {
+    if activeTaskType == .meaning, Settings.addSynonyms {
       c.addAction(UIAlertAction(title: "Add synonym",
                                 style: .default,
                                 handler: { _ in self.addSynonym() }))
