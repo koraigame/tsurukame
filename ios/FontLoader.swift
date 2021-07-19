@@ -45,10 +45,10 @@ struct FontDefinition {
   }
 
   var definition: FontDefinition
-  var fontName: String { definition.fontName }
-  var fileName: String { definition.fileName }
-  var displayName: String { definition.displayName }
-  var sizeBytes: Int64 { definition.sizeBytes }
+  var fontName: String { return definition.fontName }
+  var fileName: String { return definition.fileName }
+  var displayName: String { return definition.displayName }
+  var sizeBytes: Int64 { return definition.sizeBytes }
   var available: Bool = false
 
   init(definition: FontDefinition) {
@@ -56,7 +56,7 @@ struct FontDefinition {
     super.init()
     reload()
   }
-  
+
   func canRender(_ text: String) -> Bool {
     let fontRef = CTFontCreateWithName(NSString(string: fontName), 0.0, nil)
     let count = text.count, characters = text.utf16.map { $0 }
@@ -96,12 +96,12 @@ struct FontDefinition {
   }
 
   func didDelete() { available = false }
-  func loadScreenshot() -> UIImage! { UIImage(named: fontName) }
+  func loadScreenshot() -> UIImage! { return UIImage(named: fontName) }
 }
 
 @objc(TKMFontLoader) @objcMembers class FontLoader: NSObject {
   static var cacheDirectoryPath: String {
-    "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/fonts"
+    return "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/fonts"
   }
 
   let allFonts: [Font]

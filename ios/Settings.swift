@@ -166,7 +166,7 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     get { return S.get(false, #keyPath(upcomingTypeOverSRS)) }
     set(n) { S.set(n, #keyPath(upcomingTypeOverSRS)) }
   }
-  
+
   static var addProspectiveReviews: Bool {
     get { return S.get(false, #keyPath(addProspectiveReviews)) }
     set(n) { S.set(n, #keyPath(addProspectiveReviews)) }
@@ -211,12 +211,12 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     get { return E.get(ReviewOrder.random, #keyPath(reviewOrder)) }
     set(n) { E.set(n, #keyPath(reviewOrder)) }
   }
-  
+
   static var reviewTypeOrder: [TKMSubject.TypeEnum] {
     get { return A.get([.unknown, .unknown, .unknown], "reviewTypeOrder") }
     set(n) { A.set(n, "reviewTypeOrder") }
   }
-  
+
   static var typeOrderPrecedence: Bool {
     get { return S.get(false, #keyPath(typeOrderPrecedence)) }
     set(n) { S.set(n, #keyPath(typeOrderPrecedence)) }
@@ -311,7 +311,7 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     get { return S.get(false, #keyPath(pausePartiallyCorrect)) }
     set(n) { S.set(n, #keyPath(pausePartiallyCorrect)) }
   }
-  
+
   static var ankiMode: Bool {
     get { return S.get(false, #keyPath(ankiMode)) }
     set(n) { S.set(n, #keyPath(ankiMode)) }
