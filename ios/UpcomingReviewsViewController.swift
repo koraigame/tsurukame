@@ -59,18 +59,20 @@ class UpcomingReviewsViewController: UITableViewController {
 
     func formatData(hour: Int) -> String {
       let data = reviewData[hour],
-          difference = data.availableReviews - (hour > 0 ? reviewData[hour - 1].availableReviews : 0)
+          difference = data
+          .availableReviews - (hour > 0 ? reviewData[hour - 1].availableReviews : 0)
       return "\(data.availableReviews) (+\(difference)): " +
         (Settings.upcomingTypeOverSRS ?
-          data.countByType.sorted{$0.key.rawValue < $1.key.rawValue}.reduce("") {
+          data.countByType.sorted { $0.key.rawValue < $1.key.rawValue }.reduce("") {
             $0.isEmpty ? "\($1.value)" : "\($0)/\($1.value)"
-          } : data.countByCategory.sorted{$0.key.rawValue < $1.key.rawValue}.reduce("") {
+          } : data.countByCategory.sorted { $0.key.rawValue < $1.key.rawValue }.reduce("") {
             $0.isEmpty ? "\($1.value)" : "\($0)/\($1.value)"
           })
     }
 
     for hour in 0 ..< reviewData.count {
-      if hour > 0, reviewData[hour].availableReviews == reviewData[hour - 1].availableReviews { continue }
+      if hour > 0,
+         reviewData[hour].availableReviews == reviewData[hour - 1].availableReviews { continue }
       model.add(TKMBasicModelItem(style: .value1,
                                   title: date.string(hour: hour),
                                   subtitle: formatData(hour: hour),
