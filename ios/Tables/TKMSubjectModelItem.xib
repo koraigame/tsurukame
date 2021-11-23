@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="I7H-nZ-gZA" id="IWU-MN-cvs">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pb4-DW-YLk" customClass="OAStackView">
@@ -76,6 +76,7 @@
                 <outlet property="readingLabel" destination="4Xw-0q-YTh" id="9Ge-HX-yxa"/>
                 <outlet property="subjectLabel" destination="dyn-89-U7R" id="94m-d7-fNO"/>
             </connections>
+            <point key="canvasLocation" x="130" y="132"/>
         </tableViewCell>
     </objects>
 </document>

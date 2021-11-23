@@ -23,7 +23,7 @@ extension UNAuthorizationStatus {
 
 class SettingsViewController: UITableViewController {
   private var services: TKMServices!
-  private var model: TKMTableModel?
+  private var model: TableModel?
   private var groupMeaningReadingIndexPath: IndexPath?
   private var notificationHandler: ((Bool) -> Void)?
 
@@ -48,9 +48,9 @@ class SettingsViewController: UITableViewController {
   }
 
   private func rerender() {
-    let model = TKMMutableTableModel(tableView: tableView)
+    let model = MutableTableModel(tableView: tableView)
 
-    model.addSection("App")
+    model.add(section: "App")
     if #available(iOS 13.0, *) {
       model.add(TKMBasicModelItem(style: .value1,
                                   title: "UI Appearance",
@@ -66,7 +66,7 @@ class SettingsViewController: UITableViewController {
                                  target: self,
                                  action: #selector(upcomingTypeOverSRSChanged(_:))))
 
-    model.addSection("Notifications")
+    model.add(section: "Notifications")
     model.add(TKMSwitchModelItem(style: .default,
                                  title: "Notify for all available reviews",
                                  subtitle: nil,
@@ -80,7 +80,7 @@ class SettingsViewController: UITableViewController {
                                  target: self,
                                  action: #selector(badgingSwitchChanged(_:))))
 
-    model.addSection("Lessons")
+    model.add(section: "Lessons")
     model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Prioritize current level",
                                  subtitle: "Teach items from the current level first",
@@ -112,7 +112,7 @@ class SettingsViewController: UITableViewController {
                                  target: self,
                                  action: #selector(showStatsSectionChanged(_:))))
 
-    model.addSection("Reviews")
+    model.add(section: "Reviews")
     model.add(TKMBasicModelItem(style: .value1,
                                 title: "Review order",
                                 subtitle: reviewOrderValueText,
@@ -232,14 +232,8 @@ class SettingsViewController: UITableViewController {
                                  on: Settings.ankiMode,
                                  target: self,
                                  action: #selector(ankiModeSwitchChanged(_:))))
-    model.add(TKMSwitchModelItem(style: .subtitle,
-                                 title: "Enable note editing",
-                                 subtitle: "Allows editing meaning/reading notes in reviews",
-                                 on: Settings.enableNoteEditing,
-                                 target: self,
-                                 action: #selector(enableNoteEditingSwitchChanged(_:))))
 
-    model.addSection("Audio")
+    model.add(section: "Audio")
     model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Play audio automatically",
                                  subtitle: "When you answer correctly",
@@ -253,7 +247,7 @@ class SettingsViewController: UITableViewController {
                                 target: self,
                                 action: #selector(didTapOfflineAudio(_:))))
 
-    model.addSection("Animations", footer: "You can turn off any animations you find distracting")
+    model.add(section: "Animations", footer: "You can turn off any animations you find distracting")
     model.add(TKMSwitchModelItem(style: .default,
                                  title: "Particle explosion",
                                  subtitle: nil,
@@ -358,7 +352,7 @@ class SettingsViewController: UITableViewController {
   @objc private func groupMeaningReadingSwitchChanged(_ switchView: UISwitch) {
     Settings.groupMeaningReading = switchView.isOn
     if let groupMeaningReadingIndexPath = groupMeaningReadingIndexPath {
-      model?.setIndexPath(groupMeaningReadingIndexPath, isHidden: !switchView.isOn)
+      model?.setIndexPath(groupMeaningReadingIndexPath, hidden: !switchView.isOn)
     }
   }
 
@@ -420,10 +414,6 @@ class SettingsViewController: UITableViewController {
 
   @objc private func ankiModeSwitchChanged(_ switchView: UISwitch) {
     Settings.ankiMode = switchView.isOn
-  }
-
-  @objc private func enableNoteEditingSwitchChanged(_ switchView: UISwitch) {
-    Settings.enableNoteEditing = switchView.isOn
   }
 
   @objc private func playAudioAutomaticallySwitchChanged(_ switchView: UISwitch) {

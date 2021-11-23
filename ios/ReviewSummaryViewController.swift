@@ -16,7 +16,7 @@ import Foundation
 
 class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
   private var services: TKMServices!
-  private var model: TKMTableModel!
+  private var model: TableModel!
 
   func setup(services: TKMServices, items: [ReviewItem]) {
     self.services = services
@@ -32,7 +32,7 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
       incorrectItemsByLevel[item.assignment.level, default: []].append(item)
     }
 
-    let model = TKMMutableTableModel(tableView: tableView)
+    let model = MutableTableModel(tableView: tableView)
 
     // Summary section.
     var summaryText: String
@@ -42,7 +42,7 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
       summaryText =
         "\(Int(Double(correct) / Double(items.count) * 100.0))% (\(correct)/\(items.count))"
     }
-    model.addSection("Summary")
+    model.add(section: "Summary")
     model.add(TKMBasicModelItem(style: .value1, title: "Correct answers", subtitle: summaryText))
 
     // Add a section for each level.
@@ -51,9 +51,9 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
     }
     for level in incorrectItemLevels {
       if level == currentLevel {
-        model.addSection("Current level (\(level))")
+        model.add(section: "Current level (\(level))")
       } else {
-        model.addSection("Level \(level)")
+        model.add(section: "Level \(level)")
       }
 
       for item in incorrectItemsByLevel[level]! {

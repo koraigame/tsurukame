@@ -29,7 +29,7 @@ private class UpcomingReviewsDateFormatter: UpcomingReviewsXAxisValueFormatter {
 class UpcomingReviewsViewController: UITableViewController {
   private var services: TKMServices!
   private var date: UpcomingReviewsDateFormatter!
-  private var model: TKMTableModel?
+  private var model: TableModel?
 
   func setup(services: TKMServices) {
     self.services = services
@@ -54,20 +54,18 @@ class UpcomingReviewsViewController: UITableViewController {
   }
 
   private func rerender() {
-    let model = TKMMutableTableModel(tableView: tableView),
+    let model = MutableTableModel(tableView: tableView),
         reviewData = getReviewData()
 
     func formatData(hour: Int) -> String {
       let data = reviewData[hour],
-          difference = data
-          .availableReviews - (hour > 0 ? reviewData[hour - 1].availableReviews : 0)
-      return "\(data.availableReviews) (+\(difference)): " +
-        (Settings.upcomingTypeOverSRS ?
-          data.countByType.sorted { $0.key.rawValue < $1.key.rawValue }.reduce("") {
-            $0.isEmpty ? "\($1.value)" : "\($0)/\($1.value)"
-          } : data.countByCategory.sorted { $0.key.rawValue < $1.key.rawValue }.reduce("") {
-            $0.isEmpty ? "\($1.value)" : "\($0)/\($1.value)"
-          })
+          diff = data.availableReviews - (hour > 0 ? reviewData[hour - 1].availableReviews : 0)
+      return "\(data.availableReviews) (+\(diff)): " + (Settings.upcomingTypeOverSRS ?
+        data.countByType.sorted { $0.key.rawValue < $1.key.rawValue }.reduce("") {
+          $0.isEmpty ? "\($1.value)" : "\($0)/\($1.value)"
+        } : data.countByCategory.sorted { $0.key.rawValue < $1.key.rawValue }.reduce("") {
+          $0.isEmpty ? "\($1.value)" : "\($0)/\($1.value)"
+        })
     }
 
     for hour in 0 ..< reviewData.count {

@@ -12,7 +12,7 @@
         <!--Subject Catalogue View Controller-->
         <scene sceneID="diY-fN-oc5">
             <objects>
-                <pageViewController storyboardIdentifier="subjectCatalogue" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="XWq-bF-0D1" customClass="SubjectCatalogueViewController" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="subjectCatalogue" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="XWq-bF-0D1" customClass="SubjectCatalogueViewController" customModule="Tsurukame" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Sdh-8L-T4k"/>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ft-nE-WU4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -73,7 +73,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CbN-0R-8Ce">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CbN-0R-8Ce">
                                 <rect key="frame" x="0.0" y="44" width="70" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="GPQ-1X-kOJ"/>

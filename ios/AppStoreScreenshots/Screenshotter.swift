@@ -67,7 +67,7 @@ import Reachability
   }
 
   class FakeLocalCachingClient: LocalCachingClient {
-    private let subjectTextProtos: [Int32: String] = [
+    private let subjectTextProtos: [Int64: String] = [
       // Subjects used in the search results for "sake". Abridged protos containing just the fields
       // displayed in search results.
       743: """
@@ -1261,7 +1261,7 @@ import Reachability
       return [86, 120, 485, 786, 2056]
     }
 
-    override func getSubject(id: Int32) -> TKMSubject? {
+    override func getSubject(id: Int64) -> TKMSubject? {
       if let textProto = subjectTextProtos[id] {
         return try! TKMSubject(textFormatString: textProto)
       }
@@ -1278,7 +1278,7 @@ import Reachability
       return Array(repeating: a, count: availableReviewCount)
     }
 
-    override func getStudyMaterial(subjectId _: Int32) -> TKMStudyMaterials? {
+    override func getStudyMaterial(subjectId _: Int64) -> TKMStudyMaterials? {
       return nil
     }
 
@@ -1294,7 +1294,7 @@ import Reachability
       return []
     }
 
-    override func getAssignment(subjectId _: Int32) -> TKMAssignment? {
+    override func getAssignment(subjectId _: Int64) -> TKMAssignment? {
       return nil
     }
 

@@ -286,15 +286,10 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     get { return S.get(false, #keyPath(pausePartiallyCorrect)) }
     set(n) { S.set(n, #keyPath(pausePartiallyCorrect)) }
   }
-  
+
   static var ankiMode: Bool {
     get { return S.get(false, #keyPath(ankiMode)) }
     set(n) { S.set(n, #keyPath(ankiMode)) }
-  }
-
-  static var enableNoteEditing: Bool {
-    get { return S.get(true, #keyPath(enableNoteEditing)) }
-    set(n) { S.set(n, #keyPath(enableNoteEditing)) }
   }
 
   static var playAudioAutomatically: Bool {

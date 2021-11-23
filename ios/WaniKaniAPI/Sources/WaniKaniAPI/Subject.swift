@@ -20,12 +20,12 @@ private func jsonFromBundle<T>(_ fileName: String) -> T {
   return try! JSONSerialization.jsonObject(with: data, options: []) as! T
 }
 
-private let kDeprecatedMnemonics: [Int32: String] = {
+private let kDeprecatedMnemonics: [Int64: String] = {
   let data: [String: String] = jsonFromBundle("old-mnemonics.json")
 
-  var ret = [Int32: String]()
+  var ret = [Int64: String]()
   for (id, text) in data {
-    ret[Int32(id)!] = text
+    ret[Int64(id)!] = text
   }
   return ret
 }()
@@ -52,9 +52,9 @@ struct SubjectData: Codable {
   var meaning_hint: String?
   var reading_hint: String?
 
-  var amalgamation_subject_ids: [Int32]? // Radical and Kanji.
+  var amalgamation_subject_ids: [Int64]? // Radical and Kanji.
   var character_images: [CharacterImage]? // Radical.
-  var component_subject_ids: [Int32]? // Kanji and Vocabulary.
+  var component_subject_ids: [Int64]? // Kanji and Vocabulary.
   var readings: [Reading]? // Kanji and Vocabulary.
   var visually_similar_subject_ids: [Int]? // Kanji.
   var context_sentences: [ContextSentence]? // Vocabulary.
@@ -115,7 +115,7 @@ struct SubjectData: Codable {
     }
   }
 
-  func toProto(id: Int32, objectType: String) -> TKMSubject? {
+  func toProto(id: Int64, objectType: String) -> TKMSubject? {
     var ret = TKMSubject()
     ret.id = id
     ret.level = Int32(level)
@@ -179,7 +179,7 @@ struct SubjectData: Codable {
       if let reading_mnemonic = reading_mnemonic {
         ret.vocabulary.readingExplanation = reading_mnemonic
       }
-      ret.vocabulary.audioIds = convertAudioIds()
+      ret.vocabulary.audio = convertAudio()
       ret.vocabulary.partsOfSpeech = convertPartsofSpeech()
       ret.vocabulary.sentences = convertContextSentences()
 
@@ -204,14 +204,15 @@ struct SubjectData: Codable {
     return nil
   }
 
-  private func convertAudioIds() -> [Int32] {
-    var ret = [Int32]()
+  private func convertAudio() -> [TKMVocabulary.PronunciationAudio] {
+    var ret = [TKMVocabulary.PronunciationAudio]()
     if let pronunciation_audios = pronunciation_audios {
       for audio in pronunciation_audios {
-        if audio.content_type == "audio/mpeg",
-           let dash = audio.url.firstIndex(of: "-"),
-           let id = Int32(audio.url[audio.url.index(audio.url.startIndex, offsetBy: 32) ..< dash]) {
-          ret.append(id)
+        if audio.content_type == "audio/mpeg" {
+          var audioPb = TKMVocabulary.PronunciationAudio()
+          audioPb.url = audio.url
+          audioPb.voiceActorID = Int32(audio.metadata.voice_actor_id ?? 0)
+          ret.append(audioPb)
         }
       }
     }

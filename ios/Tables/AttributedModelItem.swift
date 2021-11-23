@@ -19,7 +19,10 @@ private let kMinimumHeight: CGFloat = 44
 
 @objc(TKMAttributedModelItem)
 class AttributedModelItem: NSObject, TKMModelItem {
-  let text: NSAttributedString
+  var text: NSAttributedString
+
+  var rightButtonImage: UIImage?
+  var rightButtonCallback: ((_ cell: AttributedModelCell) -> Void)?
 
   init(text: NSAttributedString) {
     self.text = text
@@ -55,10 +58,27 @@ class AttributedModelCell: TKMModelCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  private func rightButtonFrame(_ availableRect: CGRect) -> CGRect? {
+    guard let rightButton = rightButton else {
+      return nil
+    }
+    let buttonSize = rightButton.intrinsicContentSize
+    return CGRect(x: availableRect.maxX - buttonSize.width - kEdgeInsets.right,
+                  y: availableRect.origin.y - kEdgeInsets.top,
+                  width: buttonSize.width + kEdgeInsets.right * 2,
+                  height: buttonSize.height + kEdgeInsets.top + kEdgeInsets
+                    .bottom)
+  }
+
   override func sizeThatFits(_ size: CGSize) -> CGSize {
     var availableRect = UIEdgeInsetsInsetRect(CGRect(origin: .zero, size: size), kEdgeInsets)
-    let textViewSize = textView.sizeThatFits(availableRect.size)
+    var exclusionPaths = [UIBezierPath]()
+    if let rightButtonFrame = rightButtonFrame(availableRect) {
+      exclusionPaths.append(UIBezierPath(rect: rightButtonFrame))
+    }
+    textView.textContainer.exclusionPaths = exclusionPaths
 
+    let textViewSize = textView.sizeThatFits(availableRect.size)
     availableRect.size.height = max(kMinimumHeight,
                                     textViewSize.height + kEdgeInsets.top + kEdgeInsets.bottom)
     return availableRect.size
@@ -68,25 +88,15 @@ class AttributedModelCell: TKMModelCell {
     super.layoutSubviews()
 
     var availableRect = UIEdgeInsetsInsetRect(bounds, kEdgeInsets)
-
-    if let rightButton = rightButton {
-      let buttonSize = rightButton.intrinsicContentSize
-      rightButton.frame = CGRect(x: availableRect.maxX - buttonSize.width - kEdgeInsets.right,
-                                 y: availableRect.origin.y - kEdgeInsets.top,
-                                 width: buttonSize.width + kEdgeInsets.right * 2,
-                                 height: availableRect.size.height + kEdgeInsets.top + kEdgeInsets
-                                   .bottom)
-
-      availableRect.size.width -= buttonSize.width + kEdgeInsets.right
+    var exclusionPaths = [UIBezierPath]()
+    if let rightButton = rightButton, let rightButtonFrame = rightButtonFrame(availableRect) {
+      rightButton.frame = rightButtonFrame
+      exclusionPaths.append(UIBezierPath(rect: rightButtonFrame))
     }
+    textView.textContainer.exclusionPaths = exclusionPaths
 
-    // [UITextView sizeToFit] gives the wrong size for attributed strings that mix bold and normal
-    // weight Japanese text.  We use [NSAttributedString boundingRectWithSize] which gives the correct
-    // size.
-    let text = textView.attributedText!
-    let textViewSize = text.boundingRect(with: availableRect.size,
-                                         options: .usesLineFragmentOrigin,
-                                         context: nil).size
+    var textViewSize = textView.sizeThatFits(availableRect.size)
+    textViewSize.width = availableRect.size.width
 
     // Center the text vertically.
     if textViewSize.height < availableRect.size.height {
@@ -99,8 +109,35 @@ class AttributedModelCell: TKMModelCell {
 
   override func update(with baseItem: TKMModelItem!) {
     super.update(with: baseItem)
-
     let item = baseItem as! AttributedModelItem
+
     textView.attributedText = item.text
+
+    if let rightButtonImage = item.rightButtonImage {
+      if rightButton == nil {
+        rightButton = UIButton()
+        rightButton!
+          .addTarget(self, action: #selector(AttributedModelCell.didTapRightButton),
+                     for: .touchUpInside)
+        addSubview(rightButton!)
+      }
+      rightButton!.setImage(rightButtonImage, for: .normal)
+    } else {
+      removeRightButton()
+    }
+  }
+
+  func removeRightButton() {
+    let item = self.item as! AttributedModelItem
+    item.rightButtonImage = nil
+
+    rightButton?.removeFromSuperview()
+    rightButton = nil
+    textView.textContainer.exclusionPaths = []
+  }
+
+  @objc func didTapRightButton() {
+    let item = self.item as! AttributedModelItem
+    item.rightButtonCallback?(self)
   }
 }

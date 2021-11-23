@@ -182,6 +182,7 @@ class TKMStyle: NSObject {
   class Color: NSObject {
     static let background = AdaptiveColor(light: UIColor.white, dark: UIColor.black)
     static let cellBackground = AdaptiveColorHex(light: 0xFFFFFF, dark: 0x1C1C1E)
+    static let separator = UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 0.29)
     static let label = AdaptiveColor(light: UIColor.black, dark: UIColor.white)
     static let grey33 = AdaptiveColor(light: UIColor.darkGray, dark: UIColor.lightGray)
     static let grey66 = AdaptiveColor(light: UIColor.lightGray, dark: UIColor.darkGray)
@@ -195,6 +196,13 @@ class TKMStyle: NSObject {
     static let markupKanjiBackground = AdaptiveColorHex(light: 0xFFD6F1, dark: 0x1C1C1E)
     static let markupVocabularyForeground = AdaptiveColorHex(light: 0x000000, dark: 0xC34AFF)
     static let markupVocabularyBackground = AdaptiveColorHex(light: 0xF1D6FF, dark: 0x1C1C1E)
+
+    static var placeholderText: UIColor {
+      if #available(iOS 13.0, *) {
+        return UIColor.placeholderText
+      }
+      return UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)
+    }
   }
 
   // Wrapper around UITraitCollection.performAsCurrent that just does nothing

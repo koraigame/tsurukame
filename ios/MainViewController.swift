@@ -59,7 +59,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   MainHeaderViewDelegate,
   SearchResultViewControllerDelegate, UISearchControllerDelegate {
   var services: TKMServices!
-  var model: TKMTableModel!
+  var model: TableModel!
   @IBOutlet var headerView: MainHeaderView!
   var searchController: UISearchController!
   weak var searchResultsViewController: SearchResultViewController!
@@ -177,10 +177,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let upcomingReviews = services.localCachingClient.upcomingReviews
     let currentLevelAssignments = services.localCachingClient.getAssignmentsAtUsersCurrentLevel()
 
-    let model = TKMMutableTableModel(tableView: tableView)
+    let model = MutableTableModel(tableView: tableView)
 
     if !user.hasVacationStartedAt {
-      model.addSection("Currently available")
+      model.add(section: "Currently available")
       let lessonsItem = TKMBasicModelItem(style: .value1,
                                           title: "Lessons",
                                           subtitle: "",
@@ -203,7 +203,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       hasReviews = setTableViewCellCount(reviewsItem, count: reviews)
       model.add(reviewsItem)
 
-      model.addSection("Upcoming reviews")
+      model.add(section: "Upcoming reviews")
       model.add(UpcomingReviewsChartItem(upcomingReviews, currentReviewCount: reviews, at: Date(),
                                          target: self, action: #selector(showTableForecast)))
       model
@@ -211,7 +211,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                                               currentLevelAssignments: currentLevelAssignments))
     }
 
-    model.addSection("This level")
+    model.add(section: "This level")
     model.add(CurrentLevelChartItem(currentLevelAssignments: currentLevelAssignments))
 
     if !user.hasVacationStartedAt {
@@ -232,7 +232,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                                 target: self,
                                 action: #selector(showAll)))
 
-    model.addSection("All levels")
+    model.add(section: "All levels")
     for category in SRSStageCategory.apprentice ... SRSStageCategory.burned {
       let count = services.localCachingClient.srsCategoryCounts[category.rawValue]
       model.add(SRSStageCategoryItem(stageCategory: category, count: Int(count)))
@@ -250,6 +250,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   }
 
   override func viewWillAppear(_ animated: Bool) {
+    // Assume the hour changed while the view was invisible. This will invalidate the upcoming
+    // review cache which depends on the current time.
+    services.localCachingClient.currentHourChanged()
+
     refresh(quick: true)
     updateHourlyTimer()
 
@@ -303,7 +307,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     case "showAll":
       let vc = segue.destination as! SubjectCatalogueViewController
       let level = services.localCachingClient.getUserInfo()!.level
-      vc.setup(with: services, level: level)
+      vc.setup(services: services, level: Int(level))
 
     case "showRemaining":
       let vc = segue.destination as! SubjectsRemainingViewController
@@ -364,6 +368,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   }
 
   @objc func hourlyTimerExpired() {
+    services.localCachingClient.currentHourChanged()
     refresh(quick: true)
     updateHourlyTimer()
   }
@@ -375,6 +380,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
   @objc
   func applicationWillEnterForeground() {
+    // Assume the hour changed while the application was in the background. This will invalidate the
+    // upcoming review cache which depends on the current time.
+    services.localCachingClient.currentHourChanged()
+
     updateHourlyTimer()
   }
 

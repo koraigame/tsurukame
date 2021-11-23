@@ -57,6 +57,12 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
     if hideBackButton {
       backButton.isHidden = true
     }
+
+    let nc = NotificationCenter.default
+    nc.addObserver(self, selector: #selector(keyboardWillShow),
+                   name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    nc.addObserver(self, selector: #selector(keyboardWillHide),
+                   name: NSNotification.Name.UIKeyboardWillHide, object: nil)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -64,8 +70,13 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
     navigationController?.isNavigationBarHidden = true
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    subjectDetailsView.saveStudyMaterials()
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    super.viewDidDisappear(animated)
     subjectDetailsView.deselectLastSubjectChipTapped()
   }
 
@@ -81,6 +92,19 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
   }
 
   override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+
+  @objc private func keyboardWillShow(notification: NSNotification) {
+    guard let keyboardSize = notification
+      .userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+      return
+    }
+    subjectDetailsView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height,
+                                                   right: 0)
+  }
+
+  @objc private func keyboardWillHide(notification _: NSNotification) {
+    subjectDetailsView.contentInset = .zero
+  }
 
   // MARK: - SubjectDelegate
 
