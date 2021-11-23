@@ -293,6 +293,14 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
         return false
       }
+    case .longestRelativeWait:
+      reviewQueue.sort { (a, b: ReviewItem) -> Bool in
+        if availableRatio(a.assignment) < availableRatio(b.assignment) { return false }
+        if availableRatio(a.assignment) > availableRatio(b.assignment) { return true }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        return false
+      }
     case .random:
       break
 
@@ -301,6 +309,14 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     }
 
     refillActiveQueue()
+  }
+
+  private func availableRatio(_ assignment: TKMAssignment) -> TimeInterval {
+    let truncatedDate =
+      Date(timeIntervalSince1970: Double((Int(Date().timeIntervalSince1970) / 3600) * 3600))
+    let subject = services.localCachingClient.getSubject(id: assignment.subjectID)!
+    return truncatedDate.timeIntervalSince(assignment.availableAtDate) / assignment.srsStage
+      .duration(subject)
   }
 
   @objc public var activeQueueLength: Int {
@@ -560,12 +576,18 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         promptGradient = TKMStyle.meaningGradient as! [CGColor]
         promptTextColor = kMeaningTextColor
         taskTypePlaceholder = "Your Response"
+        if Settings.ankiMode {
+          taskTypePlaceholder = "Show answer"
+        }
       case .reading:
         kanaInput.enabled = true
         taskTypePrompt = "Reading"
         promptGradient = TKMStyle.readingGradient as! [CGColor]
         promptTextColor = kReadingTextColor
         taskTypePlaceholder = "答え"
+        if Settings.ankiMode {
+          taskTypePlaceholder = "答えを見せる"
+        }
       }
 
       // Choose a random font.
@@ -585,8 +607,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       if Settings.allowSkippingReviews {
         // Change the skip button icon.
         submitButton.setImage(skipImage, for: .normal)
-      } else {
+      } else if !Settings.ankiMode {
         submitButton.isEnabled = false
+      } else {
+        // Hide the submit button in Anki mode if skipping reviews are off
+        submitButton.isHidden = true
       }
 
       // Background gradients.
@@ -663,11 +688,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     var availableFonts: [String] = []
 
     for filename in Settings.selectedFonts {
-      if let font = services.fontLoader.font(byName: filename) {
+      if let font = services.fontLoader.font(fileName: filename) {
         if let ex = exclude, ex.contains(font.fontName) {
           continue
         }
-        if TKMFontCanRenderText(font.fontName, text) {
+        if font.canRender(text) {
           availableFonts.append(font.fontName)
         }
       }
@@ -714,18 +739,25 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // MARK: - Animation
 
   private func animateSubjectDetailsView(shown: Bool,
-                                         setupContextFunc: ((AnimationContext) -> Void)?) {
+                                         setupContextFunc: ((AnimationContext) -> Void)?,
+                                         partiallyCorrect: Bool = false) {
     let cheats = delegate.reviewViewControllerAllowsCheats(forReviewItem: activeTask)
 
     if shown {
       subjectDetailsView.isHidden = false
-      if cheats {
+      if cheats, !Settings.ankiMode {
         addSynonymButton.isHidden = false
+      }
+      if Settings.ankiMode, Settings.allowSkippingReviews {
+        submitButton.isHidden = true
       }
     } else {
       if previousSubject != nil {
         previousSubjectLabel?.isHidden = false
         previousSubjectButton.isHidden = false
+      }
+      if Settings.ankiMode, Settings.allowSkippingReviews {
+        submitButton.isHidden = false
       }
     }
 
@@ -754,7 +786,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     // Enable/disable the answer field, and set its first responder status.
     // This makes the keyboard appear or disappear immediately.  We need this animation to happen
     // here so it's in sync with the others.
-    answerField.isEnabled = !shown
+    answerField.isEnabled = !shown && !Settings.ankiMode
     if !shown {
       answerField.becomeFirstResponder()
     } else {
@@ -779,7 +811,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectButton.alpha = shown ? 0.0 : 1.0
 
     // Change the foreground color of the answer field.
-    answerField.textColor = shown ? UIColor.red : TKMStyle.Color.label
+    answerField.textColor = shown ? (partiallyCorrect ? UIColor.yellow : UIColor.red) : TKMStyle
+      .Color.label
 
     // Scroll to the top.
     subjectDetailsView
@@ -885,6 +918,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   @objc func didShortPressQuestionLabel(_: UITapGestureRecognizer) {
     toggleFont()
+    if Settings.ankiMode { submit() }
   }
 
   @objc func didSwipeQuestionLabel(_ sender: UISwipeGestureRecognizer) {
@@ -954,7 +988,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
                       self.submitButton.setImage(newImage, for: .normal)
                     }, completion: nil)
     } else {
-      submitButton.isEnabled = !text.isEmpty
+      submitButton.isEnabled = Settings.ankiMode || !text.isEmpty
     }
   }
 
@@ -992,7 +1026,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       markAnswer(.AskAgainLater)
       return
     }
-    if !answerField.isEnabled {
+    if !answerField.isEnabled, Settings.pausePartiallyCorrect {
+      markCorrect()
+    } else if !answerField.isEnabled, !Settings.ankiMode {
       randomTask()
     } else {
       submit()
@@ -1008,6 +1044,14 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   func submit() {
+    if Settings.ankiMode {
+      // Mark the answer incorrect to show the details. This can still be overriden.
+      let answersRevealed = !subjectDetailsView.isHidden
+      if !answersRevealed { markAnswer(.Incorrect) }
+      if Settings.showAnswerImmediately || answersRevealed { addSynonymButtonPressed(true) }
+      return
+    }
+
     answerField.text = AnswerChecker.normalizedString(answerField.text ?? "",
                                                       taskType: activeTaskType,
                                                       alphabet: kanaInput.alphabet)
@@ -1021,7 +1065,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     case .Precise:
       markAnswer(.Correct)
     case .Imprecise:
-      markAnswer(.Correct)
+      if Settings.exactMatch { shakeView(answerField) }
+      else if Settings.pausePartiallyCorrect { markAnswer(.Incorrect, partially: true) }
+      else { markAnswer(.Correct) }
     case .Incorrect:
       markAnswer(.Incorrect)
     case .OtherKanjiReading:
@@ -1042,7 +1088,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     view.layer.add(animation, forKey: nil)
   }
 
-  private func markAnswer(_ result: AnswerResult) {
+  private func markAnswer(_ result: AnswerResult, partially: Bool = false) {
     if result == .AskAgainLater {
       // Take the task out of the queue so it comes back later.
       activeQueue.remove(at: activeTaskIndex)
@@ -1176,11 +1222,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     }
 
     // Otherwise show the correct answer.
-    if !Settings.showAnswerImmediately {
+    if !Settings.showAnswerImmediately, !Settings.ankiMode {
       revealAnswerButton.isHidden = false
       UIView.animate(withDuration: animationDuration,
                      animations: {
-                       self.answerField.textColor = UIColor.red
+                       self.answerField.textColor = partially ? UIColor.yellow : UIColor.red
                        self.answerField.isEnabled = false
                        self.revealAnswerButton.alpha = 1.0
                        self.submitButton.setImage(self.forwardArrowImage, for: .normal)
@@ -1191,6 +1237,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   @IBAction func revealAnswerButtonPressed(_: Any) {
+    revealAnswerButtonPressed(true, partiallyCorrect: false)
+  }
+
+  func revealAnswerButtonPressed(_: Any, partiallyCorrect: Bool = false) {
     subjectDetailsView.update(withSubject: activeSubject, studyMaterials: activeStudyMaterials,
                               assignment: activeAssignment, task: activeTask)
 
@@ -1201,7 +1251,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
           .font = UIFont(name: self.normalFontName, size: self.questionLabelFontSize())
       }
     }
-    animateSubjectDetailsView(shown: true, setupContextFunc: setupContextFunc)
+    animateSubjectDetailsView(shown: true, setupContextFunc: setupContextFunc,
+                              partiallyCorrect: partiallyCorrect)
   }
 
   // MARK: - Ignoring incorrect answers
@@ -1215,9 +1266,16 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     c.popoverPresentationController?.sourceView = addSynonymButton
     c.popoverPresentationController?.sourceRect = addSynonymButton.bounds
 
-    c.addAction(UIAlertAction(title: "My answer was correct",
-                              style: .default,
-                              handler: { _ in self.markCorrect() }))
+    if !Settings.pausePartiallyCorrect || Settings.ankiMode {
+      c.addAction(UIAlertAction(title: "My answer was correct",
+                                style: .default,
+                                handler: { _ in self.markCorrect() }))
+    }
+    if Settings.pausePartiallyCorrect || Settings.ankiMode {
+      c.addAction(UIAlertAction(title: "My answer was incorrect",
+                                style: .default,
+                                handler: { _ in self.markIncorrect() }))
+    }
     c.addAction(UIAlertAction(title: "Ask again later",
                               style: .default,
                               handler: { _ in self.askAgain() }))
@@ -1234,6 +1292,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   @objc func markCorrect() {
     markAnswer(.OverrideAnswerCorrect)
+  }
+
+  @objc func markIncorrect() {
+    randomTask()
   }
 
   @objc func askAgain() {
@@ -1300,6 +1362,15 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
                                       UIKeyCommand(input: "c",
                                                    modifierFlags: [.command],
                                                    action: #selector(markCorrect)),
+                                      UIKeyCommand(input: "c",
+                                                   modifierFlags: [.control],
+                                                   action: #selector(markCorrect)),
+                                      UIKeyCommand(input: "i",
+                                                   modifierFlags: [.command],
+                                                   action: #selector(markIncorrect)),
+                                      UIKeyCommand(input: "i",
+                                                   modifierFlags: [.control],
+                                                   action: #selector(markIncorrect)),
                                       UIKeyCommand(input: "s",
                                                    modifierFlags: [.command],
                                                    action: #selector(addSynonym)),

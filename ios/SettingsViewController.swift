@@ -50,8 +50,8 @@ class SettingsViewController: UITableViewController {
   private func rerender() {
     let model = TKMMutableTableModel(tableView: tableView)
 
+    model.addSection("App")
     if #available(iOS 13.0, *) {
-      model.addSection("App")
       model.add(TKMBasicModelItem(style: .value1,
                                   title: "UI Appearance",
                                   subtitle: Settings.interfaceStyle.description,
@@ -59,6 +59,12 @@ class SettingsViewController: UITableViewController {
                                   target: self,
                                   action: #selector(didTapInterfaceStyle(_:))))
     }
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Upcoming type over SRS",
+                                 subtitle: "In the upcoming reviews list, break down item type instead of SRS.",
+                                 on: Settings.upcomingTypeOverSRS,
+                                 target: self,
+                                 action: #selector(upcomingTypeOverSRSChanged(_:))))
 
     model.addSection("Notifications")
     model.add(TKMSwitchModelItem(style: .default,
@@ -133,9 +139,9 @@ class SettingsViewController: UITableViewController {
                                                                action: #selector(didTapTaskOrder(_:))),
                                              hidden:!Settings
                                                .groupMeaningReading)
-    model.add(TKMSwitchModelItem(style: .default,
+    model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Reveal answer automatically",
-                                 subtitle: nil,
+                                 subtitle: "In Anki mode, this reveals the mark answer pop-up instead.",
                                  on: Settings.showAnswerImmediately,
                                  target: self,
                                  action: #selector(showAnswerImmediatelySwitchChanged(_:))))
@@ -152,6 +158,12 @@ class SettingsViewController: UITableViewController {
                                 target: self,
                                 action: #selector(fontSizeChanged(_:))))
 
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Exact match",
+                                 subtitle: "Requires typing in answers exactly correct",
+                                 on: Settings.exactMatch,
+                                 target: self,
+                                 action: #selector(exactMatchSwitchChanged(_:))))
     model.add(TKMSwitchModelItem(style: .subtitle,
                                  title: "Allow cheating",
                                  subtitle: "Ignore Typos and Add Synonym",
@@ -208,6 +220,24 @@ class SettingsViewController: UITableViewController {
                                                        action: #selector(minimizeReviewPenaltySwitchChanged(_:)))
     minimizeReviewPenaltyItem.numberOfSubtitleLines = 0
     model.add(minimizeReviewPenaltyItem)
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Pause on partially correct answers",
+                                 subtitle: "Allows making sure answer was correct",
+                                 on: Settings.pausePartiallyCorrect,
+                                 target: self,
+                                 action: #selector(partiallyCorrectSwitchChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Anki mode",
+                                 subtitle: "Do reviews without typing answers",
+                                 on: Settings.ankiMode,
+                                 target: self,
+                                 action: #selector(ankiModeSwitchChanged(_:))))
+    model.add(TKMSwitchModelItem(style: .subtitle,
+                                 title: "Enable note editing",
+                                 subtitle: "Allows editing meaning/reading notes in reviews",
+                                 on: Settings.enableNoteEditing,
+                                 target: self,
+                                 action: #selector(enableNoteEditingSwitchChanged(_:))))
 
     model.addSection("Audio")
     model.add(TKMSwitchModelItem(style: .subtitle,
@@ -250,13 +280,11 @@ class SettingsViewController: UITableViewController {
                                 accessoryType: .disclosureIndicator,
                                 target: self,
                                 action: #selector(didTapSendBugReport(_:))))
-    let coreVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-    if coreVersion != "", build != "" {
+    if let coreVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+       let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
       let version = "\(coreVersion).\(build)"
-      model
-        .add(TKMBasicModelItem(style: .value1, title: "Version", subtitle: version,
-                               accessoryType: .none))
+      model.add(TKMBasicModelItem(style: .value1, title: "Version", subtitle: version,
+                                  accessoryType: .none))
     }
     let logOutItem = TKMBasicModelItem(style: .default,
                                        title: "Log out",
@@ -346,6 +374,10 @@ class SettingsViewController: UITableViewController {
     Settings.minimizeReviewPenalty = switchView.isOn
   }
 
+  @objc private func exactMatchSwitchChanged(_ switchView: UISwitch) {
+    Settings.exactMatch = switchView.isOn
+  }
+
   @objc private func enableCheatsSwitchChanged(_ switchView: UISwitch) {
     Settings.enableCheats = switchView.isOn
   }
@@ -382,8 +414,24 @@ class SettingsViewController: UITableViewController {
     Settings.showAllReadings = switchView.isOn
   }
 
+  @objc private func partiallyCorrectSwitchChanged(_ switchView: UISwitch) {
+    Settings.pausePartiallyCorrect = switchView.isOn
+  }
+
+  @objc private func ankiModeSwitchChanged(_ switchView: UISwitch) {
+    Settings.ankiMode = switchView.isOn
+  }
+
+  @objc private func enableNoteEditingSwitchChanged(_ switchView: UISwitch) {
+    Settings.enableNoteEditing = switchView.isOn
+  }
+
   @objc private func playAudioAutomaticallySwitchChanged(_ switchView: UISwitch) {
     Settings.playAudioAutomatically = switchView.isOn
+  }
+
+  @objc private func upcomingTypeOverSRSChanged(_ switchView: UISwitch) {
+    Settings.upcomingTypeOverSRS = switchView.isOn
   }
 
   @objc private func allReviewsSwitchChanged(_ switchView: UISwitch) {
