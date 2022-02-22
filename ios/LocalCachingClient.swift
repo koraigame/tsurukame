@@ -280,13 +280,35 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     """
     UPDATE sync SET subjects_updated_after = "";
     """,
+
+    """
+    CREATE TABLE voice_actors (
+      id INTEGER PRIMARY KEY,
+      pb BLOB
+    );
+    ALTER TABLE sync ADD COLUMN voice_actors_updated_after TEXT;
+    UPDATE sync SET voice_actors_updated_after = "";
+    """,
+
+    """
+    CREATE TABLE audio_urls (
+      subject_id INTEGER,
+      voice_actor_id INTEGER,
+      level INTEGER,
+      url STRING,
+      PRIMARY KEY (subject_id, voice_actor_id)
+    );
+    CREATE INDEX idx_audio_url_by_level ON audio_urls (level, voice_actor_id);
+    """,
   ]
 
+  // Run when the user logs out. Clears everything in the database.
   private let kClearAllData = """
   UPDATE sync SET
     assignments_updated_after = "",
     study_materials_updated_after = "",
-    subjects_updated_after = ""
+    subjects_updated_after = "",
+    voice_actors_updated_after = ""
   ;
   DELETE FROM assignments;
   DELETE FROM pending_progress;
@@ -297,6 +319,23 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   DELETE FROM error_log;
   DELETE FROM level_progressions;
   DELETE FROM subjects;
+  DELETE FROM voice_actors;
+  DELETE FROM audio_urls;
+  """
+
+  // Run when the user pulls down on the main screen. Clears all locally cached data so it can be
+  // re-downloaded, but doesn't log out the user.
+  private let kFullSync = """
+  UPDATE sync
+    SET assignments_updated_after = \"\",
+        subjects_updated_after = \"\",
+        voice_actors_updated_after = \"\",
+        study_materials_updated_after = \"\";
+  DELETE FROM assignments;
+  DELETE FROM subjects;
+  DELETE FROM subject_progress;
+  DELETE FROM voice_actors;
+  DELETE FROM study_materials;
   """
 
   private func openDatabase() {
@@ -312,11 +351,17 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
 
       // Update the table schema.
       var shouldPopulateSubjectProgress = false
+      var shouldPopulateAudioUrls = false
       for version in currentVersion ..< targetVersion {
         db.mustExecuteStatements(schemas[version])
 
-        if version == 2 {
+        switch version {
+        case 2:
           shouldPopulateSubjectProgress = true
+        case 8:
+          shouldPopulateAudioUrls = true
+        default:
+          break
         }
       }
 
@@ -344,6 +389,13 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
             assignment.srsStage.rawValue,
             assignment.subjectType.rawValue,
           ])
+        }
+      }
+
+      // Populate audio URLs if we need to.
+      if shouldPopulateAudioUrls {
+        for subject in getAllSubjects(transaction: db) {
+          insertAudioUrls(subject: subject, transaction: db)
         }
       }
     }
@@ -491,11 +543,15 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   }
 
   func getAllSubjects() -> [TKMSubject] {
-    var ret = [TKMSubject]()
     db.inDatabase { db in
-      for cursor in db.query("SELECT pb FROM subjects") {
-        ret.append(cursor.proto(forColumnIndex: 0)!)
-      }
+      getAllSubjects(transaction: db)
+    }
+  }
+
+  private func getAllSubjects(transaction db: FMDatabase) -> [TKMSubject] {
+    var ret = [TKMSubject]()
+    for cursor in db.query("SELECT pb FROM subjects") {
+      ret.append(cursor.proto(forColumnIndex: 0)!)
     }
     return ret
   }
@@ -510,14 +566,38 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     }
   }
 
-  func getSubject(japanese: String) -> TKMSubject? {
+  func getSubject(japanese: String, type: TKMSubject.TypeEnum) -> TKMSubject? {
     return db.inDatabase { db in
-      let cursor = db.query("SELECT pb FROM subjects WHERE japanese = ?", args: [japanese])
+      let cursor = db.query("SELECT pb FROM subjects WHERE japanese = ? AND type = ?", args: [
+        japanese, type.rawValue,
+      ])
       if cursor.next() {
         return cursor.proto(forColumnIndex: 0)
       }
       return nil
     }
+  }
+
+  typealias AudioUrl = (subjectId: Int64, voiceActorId: Int64, level: Int, url: String)
+
+  func getAudioUrls(levels: [Int], voiceActorIds: [Int64]) -> [AudioUrl] {
+    var ret = [AudioUrl]()
+    db.inDatabase { db in
+      let levelList = levels.map { String($0) }.joined(separator: ",")
+      let voiceActorIdList = voiceActorIds.map { String($0) }.joined(separator: ",")
+
+      let cursor = db.query("SELECT subject_id, voice_actor_id, level, url " +
+        "FROM audio_urls " +
+        "WHERE level IN (\(levelList)) " +
+        "AND voice_actor_id IN (\(voiceActorIdList))")
+      while cursor.next() {
+        ret.append(AudioUrl(subjectId: cursor.longLongInt(forColumnIndex: 0),
+                            voiceActorId: cursor.longLongInt(forColumnIndex: 1),
+                            level: Int(cursor.int(forColumnIndex: 2)),
+                            url: cursor.string(forColumnIndex: 3)!))
+      }
+    }
+    return ret
   }
 
   func isValid(subjectId: Int64) -> Bool {
@@ -801,6 +881,20 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     _pendingStudyMaterialsCount.invalidate()
   }
 
+  func getVoiceActors() -> [TKMVoiceActor] {
+    db.inDatabase { db in
+      getVoiceActors(transaction: db)
+    }
+  }
+
+  private func getVoiceActors(transaction db: FMDatabase) -> [TKMVoiceActor] {
+    var ret = [TKMVoiceActor]()
+    for cursor in db.query("SELECT pb FROM voice_actors") {
+      ret.append(cursor.proto(forColumnIndex: 0)!)
+    }
+    return ret
+  }
+
   // MARK: - Syncing
 
   private func fetchAssignments(progress: Progress) -> Promise<Void> {
@@ -926,8 +1020,51 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
               subject.subjectType.rawValue,
               try! subject.serializedData(),
             ])
+          self.insertAudioUrls(subject: subject, transaction: db)
         }
         db.mustExecuteUpdate("UPDATE sync SET subjects_updated_after = ?",
+                             args: [updatedAt])
+      }
+    }
+  }
+
+  private func insertAudioUrls(subject: TKMSubject, transaction db: FMDatabase) {
+    guard subject.hasVocabulary else { return }
+    for audio in subject.vocabulary.audio {
+      db.mustExecuteUpdate("REPLACE INTO audio_urls (subject_id, voice_actor_id, level, url) " +
+        "VALUES (?, ?, ?, ?)", args: [
+          subject.id,
+          audio.voiceActorID,
+          subject.level,
+          audio.url,
+        ])
+    }
+  }
+
+  private func fetchVoiceActors(progress: Progress) -> Promise<Void> {
+    // Get the last voice actors update time.
+    let updatedAfter: String = db.inDatabase { db in
+      let cursor = db.query("SELECT voice_actors_updated_after FROM sync")
+      if cursor.next() {
+        return cursor.string(forColumnIndex: 0) ?? ""
+      }
+      return ""
+    }
+
+    return firstly { () -> Promise<WaniKaniAPIClient.VoiceActors> in
+      client.voiceActors(progress: progress, updatedAfter: updatedAfter)
+    }.done { voiceActors, updatedAt in
+      NSLog("Updated %d voice actors at %@", voiceActors.count, updatedAt)
+      self.db.inTransaction { db in
+        for voiceActor in voiceActors {
+          db.mustExecuteUpdate("REPLACE INTO voice_actors (id, pb) " +
+            "VALUES (?, ?)",
+            args: [
+              voiceActor.id,
+              try! voiceActor.serializedData(),
+            ])
+        }
+        db.mustExecuteUpdate("UPDATE sync SET voice_actors_updated_after = ?",
                              args: [updatedAt])
       }
     }
@@ -955,14 +1092,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       // Clear the sync table before doing anything else. This forces us to re-download all
       // assignments and subjects.
       db.inTransaction { db in
-        db.mustExecuteStatements("""
-        UPDATE sync
-          SET assignments_updated_after = \"\",
-              subjects_updated_after = \"\";
-        DELETE FROM assignments;
-        DELETE FROM subjects;
-        DELETE FROM subject_progress;
-        """)
+        db.mustExecuteStatements(kFullSync)
       }
     }
 
@@ -979,6 +1109,7 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
         self.fetchStudyMaterials(progress: childProgress(1)),
         self.fetchUserInfo(progress: childProgress(1)),
         self.fetchLevelProgression(progress: childProgress(1)),
+        self.fetchVoiceActors(progress: childProgress(1)),
       ])
     }.ensure {
       self._availableSubjects.invalidate()

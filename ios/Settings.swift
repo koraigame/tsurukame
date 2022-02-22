@@ -162,11 +162,6 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     set(n) { E.set(n, #keyPath(interfaceStyle)) }
   }
 
-  static var upcomingTypeOverSRS: Bool {
-    get { return S.get(false, #keyPath(upcomingTypeOverSRS)) }
-    set(n) { S.set(n, #keyPath(upcomingTypeOverSRS)) }
-  }
-
   static var notificationsAllReviews: Bool {
     get { return S.get(false, #keyPath(notificationsAllReviews)) }
     set(n) { S.set(n, #keyPath(notificationsAllReviews)) }
@@ -297,9 +292,19 @@ struct A<T: Sequence, E: RawRepresentable> where T.Element == E, E.RawValue: Cod
     set(n) { S.set(n, #keyPath(playAudioAutomatically)) }
   }
 
-  static var installedAudioPackages: Set<String> {
-    get { return S.get([], #keyPath(installedAudioPackages)) }
-    set(n) { S.set(n, #keyPath(installedAudioPackages)) }
+  static var offlineAudio: Bool {
+    get { return S.get(false, #keyPath(offlineAudio)) }
+    set(n) { S.set(n, #keyPath(offlineAudio)) }
+  }
+
+  static var offlineAudioCellular: Bool {
+    get { return S.get(false, #keyPath(offlineAudioCellular)) }
+    set(n) { S.set(n, #keyPath(offlineAudioCellular)) }
+  }
+
+  static var offlineAudioVoiceActors: Set<Int64> {
+    get { return S.get([], #keyPath(offlineAudioVoiceActors)) }
+    set(n) { S.set(n, #keyPath(offlineAudioVoiceActors)) }
   }
 
   static var animateParticleExplosion: Bool {

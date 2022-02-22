@@ -27,7 +27,7 @@ extension UIColor {
   static var systemBackground = UIColor()
 }
 
-class SRSStageCategoryItem: TKMBasicModelItem {
+class SRSStageCategoryItem: BasicModelItem {
   let stageCategory: SRSStageCategory
 
   init(stageCategory: SRSStageCategory, count: Int) {
@@ -35,9 +35,7 @@ class SRSStageCategoryItem: TKMBasicModelItem {
     super.init(style: .value1,
                title: stageCategory.description,
                subtitle: String(count),
-               accessoryType: .none,
-               target: nil,
-               action: nil)
+               accessoryType: .none)
 
     var color = TKMStyle.color(forSRSStageCategory: stageCategory)
 

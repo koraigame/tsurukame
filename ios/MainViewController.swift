@@ -31,16 +31,16 @@ private func userProfileImageURL(emailAddress: String) -> URL {
   return URL(string: "https://www.gravatar.com/avatar/\(hash).jpg?s=\(size)&d=\(kDefaultProfileImageURL)")!
 }
 
-private func setTableViewCellCount(_ item: TKMBasicModelItem, count: Int,
+private func setTableViewCellCount(_ item: BasicModelItem, count: Int,
                                    disabledMessage: String? = nil) -> Bool {
   item.subtitle = count < 0 ? "-" : "\(count)"
-  item.enabled = count > 0 && (disabledMessage == nil)
+  item.isEnabled = count > 0 && (disabledMessage == nil)
 
   if let message = disabledMessage {
     item.title = "\(item.title!) (\(message))"
   }
 
-  return item.enabled
+  return item.isEnabled
 }
 
 private extension UISearchBar {
@@ -54,7 +54,6 @@ private extension UISearchBar {
   }
 }
 
-@objc
 class MainViewController: UITableViewController, LoginViewControllerDelegate,
   MainHeaderViewDelegate,
   SearchResultViewControllerDelegate, UISearchControllerDelegate {
@@ -69,7 +68,8 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   var hasReviews = false
   var updatingTableModel = false
 
-  @objc
+  private let nd = NotificationDispatcher()
+
   func setup(services: TKMServices) {
     self.services = services
   }
@@ -91,12 +91,12 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     refreshControl?.attributedTitle = NSMutableAttributedString(string: "Pull to refresh...",
                                                                 attributes: [.foregroundColor: UIColor
                                                                   .white])
-    refreshControl?.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+    refreshControl?.addAction(for: .valueChanged) { [weak self] in self?.didPullToRefresh() }
 
     // Create the search results view controller.
     let searchResultsVC = storyboard?
       .instantiateViewController(withIdentifier: "searchResults") as! SearchResultViewController
-    searchResultsVC.setup(with: services, delegate: self)
+    searchResultsVC.setup(services: services, delegate: self)
     searchResultsViewController = searchResultsVC
 
     // Create the search controller.
@@ -127,31 +127,18 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updateHourlyTimer()
     recreateTableModel()
 
-    let nc = NotificationCenter.default
-    nc.addObserver(self,
-                   selector: #selector(availableItemsChanged),
-                   name: NSNotification.Name.lccAvailableItemsChanged,
-                   object: nil)
-    nc.addObserver(self,
-                   selector: #selector(userInfoChanged),
-                   name: NSNotification.Name.lccUserInfoChanged,
-                   object: nil)
-    nc.addObserver(self,
-                   selector: #selector(srsLevelCountsChanged),
-                   name: NSNotification.Name.lccSRSCategoryCountsChanged,
-                   object: nil)
-    nc.addObserver(self,
-                   selector: #selector(clientIsUnauthorized),
-                   name: NSNotification.Name.lccUnauthorized,
-                   object: nil)
-    nc.addObserver(self,
-                   selector: #selector(applicationDidEnterBackground),
-                   name: NSNotification.Name.UIApplicationDidEnterBackground,
-                   object: nil)
-    nc.addObserver(self,
-                   selector: #selector(applicationWillEnterForeground),
-                   name: NSNotification.Name.UIApplicationWillEnterForeground,
-                   object: nil)
+    nd.add(name: .lccAvailableItemsChanged) { [weak self] _ in self?.availableItemsChanged() }
+    nd.add(name: .lccUserInfoChanged) { [weak self] _ in self?.userInfoChanged() }
+    nd.add(name: .lccSRSCategoryCountsChanged) { [weak self] _ in self?.srsLevelCountsChanged() }
+    nd.add(name: .lccUnauthorized) { [weak self] _ in self?.clientIsUnauthorized() }
+    nd
+      .add(name: UIApplication.didEnterBackgroundNotification) { [weak self] _ in
+        self?.applicationDidEnterBackground()
+      }
+    nd
+      .add(name: UIApplication.willEnterForegroundNotification) { [weak self] _ in
+        self?.applicationWillEnterForeground()
+      }
   }
 
   private func scheduleTableModelUpdate() {
@@ -181,25 +168,25 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
     if !user.hasVacationStartedAt {
       model.add(section: "Currently available")
-      let lessonsItem = TKMBasicModelItem(style: .value1,
-                                          title: "Lessons",
-                                          subtitle: "",
-                                          accessoryType: .disclosureIndicator,
-                                          target: self,
-                                          action: #selector(startLessons))
+      let lessonsItem = BasicModelItem(style: .value1,
+                                       title: "Lessons",
+                                       subtitle: "",
+                                       accessoryType: .disclosureIndicator,
+                                       target: self,
+                                       action: #selector(startLessons))
       let apprenticeCount = services.localCachingClient.apprenticeCount
       let limit = Settings.apprenticeLessonsLimit
-      let disabledMessage = apprenticeCount >= limit ? "Apprentice limit reached..." : nil
+      let disabledMessage = apprenticeCount >= limit ? "apprentice limit reached" : nil
       hasLessons = setTableViewCellCount(lessonsItem, count: lessons,
                                          disabledMessage: disabledMessage)
       model.add(lessonsItem)
 
-      let reviewsItem = TKMBasicModelItem(style: .value1,
-                                          title: "Reviews",
-                                          subtitle: "",
-                                          accessoryType: .disclosureIndicator,
-                                          target: self,
-                                          action: #selector(startReviews))
+      let reviewsItem = BasicModelItem(style: .value1,
+                                       title: "Reviews",
+                                       subtitle: "",
+                                       accessoryType: .disclosureIndicator,
+                                       target: self,
+                                       action: #selector(startReviews))
       hasReviews = setTableViewCellCount(reviewsItem, count: reviews)
       model.add(reviewsItem)
 
@@ -219,18 +206,18 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
         .add(createLevelTimeRemainingItem(services: services,
                                           currentLevelAssignments: currentLevelAssignments))
     }
-    model.add(TKMBasicModelItem(style: .default,
-                                title: "Show remaining",
-                                subtitle: nil,
-                                accessoryType: .disclosureIndicator,
-                                target: self,
-                                action: #selector(showRemaining)))
-    model.add(TKMBasicModelItem(style: .default,
-                                title: "Show all",
-                                subtitle: "",
-                                accessoryType: .disclosureIndicator,
-                                target: self,
-                                action: #selector(showAll)))
+    model.add(BasicModelItem(style: .default,
+                             title: "Show remaining",
+                             subtitle: nil,
+                             accessoryType: .disclosureIndicator,
+                             target: self,
+                             action: #selector(showRemaining)))
+    model.add(BasicModelItem(style: .default,
+                             title: "Show all",
+                             subtitle: "",
+                             accessoryType: .disclosureIndicator,
+                             target: self,
+                             action: #selector(showAll)))
 
     model.add(section: "All levels")
     for category in SRSStageCategory.apprentice ... SRSStageCategory.burned {
@@ -285,8 +272,8 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
         return
       }
 
-      let vc = segue.destination as! TKMReviewContainerViewController
-      vc.setup(with: services, items: items)
+      let vc = segue.destination as! ReviewContainerViewController
+      vc.setup(services: services, items: items)
 
     case "startLessons":
       let assignments = services.localCachingClient.getAllAssignments()
@@ -373,12 +360,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updateHourlyTimer()
   }
 
-  @objc
   func applicationDidEnterBackground() {
     cancelHourlyTimer()
   }
 
-  @objc
   func applicationWillEnterForeground() {
     // Assume the hour changed while the application was in the background. This will invalidate the
     // upcoming review cache which depends on the current time.
@@ -389,7 +374,6 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
   // MARK: - Refreshing contents
 
-  @objc(refreshQuick:)
   func refresh(quick: Bool) {
     updateUserInfo()
     scheduleTableModelUpdate()
@@ -400,13 +384,13 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     _ = services.localCachingClient.sync(quick: quick, progress: progress)
   }
 
-  @objc func availableItemsChanged() {
+  func availableItemsChanged() {
     if (view?.window) != nil {
       scheduleTableModelUpdate()
     }
   }
 
-  @objc func userInfoChanged() {
+  func userInfoChanged() {
     updateUserInfo()
   }
 
@@ -433,14 +417,14 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     headerView.frame = frame
   }
 
-  @objc func srsLevelCountsChanged() {
+  func srsLevelCountsChanged() {
     if (view?.window) != nil {
       updateUserInfo()
       scheduleTableModelUpdate()
     }
   }
 
-  @objc func clientIsUnauthorized() {
+  func clientIsUnauthorized() {
     if isShowingUnauthorizedAlert {
       return
     }
@@ -473,7 +457,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     isShowingUnauthorizedAlert = false
   }
 
-  @objc func didPullToRefresh() {
+  func didPullToRefresh() {
     refreshControl?.endRefreshing()
     refresh(quick: false)
   }

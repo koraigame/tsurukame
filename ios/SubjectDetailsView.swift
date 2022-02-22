@@ -187,10 +187,11 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
     let currentLevel = services.localCachingClient!.getUserInfo()!.level
     var addedSection = false
     for similar in subject.kanji.visuallySimilarKanji {
-      guard let subject = services.localCachingClient.getSubject(japanese: String(similar)) else {
+      guard let subject = services.localCachingClient.getSubject(japanese: String(similar),
+                                                                 type: .kanji) else {
         continue
       }
-      if subject.level > currentLevel || subject.subjectType != .kanji {
+      if subject.level > currentLevel {
         continue
       }
       if !addedSection {
@@ -266,7 +267,7 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
     }
 
     model.add(section: "Part of Speech")
-    let item = TKMBasicModelItem(style: .default, title: text, subtitle: nil)
+    let item = BasicModelItem(style: .default, title: text, subtitle: nil)
     item.titleFont = UIFont.systemFont(ofSize: kFontSize)
     model.add(item)
   }
@@ -290,8 +291,9 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
     if hasNote, let note = note {
       // If there is a note, add it with its own edit button.
       let attributedNote = NSAttributedString(string: note, attributes: defaultStringAttrs())
-      let noteItem = EditableTextModelItem(text: attributedNote, placeholderText: "Add a note",
-                                           hasEditButton: true,
+      let noteItem = EditableTextModelItem(text: attributedNote,
+                                           placeholderText: "Add a note",
+                                           rightButtonImage: UIImage(named: "baseline_edit_black_24pt"),
                                            font: UIFont.systemFont(ofSize: kFontSize))
       noteItem.textChangedCallback = noteChangedCallback
       model.add(noteItem)
@@ -300,11 +302,11 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
       // button on the explanation.
       let noteItem = EditableTextModelItem(text: NSAttributedString(),
                                            placeholderText: "Add a note",
-                                           hasEditButton: false,
+                                           rightButtonImage: nil,
                                            font: UIFont.systemFont(ofSize: kFontSize))
       let noteIndex = model.add(noteItem, hidden: true)
 
-      explanationItem?.rightButtonImage = UIImage(named: "baseline_edit_black_24pt")
+      explanationItem?.rightButtonImage = UIImage(named: "baseline_note_add_black_24pt")
       explanationItem?.rightButtonCallback = { [weak self] (cell: AttributedModelCell) in
         cell.removeRightButton()
         // Show the note item.
@@ -419,31 +421,31 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
     // Your progress, SRS level, next review, first started, reached guru
     if let subjectAssignment = assignment, Settings.showStatsSection {
       model.add(section: "Stats")
-      model.add(TKMBasicModelItem(style: .value1, title: "WaniKani Level",
-                                  subtitle: String(subjectAssignment.level)))
+      model.add(BasicModelItem(style: .value1, title: "WaniKani Level",
+                               subtitle: String(subjectAssignment.level)))
 
       if subjectAssignment.hasStartedAt {
         if subjectAssignment.hasSrsStageNumber {
-          model.add(TKMBasicModelItem(style: .value1, title: "SRS Stage",
-                                      subtitle: subjectAssignment.srsStage.description))
+          model.add(BasicModelItem(style: .value1, title: "SRS Stage",
+                                   subtitle: subjectAssignment.srsStage.description))
         }
-        model.add(TKMBasicModelItem(style: .value1, title: "Started",
-                                    subtitle: statsDateFormatter
-                                      .string(from: subjectAssignment.startedAtDate)))
+        model.add(BasicModelItem(style: .value1, title: "Started",
+                                 subtitle: statsDateFormatter
+                                   .string(from: subjectAssignment.startedAtDate)))
         if subjectAssignment.hasAvailableAt {
-          model.add(TKMBasicModelItem(style: .value1, title: "Next Review",
-                                      subtitle: statsDateFormatter
-                                        .string(from: subjectAssignment.availableAtDate)))
+          model.add(BasicModelItem(style: .value1, title: "Next Review",
+                                   subtitle: statsDateFormatter
+                                     .string(from: subjectAssignment.availableAtDate)))
         }
         if subjectAssignment.hasPassedAt {
-          model.add(TKMBasicModelItem(style: .value1, title: "Passed",
-                                      subtitle: statsDateFormatter
-                                        .string(from: subjectAssignment.passedAtDate)))
+          model.add(BasicModelItem(style: .value1, title: "Passed",
+                                   subtitle: statsDateFormatter
+                                     .string(from: subjectAssignment.passedAtDate)))
         }
         if subjectAssignment.hasBurnedAt {
-          model.add(TKMBasicModelItem(style: .value1, title: "Burned",
-                                      subtitle: statsDateFormatter
-                                        .string(from: subjectAssignment.burnedAtDate)))
+          model.add(BasicModelItem(style: .value1, title: "Burned",
+                                   subtitle: statsDateFormatter
+                                     .string(from: subjectAssignment.burnedAtDate)))
         }
       }
 
@@ -460,6 +462,14 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
 
   @objc public func playAudio() {
     readingItem?.playAudio()
+  }
+
+  override func didMoveToSuperview() {
+    // Break the reference cycle between the table model and the table view (self) when the view
+    // is removed from the hierarcy.
+    if superview == nil {
+      tableModel = nil
+    }
   }
 
   // MARK: - SubjectChipDelegate

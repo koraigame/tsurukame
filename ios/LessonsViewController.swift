@@ -57,7 +57,7 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     pageController.didMove(toParentViewController: self)
 
     // Hook up the page control.
-    pageControl.addTarget(self, action: #selector(pageChanged), for: .valueChanged)
+    pageControl.addAction(for: .valueChanged) { [weak self] in self?.pageChanged() }
 
     // Load the first page.
     if let vc = createViewController(index: 0) {
@@ -98,7 +98,7 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
 
   // MARK: - UIPageControl
 
-  @objc func pageChanged() {
+  func pageChanged() {
     let newPageIndex = pageControl.currentPageIndex
     if newPageIndex == currentPageIndex {
       return
@@ -171,19 +171,19 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
 
   // MARK: - ReviewViewControllerDelegate
 
-  func reviewViewControllerAllowsCheats(forReviewItem _: ReviewItem) -> Bool {
+  func allowsCheats(forReviewItem _: ReviewItem) -> Bool {
     return false
   }
 
-  func reviewViewControllerFinishedAllReviewItems(_ reviewViewController: ReviewViewController) {
+  func finishedAllReviewItems(_ reviewViewController: ReviewViewController) {
     reviewViewController.navigationController?.popToRootViewController(animated: true)
   }
 
-  func reviewViewControllerAllowsCustomFonts() -> Bool {
+  func allowsCustomFonts() -> Bool {
     return false
   }
 
-  func reviewViewControllerShowsSuccessRate() -> Bool {
+  func showsSuccessRate() -> Bool {
     return false
   }
 

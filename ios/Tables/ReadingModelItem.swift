@@ -14,8 +14,6 @@
 
 import Foundation
 
-@objc(TKMReadingModelItem)
-@objcMembers
 class ReadingModelItem: AttributedModelItem {
   var audio: Audio?
   var audioSubjectID: Int64 = 0
@@ -24,15 +22,15 @@ class ReadingModelItem: AttributedModelItem {
 
   override init(text: NSAttributedString) {
     super.init(text: text)
-    rightButtonImage = UIImage(named: "baseline_volume_up_black_24pt")
-    rightButtonCallback = { [weak self] (_: AttributedModelCell) in
-      self?.playAudio()
-    }
   }
 
   func setAudio(_ audio: Audio, subjectID: Int64) {
     self.audio = audio
     audioSubjectID = subjectID
+    rightButtonImage = UIImage(named: "baseline_volume_up_black_24pt")
+    rightButtonCallback = { [unowned self] (_: AttributedModelCell) in
+      self.playAudio()
+    }
   }
 
   override func cellClass() -> AnyClass! {

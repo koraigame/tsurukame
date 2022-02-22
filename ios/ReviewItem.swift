@@ -23,8 +23,6 @@ enum TaskType {
   }
 }
 
-@objc
-@objcMembers
 class ReviewItem: NSObject {
   private class func filterReadyItems(assignments: [TKMAssignment],
                                       localCachingClient: LocalCachingClient,

@@ -38,7 +38,7 @@ class SubjectModelItem: NSObject, TKMModelItem {
   }
 
   func cellNibName() -> String! {
-    return "TKMSubjectModelItem"
+    return "SubjectModelItem"
   }
 }
 

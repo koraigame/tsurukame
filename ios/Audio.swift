@@ -19,8 +19,6 @@ protocol AudioDelegate: NSObject {
   func audioPlaybackStateChanged(state: Audio.PlaybackState)
 }
 
-@objc(TKMAudio)
-@objcMembers
 class Audio: NSObject {
   // Returns the local directory that contains cached audio files.
   static var cacheDirectoryPath: String {
@@ -41,6 +39,8 @@ class Audio: NSObject {
   private var waitingToPlay = false
   private weak var delegate: AudioDelegate?
 
+  private let nd = NotificationDispatcher()
+
   init(services: TKMServices) {
     self.services = services
 
@@ -58,10 +58,7 @@ class Audio: NSObject {
       .setCategory(AVAudioSessionCategoryPlayback as String, with: options)
 
     // Listen for when playback of any item finished.
-    let nc = NotificationCenter.default
-    nc
-      .addObserver(self, selector: #selector(itemFinishedPlaying),
-                   name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
+    nd.add(name: .AVPlayerItemDidPlayToEndTime) { [weak self] _ in self?.itemFinishedPlaying() }
   }
 
   private(set) var currentState = PlaybackState.finished {
@@ -89,6 +86,7 @@ class Audio: NSObject {
     if !subject.hasVocabulary || subject.vocabulary.audio.isEmpty {
       return
     }
+    let offline = services.offlineAudio!
 
     lastPlayedAudioIndex += 1
     if lastPlayedAudioIndex >= subject.vocabulary.audio.count {
@@ -97,11 +95,20 @@ class Audio: NSObject {
     let audio = subject.vocabulary.audio[lastPlayedAudioIndex]
 
     // Is the audio available offline?
-    let filename = String(format: kOfflineFilePattern, Audio.cacheDirectoryPath, subject.id,
-                          audio.voiceActorID)
-    if FileManager.default.fileExists(atPath: filename) {
-      play(url: URL(fileURLWithPath: filename), delegate: delegate)
+    if offline.isCached(subjectId: subject.id, voiceActorId: audio.voiceActorID) {
+      play(url: offline.cacheUrl(subjectId: subject.id, voiceActorId: audio.voiceActorID),
+           delegate: delegate)
       return
+    }
+
+    // Maybe one of the other voice actors' audio is available offline.
+    for (index, audio) in subject.vocabulary.audio.enumerated() {
+      if offline.isCached(subjectId: subject.id, voiceActorId: audio.voiceActorID) {
+        lastPlayedAudioIndex = index
+        play(url: offline.cacheUrl(subjectId: subject.id, voiceActorId: audio.voiceActorID),
+             delegate: delegate)
+        return
+      }
     }
 
     if !services.reachability.isReachable() {
@@ -181,7 +188,7 @@ class Audio: NSObject {
     vc.present(ac, animated: true, completion: nil)
   }
 
-  @objc private func itemFinishedPlaying() {
+  private func itemFinishedPlaying() {
     currentState = .finished
   }
 }

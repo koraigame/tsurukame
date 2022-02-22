@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -140,13 +140,14 @@ private class AnimationContext {
 }
 
 @objc
-protocol ReviewViewControllerDelegate {
-  func reviewViewControllerAllowsCheats(forReviewItem item: ReviewItem) -> Bool
-  func reviewViewControllerAllowsCustomFonts() -> Bool
-  func reviewViewControllerShowsSuccessRate() -> Bool
-  func reviewViewControllerFinishedAllReviewItems(_ reviewViewController: ReviewViewController)
-  @objc optional func reviewViewController(_ reviewViewController: ReviewViewController,
-                                           tappedMenuButton menuButton: UIButton)
+protocol ReviewViewControllerDelegate: AnyObject {
+  func allowsCheats(forReviewItem item: ReviewItem) -> Bool
+  func allowsCustomFonts() -> Bool
+  func showsSuccessRate() -> Bool
+  func finishedAllReviewItems(_ reviewViewController: ReviewViewController)
+
+  @objc optional func tappedMenuButton(reviewViewController: ReviewViewController,
+                                       menuButton: UIButton)
 }
 
 class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelegate {
@@ -225,11 +226,12 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     kanaInput = TKMKanaInput(delegate: self)
   }
 
-  @objc public func setup(services: TKMServices,
-                          items: [ReviewItem],
-                          showMenuButton: Bool,
-                          showSubjectHistory: Bool,
-                          delegate: ReviewViewControllerDelegate) {
+  @objc
+  public func setup(services: TKMServices,
+                    items: [ReviewItem],
+                    showMenuButton: Bool,
+                    showSubjectHistory: Bool,
+                    delegate: ReviewViewControllerDelegate) {
     self.services = services
     self.showMenuButton = showMenuButton
     self.showSubjectHistory = showSubjectHistory
@@ -325,6 +327,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   // MARK: - UIViewController
 
+  private let nd = NotificationDispatcher()
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -338,22 +342,20 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectGradient.cornerRadius = 4.0
     previousSubjectButton.layer.addSublayer(previousSubjectGradient)
 
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
-                                           name: NSNotification.Name.UIKeyboardWillShow,
-                                           object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
-                                           name: NSNotification.Name.UIKeyboardWillHide,
-                                           object: nil)
+    nd.add(name: UIResponder.keyboardWillShowNotification) { [weak self] notification in
+      self?.keyboardWillShow(notification)
+    }
+    nd.add(name: UIResponder.keyboardWillHideNotification) { [weak self] _ in
+      self?.keyboardWillHide()
+    }
 
     subjectDetailsView.setup(services: services, delegate: self)
 
     answerField.autocapitalizationType = .none
     answerField.delegate = kanaInput
-    answerField
-      .addTarget(self, action: #selector(answerFieldValueDidChange),
-                 for: UIControl.Event.editingChanged)
+    answerField.addAction(for: .editingChanged) { [weak self] in self?.answerFieldValueDidChange() }
 
-    let showSuccessRate = delegate.reviewViewControllerShowsSuccessRate()
+    let showSuccessRate = delegate.showsSuccessRate()
     successRateIcon.isHidden = !showSuccessRate
     successRateLabel.isHidden = !showSuccessRate
 
@@ -433,7 +435,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   // MARK: - Event handlers
 
-  @objc private func keyboardWillShow(notification: NSNotification) {
+  @objc private func keyboardWillShow(_ notification: Notification) {
     guard let keyboardFrame = notification
       .userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
       let animationDuration = notification
@@ -449,7 +451,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     resizeKeyboard(toHeight: Double(keyboardFrame.size.height))
   }
 
-  @objc private func keyboardWillHide(notification _: NSNotification) {
+  private func keyboardWillHide() {
     subjectDetailsView.contentInset = .zero
   }
 
@@ -517,7 +519,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   private func randomTask() {
     TKMStyle.withTraitCollection(traitCollection) {
       if activeQueue.count == 0 {
-        delegate.reviewViewControllerFinishedAllReviewItems(self)
+        delegate.finishedAllReviewItems(self)
         return
       }
 
@@ -585,7 +587,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       case .meaning:
         kanaInput.enabled = false
         taskTypePrompt = activeTask.assignment.subjectType == .radical ? "Name" : "Meaning"
-        promptGradient = TKMStyle.meaningGradient as! [CGColor]
+        promptGradient = TKMStyle.meaningGradient
         promptTextColor = kMeaningTextColor
         taskTypePlaceholder = "Your Response"
         if Settings.ankiMode {
@@ -594,7 +596,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       case .reading:
         kanaInput.enabled = true
         taskTypePrompt = "Reading"
-        promptGradient = TKMStyle.readingGradient as! [CGColor]
+        promptGradient = TKMStyle.readingGradient
         promptTextColor = kReadingTextColor
         taskTypePlaceholder = "答え"
         if Settings.ankiMode {
@@ -738,7 +740,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   func randomFont(thatCanRenderText text: String) -> String {
-    if delegate.reviewViewControllerAllowsCustomFonts() {
+    if delegate.allowsCustomFonts() {
       // Re-set the supported fonts when we pick a random one as that is the first
       // step.
       availableFonts = fontsThatCanRenderText(text, exclude: nil).sorted()
@@ -753,7 +755,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   private func animateSubjectDetailsView(shown: Bool,
                                          setupContextFunc: ((AnimationContext) -> Void)?,
                                          partiallyCorrect: Bool = false) {
-    let cheats = delegate.reviewViewControllerAllowsCheats(forReviewItem: activeTask)
+    let cheats = delegate.allowsCheats(forReviewItem: activeTask)
 
     if shown {
       subjectDetailsView.isHidden = false
@@ -970,7 +972,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   // MARK: - Menu button
 
   @IBAction func menuButtonPressed(_: Any) {
-    delegate.reviewViewController?(self, tappedMenuButton: menuButton)
+    delegate.tappedMenuButton?(reviewViewController: self, menuButton: menuButton)
   }
 
   // MARK: - Wrapping up
@@ -989,7 +991,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   // MARK: - Submitting answers
 
-  @objc func answerFieldValueDidChange() {
+  func answerFieldValueDidChange() {
     let text = answerField.text!.trimmingCharacters(in: .whitespaces)
 
     if Settings.allowSkippingReviews {
@@ -1226,8 +1228,9 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         // We must start the success animations *after* all the UI elements have been moved to their
         // new locations by randomTask(), so that, for example, the success sparkles animate from
         // the final position of the answerField, not the original position.
-        RunSuccessAnimation(answerField, doneLabel, levelLabel, isSubjectFinished, didLevelUp,
-                            newSrsStage.rawValue)
+        SuccessAnimation.run(answerField: answerField, doneLabel: doneLabel,
+                             srsLevelLabel: levelLabel, isSubjectFinished: isSubjectFinished,
+                             didLevelUp: didLevelUp, newSrsStage: newSrsStage)
       }
 
       if let previousSubjectLabel = previousSubjectLabel {
