@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ extension UIControl {
   func addAction(for controlEvents: UIControl.Event = .touchUpInside,
                  _ closure: @escaping () -> Void) {
     if #available(iOS 14.0, *) {
-      addAction(UIAction { (_: UIAction) in closure() }, for: controlEvents)
+      // addAction(UIAction { (_: UIAction) in closure() }, for: controlEvents)
     } else {
       @objc class ClosureWrapper: NSObject {
         let closure: () -> Void

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,14 +48,13 @@ class Audio: NSObject {
 
     // Set the audio session category.
     let session = AVAudioSession.sharedInstance()
-    var options: AVAudioSessionCategoryOptions = []
+    var options: AVAudioSession.CategoryOptions = []
     if #available(iOS 9.0, *) {
       options = [.duckOthers, .interruptSpokenAudioAndMixWithOthers]
     } else {
       options = [.duckOthers]
     }
-    try? session
-      .setCategory(AVAudioSessionCategoryPlayback as String, with: options)
+    try? session.setCategory(AVAudioSessionCategoryPlayback as String, with: options)
 
     // Listen for when playback of any item finished.
     nd.add(name: .AVPlayerItemDidPlayToEndTime) { [weak self] _ in self?.itemFinishedPlaying() }
@@ -70,9 +69,9 @@ class Audio: NSObject {
       let session = AVAudioSession.sharedInstance()
       switch currentState {
       case .playing:
-        try? session.setActive(true, with: [])
+        try? session.setActive(true)
       case .finished:
-        try? session.setActive(false, with: [.notifyOthersOnDeactivation])
+        try? session.setActive(false)
       default:
         break
       }

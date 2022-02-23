@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ class AttributedModelItem: NSObject, TKMModelItem {
   }
 
   func cellClass() -> AnyClass! {
-    return AttributedModelCell.self
+    AttributedModelCell.self
   }
 }
 
@@ -99,17 +99,8 @@ class AttributedModelCell: TKMModelCell {
   }
 
   override func sizeThatFits(_ size: CGSize) -> CGSize {
-<<<<<<< HEAD
-    var availableRect = UIEdgeInsetsInsetRect(CGRect(origin: .zero, size: size), kEdgeInsets)
-    var exclusionPaths = [UIBezierPath]()
-    if let rightButtonFrame = rightButtonFrame(availableRect) {
-      exclusionPaths.append(UIBezierPath(rect: rightButtonFrame))
-    }
-    textView.textContainer.exclusionPaths = exclusionPaths
-=======
-    let availableRect = CGRect(origin: .zero, size: size).inset(by: kEdgeInsets)
+    let availableRect = UIEdgeInsetsInsetRect(CGRect(origin: .zero, size: size), kEdgeInsets)
     let layout = caluclateLayouts(availableRect)
->>>>>>> tsurukame
 
     return CGSize(width: availableRect.width, height: max(kMinimumHeight,
                                                           layout.textHeight + kEdgeInsets
@@ -119,18 +110,8 @@ class AttributedModelCell: TKMModelCell {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-<<<<<<< HEAD
     var availableRect = UIEdgeInsetsInsetRect(bounds, kEdgeInsets)
-    var exclusionPaths = [UIBezierPath]()
-    if let rightButton = rightButton, let rightButtonFrame = rightButtonFrame(availableRect) {
-      rightButton.frame = rightButtonFrame
-      exclusionPaths.append(UIBezierPath(rect: rightButtonFrame))
-    }
-    textView.textContainer.exclusionPaths = exclusionPaths
-=======
-    var availableRect = bounds.inset(by: kEdgeInsets)
     let layout = caluclateLayouts(availableRect)
->>>>>>> tsurukame
 
     if let rightButton = rightButton, let rightButtonFrame = layout.rightButtonFrame {
       rightButton.frame = rightButtonFrame

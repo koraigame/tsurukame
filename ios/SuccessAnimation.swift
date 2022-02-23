@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class SuccessAnimation {
   private static func randFloat(min: CGFloat, max: CGFloat) -> CGFloat {
@@ -89,7 +88,7 @@ class SuccessAnimation {
     superview.layoutIfNeeded()
 
     // Fade in.
-    UIView.animate(withDuration: duration * 0.1,
+    UIView.animate(withDuration: Double(duration) * 0.1,
                    delay: 0,
                    options: .curveLinear,
                    animations: {
@@ -97,7 +96,7 @@ class SuccessAnimation {
                    })
 
     // Get bigger.
-    UIView.animate(withDuration: duration * 0.2,
+    UIView.animate(withDuration: Double(duration) * 0.2,
                    delay: 0,
                    usingSpringWithDamping: 0.5,
                    initialSpringVelocity: 1,
@@ -107,8 +106,8 @@ class SuccessAnimation {
                    })
 
     // Move to destination and get smaller
-    UIView.animate(withDuration: duration * 0.3,
-                   delay: duration * 0.7,
+    UIView.animate(withDuration: Double(duration) * 0.3,
+                   delay: Double(duration) * 0.7,
                    options: .curveLinear,
                    animations: {
                      view.center = toView.center
@@ -166,7 +165,7 @@ class SuccessAnimation {
     superview.layoutIfNeeded()
 
     // Fade in.
-    UIView.animate(withDuration: duration * 0.15,
+    UIView.animate(withDuration: Double(duration) * 0.15,
                    delay: 0,
                    options: .curveLinear,
                    animations: {
@@ -174,7 +173,7 @@ class SuccessAnimation {
                    })
 
     // Spring to target position.
-    UIView.animate(withDuration: duration * 0.3,
+    UIView.animate(withDuration: Double(duration) * 0.3,
                    delay: 0.0,
                    usingSpringWithDamping: 0.5,
                    initialSpringVelocity: 1,
@@ -187,8 +186,8 @@ class SuccessAnimation {
                    })
 
     // Get smaller and fade out.
-    UIView.animate(withDuration: duration * 0.1,
-                   delay: duration * 0.85,
+    UIView.animate(withDuration: Double(duration) * 0.1,
+                   delay: Double(duration) * 0.85,
                    options: .curveEaseInOut,
                    animations: {
                      container.transform = container.transform.scaledBy(x: 0.001, y: 0.001)
@@ -217,7 +216,7 @@ class SuccessAnimation {
                            y: view.center.y)
 
       createSpark(superview: superview, origin: origin, size: size, distance: distance,
-                  radians: angle, color: color, duration: duration)
+                  radians: angle, color: color, duration: TimeInterval(duration))
     }
   }
 
@@ -244,7 +243,7 @@ class SuccessAnimation {
 
       if let color = text.attribute(.foregroundColor, at: i, effectiveRange: nil) as? UIColor {
         createSpark(superview: superview, origin: origin, size: size, distance: distance,
-                    radians: angle, color: color, duration: duration)
+                    radians: angle, color: color, duration: TimeInterval(duration))
       }
     }
   }

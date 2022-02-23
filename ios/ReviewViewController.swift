@@ -342,10 +342,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectGradient.cornerRadius = 4.0
     previousSubjectButton.layer.addSublayer(previousSubjectGradient)
 
-    nd.add(name: UIResponder.keyboardWillShowNotification) { [weak self] notification in
+    nd.add(name: NSNotification.Name.UIKeyboardWillShow) { [weak self] notification in
       self?.keyboardWillShow(notification)
     }
-    nd.add(name: UIResponder.keyboardWillHideNotification) { [weak self] _ in
+    nd.add(name: NSNotification.Name.UIKeyboardWillHide) { [weak self] _ in
       self?.keyboardWillHide()
     }
 

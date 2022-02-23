@@ -1720,7 +1720,7 @@ extension TKMVocabulary.PronunciationAudio: SwiftProtobuf.Message, SwiftProtobuf
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularStringField(value: &self._url)
-      case 2: try decoder.decodeSingularInt32Field(value: &self._voiceActorID)
+      case 2: try decoder.decodeSingularInt64Field(value: &self._voiceActorID)
       default: break
       }
     }
@@ -2407,14 +2407,11 @@ extension TKMVoiceActor: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementa
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularInt64Field(value: &self._id) }()
-      case 2: try { try decoder.decodeSingularEnumField(value: &self._gender) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self._name) }()
-      case 4: try { try decoder.decodeSingularStringField(value: &self._description_p) }()
+      case 1: try decoder.decodeSingularInt64Field(value: &self._id)
+      case 2: try decoder.decodeSingularEnumField(value: &self._gender)
+      case 3: try decoder.decodeSingularStringField(value: &self._name)
+      case 4: try decoder.decodeSingularStringField(value: &self._description_p)
       default: break
       }
     }

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -132,11 +132,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     nd.add(name: .lccSRSCategoryCountsChanged) { [weak self] _ in self?.srsLevelCountsChanged() }
     nd.add(name: .lccUnauthorized) { [weak self] _ in self?.clientIsUnauthorized() }
     nd
-      .add(name: UIApplication.didEnterBackgroundNotification) { [weak self] _ in
+      .add(name: NSNotification.Name.UIApplicationDidEnterBackground) { [weak self] _ in
         self?.applicationDidEnterBackground()
       }
     nd
-      .add(name: UIApplication.willEnterForegroundNotification) { [weak self] _ in
+      .add(name: NSNotification.Name.UIApplicationWillEnterForeground) { [weak self] _ in
         self?.applicationWillEnterForeground()
       }
   }
