@@ -225,6 +225,13 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       model.add(SRSStageCategoryItem(stageCategory: category, count: Int(count)))
     }
 
+    model.add(BasicModelItem(style: .default,
+                             title: "Show projection",
+                             subtitle: "",
+                             accessoryType: .disclosureIndicator,
+                             target: self,
+                             action: #selector(showProjection)))
+
     self.model = model
     tableView.reloadData()
   }
@@ -264,6 +271,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
   override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
     switch segue.identifier {
+    case "projection":
+      let vc = segue.destination as! ProjectionViewController
+      vc.setup(services: services)
     case "startReviews":
       let assignments = services.localCachingClient.getAllAssignments()
       let items = ReviewItem.readyForReview(assignments: assignments,
@@ -493,6 +503,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
   @objc func showTableForecast() {
     performSegue(withIdentifier: "tableForecast", sender: self)
+  }
+
+  @objc func showProjection() {
+    performSegue(withIdentifier: "projection", sender: self)
   }
 
   override var keyCommands: [UIKeyCommand]? {
