@@ -21,6 +21,7 @@
 		481B2FED23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */; };
 		4820306724D849E100B40FDD /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
 		482D7C0F261CC29900104F69 /* ApprenticeLimitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482D7C0E261CC29900104F69 /* ApprenticeLimitViewController.swift */; };
+		483548AE27CDA4F2007F3580 /* ProjectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483548AD27CDA4F2007F3580 /* ProjectionViewController.swift */; };
 		483EBFDC261DD7190043C804 /* FontScreenshotterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */; };
 		484AAF2B27C52B880059AFF6 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484AAF2627C52B870059AFF6 /* Error.swift */; };
 		484AAF2C27C52B880059AFF6 /* CFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484AAF2727C52B870059AFF6 /* CFlags.swift */; };
@@ -251,6 +252,7 @@
 		481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLevelReviewTimeItem.swift; sourceTree = "<group>"; };
 		4826740B23ECE46900F704E4 /* TKMReviewBatchSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMReviewBatchSizeViewController.h; sourceTree = "<group>"; };
 		482D7C0E261CC29900104F69 /* ApprenticeLimitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApprenticeLimitViewController.swift; sourceTree = "<group>"; };
+		483548AD27CDA4F2007F3580 /* ProjectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionViewController.swift; sourceTree = "<group>"; };
 		484AAF2627C52B870059AFF6 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		484AAF2727C52B870059AFF6 /* CFlags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFlags.swift; sourceTree = "<group>"; };
 		484AAF2827C52B870059AFF6 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
@@ -589,6 +591,7 @@
 				C9164D3823D0CFCF00B6D93A /* InterfaceStyleViewController.swift */,
 				639528FC25CC2F4F009845ED /* LessonOrderViewController.swift */,
 				630EB12025C5652400783E54 /* LessonsPageControl.swift */,
+				63391B5E2779BF56005CDA72 /* LessonSettingsViewController.swift */,
 				637CA11425D7E48A0082580E /* LessonsViewController.swift */,
 				631CAD6B234B2B60008CEA73 /* LevelTimeRemainingItem.swift */,
 				63A16785253AD8D200B5BCD6 /* LocalCachingClient.swift */,
@@ -603,6 +606,7 @@
 				63358E9927365FC70013A2AC /* OfflineAudio.swift */,
 				63BFA78D218EB6890058E885 /* OfflineAudioViewController.swift */,
 				684AE501E6BF8ED5D65DA298 /* Pods */,
+				483548AD27CDA4F2007F3580 /* ProjectionViewController.swift */,
 				41897D922372287F00F6A0B7 /* Resources */,
 				63B63FF827733DAC0098DAAD /* ReviewContainerViewController.swift */,
 				630EB13E25C5713000783E54 /* ReviewItem.swift */,
@@ -619,7 +623,6 @@
 				63F7F52B23D43DF6006A31FB /* Services.swift */,
 				633632EE201F3490006D582B /* Settings.swift */,
 				639528EC25CC0688009845ED /* SettingsViewController.swift */,
-				63391B5E2779BF56005CDA72 /* LessonSettingsViewController.swift */,
 				C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */,
 				636A63E0238A2B8200902269 /* SRSStageCategoryItem.swift */,
 				63FCAE77237F75CC00DB1418 /* Style.swift */,
@@ -1310,6 +1313,7 @@
 				63B63FF727733ABC0098DAAD /* NotificationDispatcher.swift in Sources */,
 				630EB10A25C561A900783E54 /* NSMutableAttributedString+Replacements.swift in Sources */,
 				48119A3B27C476DD00A54B12 /* NSRegularExpression+Matches.swift in Sources */,
+				483548AE27CDA4F2007F3580 /* ProjectionViewController.swift in Sources */,
 				63358E9A27365FC70013A2AC /* OfflineAudio.swift in Sources */,
 				63BFA78E218EB6890058E885 /* OfflineAudioViewController.swift in Sources */,
 				6332528E2727F32800ABBA04 /* PillModelItem.swift in Sources */,

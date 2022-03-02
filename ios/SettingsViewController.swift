@@ -142,4 +142,3 @@ class SettingsViewController: UITableViewController, TKMViewController {
     present(c, animated: true, completion: nil)
   }
 }
-
