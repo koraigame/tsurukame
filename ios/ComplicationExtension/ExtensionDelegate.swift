@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,7 +46,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         // Snapshot tasks have a unique completion call, make sure to set your expiration date
         snapshotTask
           .setTaskCompleted(restoredDefaultState: true,
-                            estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
+                            estimatedSnapshotExpiration: Date.distantFuture,
+                            userInfo: nil)
       case let connectivityTask as WKWatchConnectivityRefreshBackgroundTask:
         // Be sure to complete the connectivity task once you’re done.
         connectivityTask.setTaskCompletedWithSnapshot(false)

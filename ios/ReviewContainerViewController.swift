@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ class ReviewContainerViewController: MMDrawerController, ReviewViewControllerDel
 
     reviewVC = (storyboard!
       .instantiateViewController(withIdentifier: "reviewViewController") as! ReviewViewController)
-    reviewVC.setup(services: services, items: items, showMenuButton: true, showSubjectHistory: true,
+    reviewVC.setup(services: services, items: items, showMenuButton: true,
+                   showSubjectHistory: true,
                    delegate: self)
 
     let menuVC = storyboard!
@@ -37,7 +38,8 @@ class ReviewContainerViewController: MMDrawerController, ReviewViewControllerDel
     shouldStretchDrawer = false
     closeDrawerGestureModeMask = .all
     centerHiddenInteractionMode = .none
-    setDrawerVisualStateBlock(MMDrawerVisualState.parallaxVisualStateBlock(withParallaxFactor: 1.0))
+    setDrawerVisualStateBlock(MMDrawerVisualState
+      .parallaxVisualStateBlock(withParallaxFactor: 1.0))
   }
 
   override func setAnimatingDrawer(_ animatingDrawer: Bool) {
@@ -63,7 +65,8 @@ class ReviewContainerViewController: MMDrawerController, ReviewViewControllerDel
   }
 
   func finishedAllReviewItems(_ reviewViewController: ReviewViewController) {
-    reviewViewController.performSegue(withIdentifier: "reviewSummary", sender: reviewViewController)
+    reviewViewController.performSegue(withIdentifier: "reviewSummary",
+                                      sender: reviewViewController)
   }
 
   func allowsCustomFonts() -> Bool {

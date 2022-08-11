@@ -9,3 +9,4 @@
 --maxwidth 100
 --wraparguments after-first
 --wrapparameters after-first
+--swiftversion 5.2

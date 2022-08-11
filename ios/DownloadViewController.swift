@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -118,7 +118,8 @@ class DownloadViewControllerClass: UITableViewController,
     let filename = url.lastPathComponent
 
     if httpResponse.statusCode != 200 {
-      reportErrorOnMainThread(filename: filename, title: "HTTP error \(httpResponse.statusCode)",
+      reportErrorOnMainThread(filename: filename,
+                              title: "HTTP error \(httpResponse.statusCode)",
                               message: url.absoluteString)
       return
     }

@@ -118,16 +118,16 @@ class TableModel: NSObject, UITableViewDataSource, UITableViewDelegate {
         cell = cellClass.init(style: .default, reuseIdentifier: reuseId) as? TKMModelCell
       }
     }
-    guard let cell = cell else {
+    guard cell != nil else {
       fatalError("Item class \(reuseId) should respond to either createCell, cellNibName or cellClass")
     }
 
     // Disable animations when reusing a cell.
     CATransaction.begin()
     CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-    cell.update(with: item, tableView: tableView)
+    cell!.update(with: item, tableView: tableView)
     CATransaction.commit()
-    return cell
+    return cell!
   }
 
   func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -242,7 +242,7 @@ class MutableTableModel: TableModel {
   }
 
   func sort<T>(section: Int, using fn: (T, T) -> Bool) {
-    sections[section].items.sort(by: { (a, b) -> Bool in
+    sections[section].items.sort(by: { a, b -> Bool in
       fn(a as! T, b as! T)
     })
   }

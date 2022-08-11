@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 private let kDefaultAnimationDuration: TimeInterval = 0.25
 // Undocumented, but it's what the keyboard animations use.
@@ -70,11 +69,14 @@ private func getDots(stage: SRSStage) -> NSAttributedString? {
     string = NSMutableAttributedString(string: "••••◦",
                                        attributes: [.foregroundColor: kDotColorApprentice])
     string?
-      .addAttribute(.foregroundColor, value: kDotColorGuru, range: NSRange(location: 4, length: 1))
+      .addAttribute(.foregroundColor, value: kDotColorGuru,
+                    range: NSRange(location: 4, length: 1))
   case .guru1:
-    string = NSMutableAttributedString(string: "•◦", attributes: [.foregroundColor: kDotColorGuru])
+    string = NSMutableAttributedString(string: "•◦",
+                                       attributes: [.foregroundColor: kDotColorGuru])
   case .guru2:
-    string = NSMutableAttributedString(string: "••◦", attributes: [.foregroundColor: kDotColorGuru])
+    string = NSMutableAttributedString(string: "••◦",
+                                       attributes: [.foregroundColor: kDotColorGuru])
     string?
       .addAttribute(.foregroundColor, value: kDotColorMaster,
                     range: NSRange(location: 2, length: 1))
@@ -91,7 +93,8 @@ private func getDots(stage: SRSStage) -> NSAttributedString? {
       .addAttribute(.foregroundColor, value: kDotColorBurned,
                     range: NSRange(location: 1, length: 1))
   case .burned:
-    string = NSMutableAttributedString(string: "•", attributes: [.foregroundColor: kDotColorBurned])
+    string = NSMutableAttributedString(string: "•",
+                                       attributes: [.foregroundColor: kDotColorBurned])
   default:
     string = nil
   }
@@ -153,8 +156,6 @@ protocol ReviewViewControllerDelegate: AnyObject {
 
 class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelegate {
   private var kanaInput: TKMKanaInput!
-  private let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator
-    .FeedbackStyle.light)
   private let tickImage = UIImage(named: "checkmark.circle")
   private let forwardArrowImage = UIImage(named: "ic_arrow_forward_white")
   private let skipImage = UIImage(named: "goforward.plus")
@@ -254,56 +255,70 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       reviewQueue.sort { (a, b: ReviewItem) -> Bool in
         if a.assignment.srsStage < b.assignment.srsStage { return true }
         if a.assignment.srsStage > b.assignment.srsStage { return false }
-        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
-        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType
+          .rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType
+          .rawValue { return false }
         return false
       }
     case .descendingSRSStage:
       reviewQueue.sort { (a, b: ReviewItem) -> Bool in
         if a.assignment.srsStage < b.assignment.srsStage { return false }
         if a.assignment.srsStage > b.assignment.srsStage { return true }
-        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
-        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType
+          .rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType
+          .rawValue { return false }
         return false
       }
     case .currentLevelFirst:
       reviewQueue.sort { (a, b: ReviewItem) -> Bool in
         if a.assignment.level < b.assignment.level { return false }
         if a.assignment.level > b.assignment.level { return true }
-        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
-        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType
+          .rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType
+          .rawValue { return false }
         return false
       }
     case .lowestLevelFirst:
       reviewQueue.sort { (a, b: ReviewItem) -> Bool in
         if a.assignment.level < b.assignment.level { return true }
         if a.assignment.level > b.assignment.level { return false }
-        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
-        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType
+          .rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType
+          .rawValue { return false }
         return false
       }
     case .newestAvailableFirst:
       reviewQueue.sort { (a, b: ReviewItem) -> Bool in
         if a.assignment.availableAt < b.assignment.availableAt { return false }
         if a.assignment.availableAt > b.assignment.availableAt { return true }
-        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
-        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType
+          .rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType
+          .rawValue { return false }
         return false
       }
     case .oldestAvailableFirst:
       reviewQueue.sort { (a, b: ReviewItem) -> Bool in
         if a.assignment.availableAt < b.assignment.availableAt { return true }
         if a.assignment.availableAt > b.assignment.availableAt { return false }
-        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
-        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType
+          .rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType
+          .rawValue { return false }
         return false
       }
     case .longestRelativeWait:
       reviewQueue.sort { (a, b: ReviewItem) -> Bool in
         if availableRatio(a.assignment) < availableRatio(b.assignment) { return false }
         if availableRatio(a.assignment) > availableRatio(b.assignment) { return true }
-        if a.assignment.subjectType.rawValue < b.assignment.subjectType.rawValue { return true }
-        if a.assignment.subjectType.rawValue > b.assignment.subjectType.rawValue { return false }
+        if a.assignment.subjectType.rawValue < b.assignment.subjectType
+          .rawValue { return true }
+        if a.assignment.subjectType.rawValue > b.assignment.subjectType
+          .rawValue { return false }
         return false
       }
     case .random:
@@ -356,7 +371,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
     answerField.autocapitalizationType = .none
     answerField.delegate = kanaInput
-    answerField.addAction(for: .editingChanged) { [weak self] in self?.answerFieldValueDidChange() }
+    answerField
+      .addAction(for: .editingChanged) { [weak self] in self?.answerFieldValueDidChange() }
 
     let showSuccessRate = delegate.showsSuccessRate()
     successRateIcon.isHidden = !showSuccessRate
@@ -396,7 +412,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
     // Fix the extra inset at the top of the subject details view.
     subjectDetailsView
-      .contentInset = UIEdgeInsets(top: -view.tkm_safeAreaInsets.top, left: 0, bottom: 0, right: 0)
+      .contentInset = UIEdgeInsets(top: -view.tkm_safeAreaInsets.top, left: 0, bottom: 0,
+                                   right: 0)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -545,18 +562,21 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       if totalLength == 0 {
         progressBar.setProgress(0.0, animated: true)
       } else {
-        progressBar.setProgress(Float(reviewsCompleted) / Float(totalLength), animated: true)
+        progressBar.setProgress(Float(reviewsCompleted) / Float(totalLength),
+                                animated: true)
       }
 
       // Choose a random task from the active queue.
       activeTaskIndex = Int(arc4random_uniform(UInt32(activeQueue.count)))
       activeTask = activeQueue[activeTaskIndex]
-      activeSubject = services.localCachingClient.getSubject(id: activeTask.assignment.subjectID)!
+      activeSubject = services.localCachingClient
+        .getSubject(id: activeTask.assignment.subjectID)!
       activeStudyMaterials =
         services.localCachingClient
           .getStudyMaterial(subjectId: activeTask.assignment.subjectID)
       activeAssignment =
-        services.localCachingClient.getAssignment(subjectId: activeTask.assignment.subjectID)
+        services.localCachingClient
+          .getAssignment(subjectId: activeTask.assignment.subjectID)
 
       // Choose whether to ask the meaning or the reading.
       if activeTask.answeredMeaning {
@@ -671,7 +691,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
           self.questionLabel.font.familyName != self.currentFontName {
           ctx.addFadingLabel(original: self.questionLabel!)
           self.questionLabel
-            .font = UIFont(name: self.currentFontName, size: self.questionLabelFontSize())
+            .font = UIFont(name: self.currentFontName,
+                           size: self.questionLabelFontSize())
           self.questionLabel.attributedText = self.activeSubject.japaneseText
         }
         if self.wrapUpLabel.text != wrapUpText {
@@ -719,7 +740,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   func nextCustomFont(thatCanRenderText _: String) -> String? {
-    if let availableFonts = self.availableFonts,
+    if let availableFonts = availableFonts,
        let index = availableFonts.firstIndex(of: currentFontName) {
       if index + 1 >= availableFonts.count {
         return availableFonts.first
@@ -731,7 +752,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   func previousCustomFont(thatCanRenderText _: String) -> String? {
-    if let availableFonts = self.availableFonts,
+    if let availableFonts = availableFonts,
        let index = availableFonts.firstIndex(of: currentFontName) {
       if index == 0 {
         return availableFonts.last
@@ -828,12 +849,14 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectButton.alpha = shown ? 0.0 : 1.0
 
     // Change the foreground color of the answer field.
-    answerField.textColor = shown ? (partiallyCorrect ? .systemYellow : .systemRed) : TKMStyle.Color
+    answerField.textColor = shown ? (partiallyCorrect ? .systemYellow : .systemRed) : TKMStyle
+      .Color
       .label
 
     // Scroll to the top.
     subjectDetailsView
-      .setContentOffset(CGPoint(x: 0, y: -subjectDetailsView.contentInset.top), animated: false)
+      .setContentOffset(CGPoint(x: 0, y: -subjectDetailsView.contentInset.top),
+                        animated: false)
 
     UIView.commitAnimations()
   }
@@ -914,7 +937,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
                      self.previousSubjectGradient.frame = self.previousSubjectButton.bounds
                      self.previousSubjectButton.alpha = 1.0
 
-                     self.previousSubjectLabel?.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+                     self.previousSubjectLabel?.transform = CGAffineTransform(scaleX: 0.01,
+                                                                              y: 0.01)
                      self.previousSubjectLabel?.alpha = 0.01
                    }) { (_: Bool) in
       self.previousSubjectLabel?.removeFromSuperview()
@@ -947,7 +971,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   }
 
   @objc func showNextCustomFont() {
-    currentFontName = nextCustomFont(thatCanRenderText: activeSubject.japanese) ?? normalFontName
+    currentFontName = nextCustomFont(thatCanRenderText: activeSubject.japanese) ??
+      normalFontName
     setCustomQuestionLabelFont(useCustomFont: true)
   }
 
@@ -1122,8 +1147,12 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     let correct = result == .Correct || result == .OverrideAnswerCorrect
 
     if correct {
-      hapticGenerator.impactOccurred()
-      hapticGenerator.prepare()
+      if #available(iOS 10.0, *) {
+        let hapticGenerator = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator
+          .FeedbackStyle.light)
+        hapticGenerator.impactOccurred()
+        hapticGenerator.prepare()
+      }
     }
 
     // Mark the task.
@@ -1186,7 +1215,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       activeTask.answeredMeaning && (activeSubject.hasRadical || activeTask.answeredReading)
     let didLevelUp = (!activeTask.answer.readingWrong && !activeTask.answer.meaningWrong)
     let newSrsStage =
-      didLevelUp ? activeTask.assignment.srsStage.next : activeTask.assignment.srsStage.previous
+      didLevelUp ? activeTask.assignment.srsStage.next : activeTask.assignment.srsStage
+        .previous
     if isSubjectFinished {
       let date = Int32(Date().timeIntervalSince1970)
       if date > activeTask.assignment.availableAt {
@@ -1228,7 +1258,8 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
         // new locations by randomTask(), so that, for example, the success sparkles animate from
         // the final position of the answerField, not the original position.
         SuccessAnimation.run(answerField: answerField, doneLabel: doneLabel,
-                             srsLevelLabel: levelLabel, isSubjectFinished: isSubjectFinished,
+                             srsLevelLabel: levelLabel,
+                             isSubjectFinished: isSubjectFinished,
                              didLevelUp: didLevelUp, newSrsStage: newSrsStage)
       }
 
@@ -1351,20 +1382,17 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
   override var keyCommands: [UIKeyCommand]? {
     let keyboardEnter = UIKeyCommand(input: "\r",
                                      modifierFlags: [],
-                                     action: #selector(enterKeyPressed),
-                                     discoverabilityTitle: "Continue")
+                                     action: #selector(enterKeyPressed))
     let numericKeyPadEnter = UIKeyCommand(input: "\u{3}",
                                           modifierFlags: [],
-                                          action: #selector(enterKeyPressed),
-                                          discoverabilityTitle: "Continue")
+                                          action: #selector(enterKeyPressed))
     var keyCommands: [UIKeyCommand] = []
 
     if !answerField.isEnabled, subjectDetailsView.isHidden {
       // Continue when a wrong answer has been entered but the subject details view is hidden.
       keyCommands.append(contentsOf: [UIKeyCommand(input: "\u{8}",
                                                    modifierFlags: [],
-                                                   action: #selector(backspaceKeyPressed),
-                                                   discoverabilityTitle: "Clear wrong answer"),
+                                                   action: #selector(backspaceKeyPressed)),
                                       keyboardEnter,
                                       numericKeyPadEnter])
     }
@@ -1373,32 +1401,27 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       // Key commands when showing the detail view
       keyCommands.append(contentsOf: [UIKeyCommand(input: " ",
                                                    modifierFlags: [],
-                                                   action: #selector(playAudio),
-                                                   discoverabilityTitle: "Play reading"),
+                                                   action: #selector(playAudio)),
                                       UIKeyCommand(input: "j", modifierFlags: [],
                                                    action: #selector(playAudio)),
                                       UIKeyCommand(input: "a",
                                                    modifierFlags: [.command],
-                                                   action: #selector(askAgain),
-                                                   discoverabilityTitle: "Ask again later"),
+                                                   action: #selector(askAgain)),
                                       UIKeyCommand(input: "c",
                                                    modifierFlags: [.command],
-                                                   action: #selector(markCorrect),
-                                                   discoverabilityTitle: "Mark correct"),
+                                                   action: #selector(markCorrect)),
                                       UIKeyCommand(input: "c",
                                                    modifierFlags: [.control],
                                                    action: #selector(markCorrect)),
                                       UIKeyCommand(input: "i",
                                                    modifierFlags: [.command],
-                                                   action: #selector(markIncorrect),
-                                                   discoverabilityTitle: "Mark incorrect"),
+                                                   action: #selector(markIncorrect)),
                                       UIKeyCommand(input: "i",
                                                    modifierFlags: [.control],
                                                    action: #selector(markIncorrect)),
                                       UIKeyCommand(input: "s",
                                                    modifierFlags: [.command],
-                                                   action: #selector(addSynonym),
-                                                   discoverabilityTitle: "Add as synonym"),
+                                                   action: #selector(addSynonym)),
                                       keyboardEnter,
                                       numericKeyPadEnter])
     }
@@ -1406,22 +1429,18 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     if Settings.selectedFonts.count > 0 {
       keyCommands.append(UIKeyCommand(input: "\t",
                                       modifierFlags: [],
-                                      action: #selector(toggleFont),
-                                      discoverabilityTitle: "Toggle font"))
+                                      action: #selector(toggleFont)))
       keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputRightArrow,
                                       modifierFlags: [],
-                                      action: #selector(showNextCustomFont),
-                                      discoverabilityTitle: "Next font"))
+                                      action: #selector(showNextCustomFont)))
       keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
                                       modifierFlags: [],
-                                      action: #selector(showPreviousCustomFont),
-                                      discoverabilityTitle: "Previous font"))
+                                      action: #selector(showPreviousCustomFont)))
     }
     if !previousSubjectButton.isHidden {
       keyCommands.append(UIKeyCommand(input: "p",
                                       modifierFlags: [.command],
-                                      action: #selector(previousSubjectButtonPressed(_:)),
-                                      discoverabilityTitle: "Previous subject"))
+                                      action: #selector(previousSubjectButtonPressed(_:))))
     }
     return keyCommands
   }

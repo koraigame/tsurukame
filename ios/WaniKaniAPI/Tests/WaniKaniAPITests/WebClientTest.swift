@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,14 +32,16 @@ class WebClientTest: XCTestCase {
     client = WaniKaniWebClient()
     Hippolyte.shared.start()
 
-    getLoginPage = StubRequest(method: .GET, url: URL(string: "https://www.wanikani.com/login")!)
+    getLoginPage = StubRequest(method: .GET,
+                               url: URL(string: "https://www.wanikani.com/login")!)
     getLoginPage.response.headers["Set-Cookie"] =
       "_wanikani_session=sessioncookie1; path=/; secure; HttpOnly"
     getLoginPage.response.body = """
       <meta name="csrf-token" content="blahblah"/>
     """.data(using: .utf8)
 
-    postLoginPage = StubRequest(method: .POST, url: URL(string: "https://www.wanikani.com/login")!)
+    postLoginPage = StubRequest(method: .POST,
+                                url: URL(string: "https://www.wanikani.com/login")!)
     postLoginPage.bodyMatcher =
       StringMatcher(string: "user%5Blogin%5D=foo&user%5Bpassword%5D=bar&user%5Bremember_me%5D=0&" +
         "authenticity_token=blahblah&utf8=%E2%9C%93")
@@ -84,7 +86,8 @@ class WebClientTest: XCTestCase {
       URL(string: "https://www.wanikani.com/settings/personal_access_tokens")!)
     createApiToken.setHeader(key: "Cookie", value: "_wanikani_session=sessioncookie2")
     createApiToken
-      .bodyMatcher = StringMatcher(string: "personal_access_token%5Bdescription%5D=Tsurukame&" +
+      .bodyMatcher =
+      StringMatcher(string: "personal_access_token%5Bdescription%5D=Tsurukame&" +
         "personal_access_token%5Bpermissions%5D%5Bassignments%5D%5Bstart%5D=1&" +
         "personal_access_token%5Bpermissions%5D%5Breviews%5D%5Bcreate%5D=1&" +
         "personal_access_token%5Bpermissions%5D%5Breviews%5D%5Bupdate%5D=1&" +

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 protocol SubjectChipDelegate: NSObject {
   func didTapSubjectChip(_ subjectChip: SubjectChip)
@@ -38,7 +37,8 @@ class SubjectChip: UIView {
   convenience init(subject: TKMSubject, showMeaning: Bool, delegate: SubjectChipDelegate) {
     let japaneseText = subject.japaneseText(imageSize: kLabelHeight)
     let sideText = showMeaning ? NSAttributedString(string: subject.primaryMeaning) : nil
-    self.init(subject: subject, chipText: japaneseText, sideText: sideText, chipTextColor: .white,
+    self.init(subject: subject, chipText: japaneseText, sideText: sideText,
+              chipTextColor: .white,
               chipGradient: TKMStyle.gradient(forSubject: subject), delegate: delegate)
   }
 

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@ import FMDB
 import Foundation
 import PromiseKit
 import Reachability
-import WaniKaniAPI
 
 extension Notification.Name {
   static let lccUnauthorized = Notification.Name(rawValue: "lccUnauthorized")
@@ -34,7 +33,8 @@ struct ReviewComposition {
 
   static func + (left: ReviewComposition, right: ReviewComposition) -> ReviewComposition {
     ReviewComposition(availableReviews: left.availableReviews + right.availableReviews,
-                      countByType: left.countByType.merging(right.countByType, uniquingKeysWith: +),
+                      countByType: left.countByType.merging(right.countByType,
+                                                            uniquingKeysWith: +),
                       countByCategory: left.countByCategory.merging(right.countByCategory,
                                                                     uniquingKeysWith: +))
   }
@@ -171,7 +171,8 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       } else if assignment.isReviewStage {
         let stage = assignment.srsStage,
             interval = max(0, assignment.availableAtDate.timeIntervalSince(now))
-        iterateValidReview(assignment.subjectType, hours: Int(ceil(interval / 3600)), stage: stage)
+        iterateValidReview(assignment.subjectType, hours: Int(ceil(interval / 3600)),
+                           stage: stage)
       }
     }
 
@@ -452,7 +453,8 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
 
   func getAssignment(subjectId: Int64) -> TKMAssignment? {
     db.inDatabase { db in
-      var cursor = db.query("SELECT pb FROM assignments WHERE subject_id = ?", args: [subjectId])
+      var cursor = db.query("SELECT pb FROM assignments WHERE subject_id = ?",
+                            args: [subjectId])
       if cursor.next() {
         return cursor.proto(forColumnIndex: 0)
       }
@@ -494,7 +496,8 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
         assignment = TKMAssignment()
         assignment!.subjectID = cursor.longLongInt(forColumnIndex: 0)
         assignment!.level = cursor.int(forColumnIndex: 1)
-        assignment!.subjectType = TKMSubject.TypeEnum(rawValue: Int(cursor.int(forColumnIndex: 3)))!
+        assignment!.subjectType = TKMSubject
+          .TypeEnum(rawValue: Int(cursor.int(forColumnIndex: 3)))!
       }
       assignment!.srsStageNumber = cursor.int(forColumnIndex: 2)
 
@@ -642,7 +645,8 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     db.inTransaction { db in
       for p in progress {
         // Delete the assignment.
-        db.mustExecuteUpdate("DELETE FROM assignments WHERE id = ?", args: [p.assignment.id])
+        db.mustExecuteUpdate("DELETE FROM assignments WHERE id = ?",
+                             args: [p.assignment.id])
 
         // Store the progress locally.
         db.mustExecuteUpdate("REPLACE INTO pending_progress (id, pb) VALUES (?, ?)",
@@ -654,14 +658,15 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
         } else if p.meaningWrong || p.readingWrong {
           newSrsStage = newSrsStage.previous
         }
-        db.mustExecuteUpdate("REPLACE INTO subject_progress (id, level, srs_stage, subject_type) " +
-          "VALUES (?, ?, ?, ?)",
-          args: [
-            p.assignment.subjectID,
-            p.assignment.level,
-            newSrsStage.rawValue,
-            p.assignment.subjectType.rawValue,
-          ])
+        db
+          .mustExecuteUpdate("REPLACE INTO subject_progress (id, level, srs_stage, subject_type) " +
+            "VALUES (?, ?, ?, ?)",
+            args: [
+              p.assignment.subjectID,
+              p.assignment.level,
+              newSrsStage.rawValue,
+              p.assignment.subjectType.rawValue,
+            ])
       }
     }
 
@@ -978,7 +983,8 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
       NSLog("Updated %d level progressions", progressions.count)
       self.db.inTransaction { db in
         for level in progressions {
-          db.mustExecuteUpdate("REPLACE INTO level_progressions (id, level, pb) VALUES (?, ?, ?)",
+          db
+            .mustExecuteUpdate("REPLACE INTO level_progressions (id, level, pb) VALUES (?, ?, ?)",
                                args: [level.id, level.level, try! level.serializedData()])
         }
       }
@@ -1021,13 +1027,14 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
   private func insertAudioUrls(subject: TKMSubject, transaction db: FMDatabase) {
     guard subject.hasVocabulary else { return }
     for audio in subject.vocabulary.audio {
-      db.mustExecuteUpdate("REPLACE INTO audio_urls (subject_id, voice_actor_id, level, url) " +
-        "VALUES (?, ?, ?, ?)", args: [
-          subject.id,
-          audio.voiceActorID,
-          subject.level,
-          audio.url,
-        ])
+      db
+        .mustExecuteUpdate("REPLACE INTO audio_urls (subject_id, voice_actor_id, level, url) " +
+          "VALUES (?, ?, ?, ?)", args: [
+            subject.id,
+            audio.voiceActorID,
+            subject.level,
+            audio.url,
+          ])
     }
   }
 
@@ -1070,8 +1077,12 @@ private func postNotificationOnMainQueue(_ notification: Notification.Name) {
     let assignmentProgressUnits: Int64 = quick ? 1 : 8
     let subjectProgressUnits: Int64 = quick ? 1 : 20
     progress.totalUnitCount = 5 + assignmentProgressUnits + subjectProgressUnits
-    let childProgress = { (units: Int64) in
-      Progress(totalUnitCount: -1, parent: progress, pendingUnitCount: units)
+    let childProgress = { (units: Int64) -> Progress in
+      if #available(iOS 9.0, *) {
+        return Progress(totalUnitCount: -1, parent: progress, pendingUnitCount: units)
+      } else {
+        return Progress(totalUnitCount: -1)
+      }
     }
 
     if !quick {

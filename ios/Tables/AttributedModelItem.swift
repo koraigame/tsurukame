@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,7 +68,8 @@ class AttributedModelCell: TKMModelCell {
       let buttonSize = rightButton.intrinsicContentSize
       rightButtonFrame = CGRect(x: availableRect.maxX - buttonSize.width - kEdgeInsets.left,
                                 y: availableRect.origin.y - kEdgeInsets.top,
-                                width: buttonSize.width + kEdgeInsets.right + kEdgeInsets.left,
+                                width: buttonSize.width + kEdgeInsets.right + kEdgeInsets
+                                  .left,
                                 height: buttonSize.height + kEdgeInsets.top + kEdgeInsets
                                   .bottom)
       exclusionPaths.append(UIBezierPath(rect: rightButtonFrame!))

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,8 +38,10 @@ public extension URLRequest {
     // the whole thing because it would leave = and & unencoded.
     var encodedQueryItems = [String]()
     for queryItem in queryItems {
-      let name = queryItem.name.addingPercentEncoding(withAllowedCharacters: .rfc3986Unreserved)!
-      let value = queryItem.value!.addingPercentEncoding(withAllowedCharacters: .rfc3986Unreserved)!
+      let name = queryItem.name
+        .addingPercentEncoding(withAllowedCharacters: .rfc3986Unreserved)!
+      let value = queryItem.value!
+        .addingPercentEncoding(withAllowedCharacters: .rfc3986Unreserved)!
       encodedQueryItems.append("\(name)=\(value)")
     }
     let query = encodedQueryItems.joined(separator: "&")

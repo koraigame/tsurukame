@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,8 @@ private class SubjectCollectionModelView: TKMModelCell {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    let frames = calculateSubjectChipFrames(chips: chips, width: frame.size.width, alignment: .left)
+    let frames = calculateSubjectChipFrames(chips: chips, width: frame.size.width,
+                                            alignment: .left)
     for (idx, frame) in frames.enumerated() {
       chips[idx].frame = frame
     }
@@ -73,7 +74,8 @@ private class SubjectCollectionModelView: TKMModelCell {
     if chips.isEmpty {
       return size
     }
-    let frames = calculateSubjectChipFrames(chips: chips, width: frame.size.width, alignment: .left)
+    let frames = calculateSubjectChipFrames(chips: chips, width: frame.size.width,
+                                            alignment: .left)
     if frames.isEmpty {
       return size
     }

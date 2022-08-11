@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 import Foundation
 import PromiseKit
-import WaniKaniAPI
 
 extension Notification.Name {
   static let logout = Notification.Name("kLogoutNotification")
@@ -76,7 +75,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
   }
 
   @objc func textFieldDidChange(_: UITextField) {
-    let enabled = !(usernameField.text?.isEmpty ?? false) && !(passwordField.text?.isEmpty ?? false)
+    let enabled = !(usernameField.text?.isEmpty ?? false) &&
+      !(passwordField.text?.isEmpty ?? false)
     signInButton.isEnabled = enabled
     signInButton.backgroundColor = enabled ? TKMStyle.radicalColor2 : TKMStyle.Color.grey33
   }
@@ -129,6 +129,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
   @IBAction func didTapPrivacyPolicyButton() {
     let url = URL(string: kPrivacyPolicyURL)!
-    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    if #available(iOS 10.0, *) {
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    } else {
+      UIApplication.shared.openURL(url)
+    }
   }
 }

@@ -437,8 +437,7 @@ NSString *TKMConvertKanaText(NSString *input) {
     NSString *replacement = kReplacements[text];
     if (replacement) {
       if (firstCharacterIsUppercase || _alphabet == kTKMAlphabetKatakana) {
-        replacement = [replacement stringByApplyingTransform:NSStringTransformHiraganaToKatakana
-                                                     reverse:NO];
+        replacement = [StringTransformer katakanaTransformReverse:NO string:replacement];
       }
       textField.text = [textField.text stringByReplacingCharactersInRange:replacementRange
                                                                withString:replacement];

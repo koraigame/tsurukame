@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class AnswerChecker: NSObject {
   enum AnswerCheckerResult: Int {
@@ -102,7 +101,7 @@ class AnswerChecker: NSObject {
         convertKatakanaToHiragana(String(text[text.index(after: dash)...]))
     }
 
-    return text.applyingTransform(StringTransform.hiraganaToKatakana, reverse: true)!
+    return StringTransformer.katakanaTransform(reverse: true, string: text)
   }
 
   class func normalizedString(_ text: String, taskType: TaskType,
@@ -154,14 +153,16 @@ class AnswerChecker: NSObject {
         // reading instead of the vocabulary reading.
         if let kanji = localCachingClient
           .getSubject(id: subject.componentSubjectIds[0]) {
-          let result = checkAnswer(answer, subject: kanji, studyMaterials: nil, taskType: taskType,
+          let result = checkAnswer(answer, subject: kanji, studyMaterials: nil,
+                                   taskType: taskType,
                                    localCachingClient: localCachingClient)
           if result == .Precise {
             return .OtherKanjiReading
           }
         }
       }
-      if subject.hasVocabulary, mismatchingOkurigana(answer: answer, japanese: subject.japanese) {
+      if subject.hasVocabulary, mismatchingOkurigana(answer: answer,
+                                                     japanese: subject.japanese) {
         return .OtherKanjiReading
       }
 

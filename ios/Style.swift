@@ -13,12 +13,11 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 private func UIColorFromHex(_ hexColor: Int32) -> UIColor {
-  let red = (CGFloat)((hexColor & 0xFF0000) >> 16) / 255
-  let green = (CGFloat)((hexColor & 0x00FF00) >> 8) / 255
-  let blue = (CGFloat)(hexColor & 0x0000FF) / 255
+  let red = CGFloat((hexColor & 0xFF0000) >> 16) / 255
+  let green = CGFloat((hexColor & 0x00FF00) >> 8) / 255
+  let blue = CGFloat(hexColor & 0x0000FF) / 255
   return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
 }
 
@@ -79,7 +78,9 @@ class TKMStyle: NSObject {
 
   static var radicalGradient: [CGColor] { [radicalColor1.cgColor, radicalColor2.cgColor] }
   static var kanjiGradient: [CGColor] { [kanjiColor1.cgColor, kanjiColor2.cgColor] }
-  static var vocabularyGradient: [CGColor] { [vocabularyColor1.cgColor, vocabularyColor2.cgColor] }
+  static var vocabularyGradient: [CGColor] { [vocabularyColor1.cgColor, vocabularyColor2.cgColor]
+  }
+
   static var lockedGradient: [CGColor] { [lockedColor1.cgColor, lockedColor2.cgColor] }
   static var readingGradient: [CGColor] { [readingColor1.cgColor, readingColor2.cgColor] }
   static var meaningGradient: [CGColor] { [meaningColor1.cgColor, meaningColor2.cgColor] }

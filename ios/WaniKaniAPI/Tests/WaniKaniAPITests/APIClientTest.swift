@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,7 +58,8 @@ class APIClientTest: XCTestCase {
   }
 
   func testUser() {
-    var request = StubRequest(method: .GET, url: URL(string: "https://api.wanikani.com/v2/user")!)
+    var request = StubRequest(method: .GET,
+                              url: URL(string: "https://api.wanikani.com/v2/user")!)
     request.setHeader(key: "Authorization", value: "Token token=bob")
     request.response.body = """
     {
@@ -192,7 +193,8 @@ class APIClientTest: XCTestCase {
     Hippolyte.shared.add(stubbedRequest: request)
 
     let progress = Progress(totalUnitCount: -1)
-    if let result = waitForPromise(client.assignments(progress: progress, updatedAfter: "foobar")) {
+    if let result = waitForPromise(client
+      .assignments(progress: progress, updatedAfter: "foobar")) {
       XCTAssertEqual(result.assignments.count, 0)
       XCTAssertEqual(result.updatedAt, "2017-11-29T19:37:03.571377Z")
     }
@@ -222,7 +224,8 @@ class APIClientTest: XCTestCase {
     Hippolyte.shared.add(stubbedRequest: request)
 
     let progress = Progress(totalUnitCount: -1)
-    if let result = waitForPromise(client.assignments(progress: progress, updatedAfter: "foobar")) {
+    if let result = waitForPromise(client
+      .assignments(progress: progress, updatedAfter: "foobar")) {
       XCTAssertEqual(result.assignments.count, 0)
       XCTAssertEqual(result.updatedAt, "foobar")
     }
@@ -820,7 +823,8 @@ class APIClientTest: XCTestCase {
   }
 
   func test4xxErrorResponse() {
-    var request = StubRequest(method: .GET, url: URL(string: "https://api.wanikani.com/v2/user")!)
+    var request = StubRequest(method: .GET,
+                              url: URL(string: "https://api.wanikani.com/v2/user")!)
     request.setHeader(key: "Authorization", value: "Token token=bob")
     request.response.statusCode = 400
     request.response.body = """
@@ -848,7 +852,8 @@ class APIClientTest: XCTestCase {
   }
 
   func test5xxErrorResponse() {
-    var request = StubRequest(method: .GET, url: URL(string: "https://api.wanikani.com/v2/user")!)
+    var request = StubRequest(method: .GET,
+                              url: URL(string: "https://api.wanikani.com/v2/user")!)
     request.setHeader(key: "Authorization", value: "Token token=bob")
     request.response.statusCode = 500
     request.response.body = """
@@ -876,7 +881,8 @@ class APIClientTest: XCTestCase {
   }
 
   func testJSONDecodeError() {
-    var request = StubRequest(method: .GET, url: URL(string: "https://api.wanikani.com/v2/user")!)
+    var request = StubRequest(method: .GET,
+                              url: URL(string: "https://api.wanikani.com/v2/user")!)
     request.setHeader(key: "Authorization", value: "Token token=bob")
     request.response.body = "invalid json".data(using: .utf8)
     Hippolyte.shared.add(stubbedRequest: request)
@@ -1068,7 +1074,8 @@ class APIClientTest: XCTestCase {
     Hippolyte.shared.add(stubbedRequest: request)
 
     let progress = Progress(totalUnitCount: -1)
-    if let result = waitForPromise(client.subjects(progress: progress, updatedAfter: "foobar")) {
+    if let result = waitForPromise(client
+      .subjects(progress: progress, updatedAfter: "foobar")) {
       XCTAssertEqual(result.subjects.count, 0)
       XCTAssertEqual(result.updatedAt, "2017-11-29T19:37:03.571377Z")
     }

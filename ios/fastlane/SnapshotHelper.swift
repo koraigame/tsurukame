@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ open class Snapshot: NSObject {
   }
 
   class func setLanguage(_ app: XCUIApplication) {
-    guard let cacheDirectory = self.cacheDirectory else {
+    guard let cacheDirectory = cacheDirectory else {
       NSLog("CacheDirectory is not set - probably running on a physical device?")
       return
     }
@@ -110,7 +110,7 @@ open class Snapshot: NSObject {
   }
 
   class func setLocale(_ app: XCUIApplication) {
-    guard let cacheDirectory = self.cacheDirectory else {
+    guard let cacheDirectory = cacheDirectory else {
       NSLog("CacheDirectory is not set - probably running on a physical device?")
       return
     }
@@ -135,7 +135,7 @@ open class Snapshot: NSObject {
   }
 
   class func setLaunchArguments(_ app: XCUIApplication) {
-    guard let cacheDirectory = self.cacheDirectory else {
+    guard let cacheDirectory = cacheDirectory else {
       NSLog("CacheDirectory is not set - probably running on a physical device?")
       return
     }
@@ -170,7 +170,7 @@ open class Snapshot: NSObject {
     }
 
     #if os(OSX)
-      guard let app = self.app else {
+      guard let app = app else {
         NSLog("XCUIApplication is not set. Please call setupSnapshot(app) before snapshot().")
         return
       }
@@ -191,7 +191,8 @@ open class Snapshot: NSObject {
         // The simulator name contains "Clone X of " inside the screenshot file when running parallelized UI Tests on concurrent devices
         let regex = try NSRegularExpression(pattern: "Clone [0-9]+ of ")
         let range = NSRange(location: 0, length: simulator.count)
-        simulator = regex.stringByReplacingMatches(in: simulator, range: range, withTemplate: "")
+        simulator = regex.stringByReplacingMatches(in: simulator, range: range,
+                                                   withTemplate: "")
 
         let path = screenshotsDir.appendingPathComponent("\(simulator)-\(name).png")
         try screenshot.pngRepresentation.write(to: path)
@@ -207,7 +208,7 @@ open class Snapshot: NSObject {
       return
     #endif
 
-    guard let app = self.app else {
+    guard let app = app else {
       NSLog("XCUIApplication is not set. Please call setupSnapshot(app) before snapshot().")
       return
     }
@@ -237,7 +238,8 @@ open class Snapshot: NSObject {
       homeDir = usersDir.appendingPathComponent(user)
     #else
       #if arch(i386) || arch(x86_64)
-        guard let simulatorHostHome = ProcessInfo().environment["SIMULATOR_HOST_HOME"] else {
+        guard let simulatorHostHome = ProcessInfo().environment["SIMULATOR_HOST_HOME"]
+        else {
           throw SnapshotError.cannotFindSimulatorHomeDirectory
         }
         guard let homeDirUrl = URL(string: simulatorHostHome) else {
@@ -257,7 +259,8 @@ private extension XCUIElementAttributes {
     if hasWhiteListedIdentifier { return false }
 
     let hasOldLoadingIndicatorSize = frame.size == CGSize(width: 10, height: 20)
-    let hasNewLoadingIndicatorSize = frame.size.width.isBetween(46, and: 47) && frame.size.height
+    let hasNewLoadingIndicatorSize = frame.size.width.isBetween(46, and: 47) && frame.size
+      .height
       .isBetween(2, and: 3)
 
     return hasOldLoadingIndicatorSize || hasNewLoadingIndicatorSize

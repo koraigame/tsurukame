@@ -14,7 +14,6 @@
 
 import Foundation
 import UIKit
-import WaniKaniAPI
 
 class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelegate {
   var window: UIWindow?
@@ -81,22 +80,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
   }
 
   private func pushLoginViewController() {
-    let vc = storyboard.instantiateViewController(withIdentifier: "login") as! LoginViewController
+    let vc = storyboard
+      .instantiateViewController(withIdentifier: "login") as! LoginViewController
     vc.delegate = self
     navigationController.setViewControllers([vc], animated: false)
   }
 
   private func setMainViewControllerAnimated(animated: Bool, clearUserData: Bool) {
     services.client = WaniKaniAPIClient(apiToken: Settings.userApiToken)
-    services.localCachingClient = Screenshotter.createLocalCachingClient(client: services.client,
-                                                                         reachability: services
-                                                                           .reachability)
+    services.localCachingClient = Screenshotter
+      .createLocalCachingClient(client: services.client,
+                                reachability: services
+                                  .reachability)
     services.client.subjectLevelGetter = services.localCachingClient
 
     if !Screenshotter.isActive {
       // Ask for notification permissions.
-      let unc = UNUserNotificationCenter.current()
-      unc.requestAuthorization(options: [.badge, .alert]) { _, _ in }
+      if #available(iOS 10.0, *) {
+        let unc = UNUserNotificationCenter.current()
+        unc.requestAuthorization(options: [.badge, .alert]) { _, _ in }
+      } else {
+        UIApplication.shared
+          .registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .alert],
+                                                                       categories: nil))
+      }
     }
 
     let pushMainViewController = { () in
@@ -181,49 +188,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
       return
     }
 
-    WatchHelper.sharedInstance.updatedData(client: services.localCachingClient)
+    if #available(iOS 9.3, *) {
+      WatchHelper.sharedInstance.updatedData(client: services.localCachingClient)
+    }
 
-    let nc = UNUserNotificationCenter.current()
-    nc.getNotificationSettings { settings in
-      if settings.badgeSetting != .enabled {
-        return
-      }
+    if #available(iOS 10.0, *) {
+      let nc = UNUserNotificationCenter.current()
+      nc.getNotificationSettings { settings in
+        if settings.badgeSetting != .enabled {
+          return
+        }
 
-      DispatchQueue.main.async {
-        UIApplication.shared.applicationIconBadgeNumber = reviewCount
-        nc.removeAllPendingNotificationRequests()
+        DispatchQueue.main.async {
+          UIApplication.shared.applicationIconBadgeNumber = reviewCount
+          nc.removeAllPendingNotificationRequests()
 
-        let startDate = NSCalendar.current.nextDate(after: Date(),
-                                                    matching: DateComponents(minute: 0, second: 0),
-                                                    matchingPolicy: .nextTime)!
-        let startInterval = startDate.timeIntervalSinceNow
-        var cumulativeReviews = reviewCount
-        for hour in 0 ..< upcomingReviews.count {
-          let reviews = upcomingReviews[hour]
-          if reviews == 0 {
-            continue
-          }
-          cumulativeReviews += reviews
+          let startDate = NSCalendar.current.nextDate(after: Date(),
+                                                      matching: DateComponents(minute: 0,
+                                                                               second: 0),
+                                                      matchingPolicy: .nextTime)!
+          let startInterval = startDate.timeIntervalSinceNow
+          var cumulativeReviews = reviewCount
+          for hour in 0 ..< upcomingReviews.count {
+            let reviews = upcomingReviews[hour]
+            if reviews == 0 {
+              continue
+            }
+            cumulativeReviews += reviews
 
-          let triggerTimeInterval = startInterval + (Double(hour) * 60 * 60)
-          if triggerTimeInterval <= 0 {
-            // UNTimeIntervalNotificationTrigger sometimes crashes with a negative triggerTimeInterval.
-            continue
+            let triggerTimeInterval = startInterval + (Double(hour) * 60 * 60)
+            if triggerTimeInterval <= 0 {
+              // UNTimeIntervalNotificationTrigger sometimes crashes with a negative triggerTimeInterval.
+              continue
+            }
+            let identifier = "badge-\(hour)"
+            let content = UNMutableNotificationContent()
+            if Settings.notificationsAllReviews {
+              content
+                .body =
+                "\(cumulativeReviews) review\(cumulativeReviews == 1 ? "" : "s") " +
+                "available (\(upcomingReviews[hour]) new)"
+            }
+            if Settings.notificationsBadging {
+              content.badge = NSNumber(value: cumulativeReviews)
+            }
+            let trigger =
+              UNTimeIntervalNotificationTrigger(timeInterval: triggerTimeInterval,
+                                                repeats: false)
+            let request = UNNotificationRequest(identifier: identifier, content: content,
+                                                trigger: trigger)
+            nc.add(request, withCompletionHandler: nil)
           }
-          let identifier = "badge-\(hour)"
-          let content = UNMutableNotificationContent()
-          if Settings.notificationsAllReviews {
-            content.body = "\(cumulativeReviews) review\(cumulativeReviews == 1 ? "" : "s") " +
-              "available (\(upcomingReviews[hour]) new)"
-          }
-          if Settings.notificationsBadging {
-            content.badge = NSNumber(value: cumulativeReviews)
-          }
-          let trigger = UNTimeIntervalNotificationTrigger(timeInterval: triggerTimeInterval,
-                                                          repeats: false)
-          let request = UNNotificationRequest(identifier: identifier, content: content,
-                                              trigger: trigger)
-          nc.add(request, withCompletionHandler: nil)
         }
       }
     }

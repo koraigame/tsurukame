@@ -263,7 +263,8 @@ class ReviewSettingsViewController: UITableViewController, TKMViewController {
     if switchView.isOn, AnswerTextField.japaneseTextInputMode == nil {
       // The user wants a Japanese keyboard but they don't have one installed.
       let device = UIDevice.current.model
-      let message = "You must add a Japanese keyboard to your \(device).\nOpen Settings then " +
+      let message =
+        "You must add a Japanese keyboard to your \(device).\nOpen Settings then " +
         "General ⮕ Keyboard ⮕ Keyboards ⮕ Add New Keyboard."
       let ac = UIAlertController(title: "No Japanese keyboard", message: message,
                                  preferredStyle: .alert)
@@ -307,7 +308,8 @@ class ReviewSettingsViewController: UITableViewController, TKMViewController {
   }
 
   @objc private func didTapReviewOrder(_: BasicModelItem) {
-    let vc = SettingChoiceListViewController(setting: Settings.$reviewOrder, title: "Review Order")
+    let vc = SettingChoiceListViewController(setting: Settings.$reviewOrder,
+                                             title: "Review Order")
     vc.addChoicesFromEnum()
     navigationController?.pushViewController(vc, animated: true)
   }

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 private let kSectionHeaderHeight: CGFloat = 38.0
 private let kSectionFooterHeight: CGFloat = 0.0
@@ -50,7 +49,12 @@ private func renderMeanings(subject: TKMSubject,
   for meaning in subject.meanings {
     if meaning.type != .primary, meaning.type != .blacklist,
        meaning.type != .auxiliaryWhitelist || !subject.hasRadical || Settings.showOldMnemonic {
-      let font = UIFont.systemFont(ofSize: kFontSize, weight: .light)
+      var font: UIFont
+      if #available(iOS 8.2, *) {
+        font = UIFont.systemFont(ofSize: kFontSize, weight: .light)
+      } else {
+        font = UIFont.systemFont(ofSize: kFontSize)
+      }
       strings.append(attrString(meaning.meaning, attrs: [.font: font]))
     }
   }
@@ -66,8 +70,9 @@ private func renderReadings(readings: [TKMReading], primaryOnly: Bool) -> NSAttr
         font = TKMStyle.japaneseFontBold(size: kFontSize)
       }
       strings
-        .append(attrString(reading.displayText(useKatakanaForOnyomi: Settings.useKatakanaForOnyomi),
-                           attrs: [.font: font]))
+        .append(attrString(reading
+            .displayText(useKatakanaForOnyomi: Settings.useKatakanaForOnyomi),
+          attrs: [.font: font]))
     }
   }
   if !primaryOnly {
@@ -212,7 +217,7 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
       return
     }
 
-    subjects.sort { (a, b) -> Bool in
+    subjects.sort { a, b -> Bool in
       a.level < b.level
     }
 
@@ -269,7 +274,8 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
   }
 
   @objc private func showAllFields() {
-    update(withSubject: subject, studyMaterials: studyMaterials, assignment: assignment, task: nil)
+    update(withSubject: subject, studyMaterials: studyMaterials, assignment: assignment,
+           task: nil)
   }
 
   private func addExplanation(model: MutableTableModel, title: String, text: String,
@@ -349,7 +355,8 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
         addMeanings(subject, studyMaterials: studyMaterials, toModel: model)
 
         addExplanation(model: model, title: "Mnemonic", text: subject.radical.mnemonic,
-                       note: studyMaterials?.meaningNote, noteChangedCallback: setMeaningNote)
+                       note: studyMaterials?.meaningNote,
+                       noteChangedCallback: setMeaningNote)
 
         if Settings.showOldMnemonic, !subject.radical.deprecatedMnemonic.isEmpty {
           addExplanation(model: model, title: "Old Mnemonic",
@@ -372,12 +379,14 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
       if meaningShown {
         addExplanation(model: model, title: "Meaning Explanation",
                        text: subject.kanji.meaningMnemonic, hint: subject.kanji.meaningHint,
-                       note: studyMaterials?.meaningNote, noteChangedCallback: setMeaningNote)
+                       note: studyMaterials?.meaningNote,
+                       noteChangedCallback: setMeaningNote)
       }
       if meaningShown, readingShown {
         addExplanation(model: model, title: "Reading Explanation",
                        text: subject.kanji.readingMnemonic, hint: subject.kanji.readingHint,
-                       note: studyMaterials?.readingNote, noteChangedCallback: setReadingNote)
+                       note: studyMaterials?.readingNote,
+                       noteChangedCallback: setReadingNote)
       }
       if !meaningShown || !readingShown {
         model.add(showAllItem)
@@ -397,13 +406,15 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
       if meaningShown {
         addExplanation(model: model, title: "Meaning Explanation",
                        text: subject.vocabulary.meaningExplanation,
-                       note: studyMaterials?.meaningNote, noteChangedCallback: setMeaningNote)
+                       note: studyMaterials?.meaningNote,
+                       noteChangedCallback: setMeaningNote)
       }
       // Reading explanations often contain the meaning, so require it as well
       if meaningShown, readingShown {
         addExplanation(model: model, title: "Reading Explanation",
                        text: subject.vocabulary.readingExplanation,
-                       note: studyMaterials?.readingNote, noteChangedCallback: setReadingNote)
+                       note: studyMaterials?.readingNote,
+                       noteChangedCallback: setReadingNote)
       }
       if !meaningShown || !readingShown {
         model.add(showAllItem)

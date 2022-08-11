@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,8 +85,9 @@ class OfflineAudio {
   func cacheDirectorySize() -> Promise<Int64> {
     DispatchQueue.global(qos: .userInitiated).async(.promise) {
       var ret: Int64 = 0
-      let it = FileManager.default.enumerator(at: URL(fileURLWithPath: self.cacheDirectoryPath),
-                                              includingPropertiesForKeys: [.fileAllocatedSizeKey])!
+      let it = FileManager.default
+        .enumerator(at: URL(fileURLWithPath: self.cacheDirectoryPath),
+                    includingPropertiesForKeys: [.fileAllocatedSizeKey])!
       for url in it {
         if let url = url as? URL,
            let values = try? url.resourceValues(forKeys: [.fileAllocatedSizeKey]),

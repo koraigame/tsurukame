@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 func render(formattedText: [TKMFormattedText],
             standardAttributes: [NSAttributedString.Key: Any]) -> NSMutableAttributedString {

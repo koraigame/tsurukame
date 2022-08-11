@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,21 +36,24 @@ class SubjectCatalogueViewController: UIPageViewController, UIPageViewController
     answerSwitch.addTarget(self, action: #selector(answerSwitchChanged), for: .valueChanged)
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: answerSwitch)
 
-    setViewControllers([createViewController(level: level)!], direction: .forward, animated: false,
+    setViewControllers([createViewController(level: level)!], direction: .forward,
+                       animated: false,
                        completion: nil)
     updateNavigationItem()
 
-    if #available(iOS 15.0, *) {
-      // On iOS 15 the scrollEdgeAppearance is used when the view is scrolled all the way to the top
-      // edge. Unfortunately here the scroll view is in the nested view controller, so the
-      // navigation bar doesn't know when the user starts scrolling down.
-      // Override the scrollEdgeAppearance to have an opaque background, so it covers the scroll
-      // view when it's scrolled.
-      let appearance = UINavigationBarAppearance()
-      appearance.configureWithOpaqueBackground()
-      navigationItem.scrollEdgeAppearance = appearance
-      navigationItem.compactScrollEdgeAppearance = appearance
-    }
+    #if compiler(>=5.5)
+      if #available(iOS 15.0, *) {
+        // On iOS 15 the scrollEdgeAppearance is used when the view is scrolled all the way to the top
+        // edge. Unfortunately here the scroll view is in the nested view controller, so the
+        // navigation bar doesn't know when the user starts scrolling down.
+        // Override the scrollEdgeAppearance to have an opaque background, so it covers the scroll
+        // view when it's scrolled.
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        navigationItem.scrollEdgeAppearance = appearance
+        navigationItem.compactScrollEdgeAppearance = appearance
+      }
+    #endif
   }
 
   private func updateNavigationItem() {

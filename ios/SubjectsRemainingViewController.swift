@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class SubjectsRemainingViewController: UITableViewController, SubjectDelegate,
   TKMViewController {
@@ -85,19 +84,20 @@ class SubjectsRemainingViewController: UITableViewController, SubjectDelegate,
     }
 
     for section in 0 ..< model.sectionCount {
-      model.sort(section: section) { (itemA: SubjectModelItem, itemB: SubjectModelItem) -> Bool in
-        if let a = itemA.assignment, let b = itemB.assignment {
-          if a.isLocked, !b.isLocked { return false }
-          if !a.isLocked, b.isLocked { return true }
-          if a.isReviewStage, !b.isReviewStage { return true }
-          if !a.isReviewStage, b.isReviewStage { return false }
-          if a.isLessonStage, !b.isLessonStage { return true }
-          if !a.isLessonStage, b.isLessonStage { return false }
-          if a.srsStage > b.srsStage { return true }
-          if a.srsStage < b.srsStage { return false }
+      model
+        .sort(section: section) { (itemA: SubjectModelItem, itemB: SubjectModelItem) -> Bool in
+          if let a = itemA.assignment, let b = itemB.assignment {
+            if a.isLocked, !b.isLocked { return false }
+            if !a.isLocked, b.isLocked { return true }
+            if a.isReviewStage, !b.isReviewStage { return true }
+            if !a.isReviewStage, b.isReviewStage { return false }
+            if a.isLessonStage, !b.isLessonStage { return true }
+            if !a.isLessonStage, b.isLessonStage { return false }
+            if a.srsStage > b.srsStage { return true }
+            if a.srsStage < b.srsStage { return false }
+          }
+          return false
         }
-        return false
-      }
 
       let items = model.items(inSection: section)
       var lastAssignment: TKMAssignment?
@@ -115,7 +115,8 @@ class SubjectsRemainingViewController: UITableViewController, SubjectDelegate,
           } else {
             label = assignment.srsStage.description
           }
-          model.insert(TKMListSeparatorItem(label: label), atIndex: index, inSection: section)
+          model.insert(TKMListSeparatorItem(label: label), atIndex: index,
+                       inSection: section)
           index += 1
         }
         lastAssignment = assignment

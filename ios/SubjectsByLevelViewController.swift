@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class SubjectsByLevelViewController: UITableViewController, SubjectDelegate {
   private var services: TKMServices!
@@ -92,7 +91,8 @@ class SubjectsByLevelViewController: UITableViewController, SubjectDelegate {
             } else {
               label = assignment.srsStage.description
             }
-            model.insert(TKMListSeparatorItem(label: label), atIndex: itemIndex, inSection: section)
+            model.insert(TKMListSeparatorItem(label: label), atIndex: itemIndex,
+                         inSection: section)
             itemIndex += 1
           }
           lastAssignment = assignment

@@ -49,13 +49,6 @@ class SettingChoiceListViewController<T: SettingProtocol>: UITableViewController
     fatalError("init(coder:) has not been implemented")
   }
 
-  // Adds a choice for each possible enum value. The Setting must be an EnumSetting.
-  func addChoicesFromEnum() where T.ValueType: SettingEnum {
-    for c in T.ValueType.allCases {
-      addChoice(name: String(describing: c), value: c)
-    }
-  }
-
   // Adds a choice for each item in the Sequence.
   func addChoicesFromRange<S>(_ range: S, suffix: String) where S: Sequence,
     S.Element == T.ValueType {
@@ -86,5 +79,14 @@ class SettingChoiceListViewController<T: SettingProtocol>: UITableViewController
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     model.reloadTable()
+  }
+}
+
+extension SettingChoiceListViewController where T.ValueType: SettingEnum {
+  // Adds a choice for each possible enum value. The Setting must be an EnumSetting.
+  func addChoicesFromEnum() {
+    for c in T.ValueType.allCases {
+      addChoice(name: String(describing: c), value: c)
+    }
   }
 }

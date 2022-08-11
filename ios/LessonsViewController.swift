@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   UIPageViewControllerDelegate, ReviewViewControllerDelegate {
@@ -76,7 +75,8 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     super.viewDidLayoutSubviews()
 
     let safeArea = view.frame.inset(by: view.tkm_safeAreaInsets)
-    let pageControlSize = pageControl.sizeThatFits(CGSize(width: view.frame.size.width, height: 0))
+    let pageControlSize = pageControl
+      .sizeThatFits(CGSize(width: view.frame.size.width, height: 0))
     let pageControlFrame = CGRect(x: safeArea.minX, y: safeArea.maxY - pageControlSize.height,
                                   width: safeArea.size.width,
                                   height: pageControlSize.height)
@@ -108,7 +108,8 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     if let vc = createViewController(index: newPageIndex) {
       let direction: UIPageViewController
         .NavigationDirection = (newPageIndex > currentPageIndex) ? .forward : .reverse
-      pageController.setViewControllers([vc], direction: direction, animated: true, completion: nil)
+      pageController.setViewControllers([vc], direction: direction, animated: true,
+                                        completion: nil)
       currentPageIndex = newPageIndex
     }
   }
@@ -202,19 +203,15 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
 
     return [
       UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [],
-                   action: #selector(prevPage),
-                   discoverabilityTitle: "Previous"),
+                   action: #selector(prevPage)),
       UIKeyCommand(input: "a", modifierFlags: [], action: #selector(prevPage)),
       UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [],
-                   action: #selector(nextPage),
-                   discoverabilityTitle: "Next"),
+                   action: #selector(nextPage)),
       UIKeyCommand(input: "d", modifierFlags: [], action: #selector(nextPage)),
       UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(nextPage)),
-      UIKeyCommand(input: " ", modifierFlags: [], action: #selector(playAudio),
-                   discoverabilityTitle: "Play reading"),
+      UIKeyCommand(input: " ", modifierFlags: [], action: #selector(playAudio)),
       UIKeyCommand(input: "j", modifierFlags: [], action: #selector(playAudio)),
-      UIKeyCommand(input: "q", modifierFlags: [], action: #selector(jumpToQuiz),
-                   discoverabilityTitle: "Jump to quiz"),
+      UIKeyCommand(input: "q", modifierFlags: [], action: #selector(jumpToQuiz)),
     ]
   }
 

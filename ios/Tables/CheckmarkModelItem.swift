@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@ class CheckmarkModelItem: BasicModelItem {
        target: NSObject? = nil, action: Selector? = nil, switchHandler: ((Bool) -> Void)? = nil) {
     isOn = on
     self.switchHandler = switchHandler
-    super.init(style: style, title: title, subtitle: subtitle, accessoryType: .none, target: target,
+    super.init(style: style, title: title, subtitle: subtitle, accessoryType: .none,
+               target: target,
                action: action, tapHandler: nil)
   }
 

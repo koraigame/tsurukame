@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 import Foundation
 import PromiseKit
 import Reachability
-import WaniKaniAPI
 
 #if !DEBUG
 
@@ -39,9 +38,7 @@ import WaniKaniAPI
   @objc(TKMScreenshotter)
   @objcMembers
   class Screenshotter: NSObject {
-    static let isActive: Bool = {
-      UserDefaults.standard.bool(forKey: "FASTLANE_SNAPSHOT")
-    }()
+    static let isActive: Bool = UserDefaults.standard.bool(forKey: "FASTLANE_SNAPSHOT")
 
     class func setUp() {
       if isActive {
@@ -1250,8 +1247,10 @@ import WaniKaniAPI
     }
 
     override func updateAvailableSubjects() -> (Int, [ReviewComposition]) {
-      return (10, createComposition(4, 14, 8, 2, 1, 12, 42, 17, 9, 2, 0, 2, 17, 0, 0, 6, 0, 0, 0, 0,
-                                    4, 11, 0, 8, 6))
+      return (10,
+              createComposition(4, 14, 8, 2, 1, 12, 42, 17, 9, 2, 0, 2, 17, 0, 0, 6, 0, 0, 0,
+                                0,
+                                4, 11, 0, 8, 6))
     }
 
     override func updateGuruKanjiCount() -> Int {

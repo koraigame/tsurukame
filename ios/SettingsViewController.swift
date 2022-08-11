@@ -110,7 +110,8 @@ class SettingsViewController: UITableViewController, TKMViewController {
     indexPath == versionIndexPath
   }
 
-  override func tableView(_: UITableView, canPerformAction action: Selector, forRowAt _: IndexPath,
+  override func tableView(_: UITableView, canPerformAction action: Selector,
+                          forRowAt _: IndexPath,
                           withSender _: Any?) -> Bool {
     action == #selector(copy(_:))
   }

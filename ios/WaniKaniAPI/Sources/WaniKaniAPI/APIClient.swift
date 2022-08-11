@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -84,7 +84,9 @@ public class WaniKaniAPIClient: NSObject {
     }.map { (allData: Response<[Response<AssignmentData>]>) -> Assignments in
       var ret = [TKMAssignment]()
       for data in allData.data {
-        ret.append(data.data.toProto(id: data.id, subjectLevelGetter: self.subjectLevelGetter))
+        ret
+          .append(data.data
+            .toProto(id: data.id, subjectLevelGetter: self.subjectLevelGetter))
       }
       return (assignments: ret, updatedAt: allData.data_updated_at ?? updatedAfter)
     }
@@ -332,7 +334,8 @@ public class WaniKaniAPIClient: NSObject {
 
   /** Fetches all pages of a multi-page query and combines the results into an array. */
   private func pagedQuery<DataType: Codable>(url: URL,
-                                             progress: Progress) -> Promise<Response<[DataType]>> {
+                                             progress: Progress)
+    -> Promise<Response<[DataType]>> {
     let results = try! JSONDecoder()
       .decode(Response<[DataType]>.self, from: kEmptyPaginatedResultJson)
     return pagedQuery(url: url, results: results, progress: progress)
@@ -407,13 +410,14 @@ public class WaniKaniAPIClient: NSObject {
       if pageUrl.queryItems == nil {
         pageUrl.queryItems = []
       }
-      pageUrl.queryItems!.append(URLQueryItem(name: "page_after_id", value: String(pageAfterId)))
+      pageUrl.queryItems!
+        .append(URLQueryItem(name: "page_after_id", value: String(pageAfterId)))
 
       if !isLastPage {
         // Fetch the first N-1 pages as one-off queries for individual URLs.
         promises.append(firstly {
           query(authorize(pageUrl.url!))
-        }.map { (response: PaginatedResponse<[DataType]>) -> Void in
+        }.map { (response: PaginatedResponse<[DataType]>) in
           // Add these results to the previous ones.
           results.data_updated_at = response.data_updated_at
           results.data.append(contentsOf: response.data)
@@ -423,7 +427,8 @@ public class WaniKaniAPIClient: NSObject {
         // Even though we think this is the last page it might have more pages after it, so fall
         // back to the serial page fetching behaviour.
         promises.append(firstly {
-          pagedQuery(url: pageUrl.url!, results: results, progress: Progress(totalUnitCount: -1))
+          pagedQuery(url: pageUrl.url!, results: results,
+                     progress: Progress(totalUnitCount: -1))
         }.asVoid())
       }
     }
@@ -441,7 +446,7 @@ public class WaniKaniAPIClient: NSObject {
     firstly { () -> DataTaskPromise in
       NSLog("%@ %@", req.httpMethod!, req.url!.absoluteString)
       return session.dataTask(.promise, with: req)
-    }.map { (data, response) -> Type in
+    }.map { data, response -> Type in
       let response = response as! HTTPURLResponse
       switch response.statusCode {
       case 200, 201:
@@ -450,7 +455,8 @@ public class WaniKaniAPIClient: NSObject {
       case 400 ..< 500:
         // Decode an API error response.
         let err: ErrorResponse = try decodeJSON(data, request: req, response: response)
-        throw WaniKaniAPIError(code: err.code, message: err.error, request: req, response: response)
+        throw WaniKaniAPIError(code: err.code, message: err.error, request: req,
+                               response: response)
       default:
         throw WaniKaniAPIError(code: response.statusCode, message: nil, request: req,
                                response: response)
@@ -485,7 +491,8 @@ func decodeJSON<T: Decodable>(_ data: Data, request: URLRequest,
   do {
     return try JSONDecoder().decode(T.self, from: data)
   } catch {
-    throw WaniKaniJSONDecodeError(data: data, error: error, request: request, response: response)
+    throw WaniKaniJSONDecodeError(data: data, error: error, request: request,
+                                  response: response)
   }
 }
 

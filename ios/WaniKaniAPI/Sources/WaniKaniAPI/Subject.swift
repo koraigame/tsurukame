@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 import UIKit
 
 private func jsonFromBundle<T>(_ fileName: String) -> T {
-  let path = Bundle.module.path(forResource: fileName, ofType: nil)
+  let path = Bundle.main.path(forResource: fileName, ofType: nil)
   let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
   return try! JSONSerialization.jsonObject(with: data, options: []) as! T
 }

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 func createLevelTimeRemainingItem(services: TKMServices,
                                   currentLevelAssignments: [TKMAssignment]) -> TKMModelItem {
@@ -75,7 +74,8 @@ private func calculateLevelTimeRemaining(services: TKMServices,
       // But ensure it can't be less than the time it would take to get a fresh item
       // to Guru, if they've spent longer at the current level than the average.
       average = max(average,
-                    SRSStage.apprentice1.minimumTimeUntilGuru(lastSubject) + lastRadicalGuruTime)
+                    SRSStage.apprentice1
+                      .minimumTimeUntilGuru(lastSubject) + lastRadicalGuruTime)
       return (Date(timeIntervalSinceNow: average), isEstimate: true)
     } else {
       return (lastGuruDate, isEstimate: false)

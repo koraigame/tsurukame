@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ class SiriShortcutHelper: NSObject {
     return activity
   }
 
+  @available(iOS 9.0, *)
   private func configureType(_ type: ShortcutType, activity: NSUserActivity) {
     let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
     switch type {

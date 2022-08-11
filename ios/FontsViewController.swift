@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -106,9 +106,11 @@ class FontsViewController: DownloadViewController {
   private func didTapDeleteAllFonts() {
     let ac = UIAlertController(title: "Delete all downloaded fonts", message: "Are you sure?",
                                preferredStyle: .alert)
-    ac.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [unowned self] _ in
-      self.deleteAllFonts()
-    }))
+    ac
+      .addAction(UIAlertAction(title: "Delete", style: .destructive,
+                               handler: { [unowned self] _ in
+                                 self.deleteAllFonts()
+                               }))
     ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
     present(ac, animated: true, completion: nil)
   }

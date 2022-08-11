@@ -114,22 +114,25 @@ class AppSettingsViewController: UITableViewController, TKMViewController {
       }
     }
 
-    let center = UNUserNotificationCenter.current()
-    center.getNotificationSettings { settings in
-      switch settings.authorizationStatus {
-      case .authorized, .provisional, .ephemeral:
-        self.notificationHandler?(true)
-      case .notDetermined:
-        center.requestAuthorization(options: [.badge, .alert]) { granted, _ in
-          self.notificationHandler?(granted)
+    if #available(iOS 10.0, *) {
+      let center = UNUserNotificationCenter.current()
+      center.getNotificationSettings { settings in
+        switch settings.authorizationStatus {
+        case .authorized, .provisional, .ephemeral:
+          self.notificationHandler?(true)
+        case .notDetermined:
+          center.requestAuthorization(options: [.badge, .alert]) { granted, _ in
+            self.notificationHandler?(granted)
+          }
+        case .denied:
+          DispatchQueue.main.async {
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
+                                      options: [:],
+                                      completionHandler: nil)
+          }
+        default:
+          break
         }
-      case .denied:
-        DispatchQueue.main.async {
-          UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:],
-                                    completionHandler: nil)
-        }
-      default:
-        break
       }
     }
   }
@@ -138,13 +141,22 @@ class AppSettingsViewController: UITableViewController, TKMViewController {
     if notificationHandler == nil {
       return
     }
-    let center = UNUserNotificationCenter.current()
-    center.getNotificationSettings { settings in
-      var granted = settings.authorizationStatus == .authorized
-      if #available(iOS 12.0, *) {
-        granted = granted || settings.authorizationStatus == .provisional
+    if #available(iOS 10.0, *) {
+      let center = UNUserNotificationCenter.current()
+      center.getNotificationSettings { settings in
+        var granted = settings.authorizationStatus == .authorized
+        if #available(iOS 12.0, *) {
+          granted = granted || settings.authorizationStatus == .provisional
+        }
+        self.notificationHandler?(granted)
       }
-      self.notificationHandler?(granted)
     }
   }
 }
+
+#if compiler(<5.3)
+  @available(iOS 10.0, *)
+  extension UNAuthorizationStatus {
+    static let ephemeral = UNAuthorizationStatus(rawValue: 4)!
+  }
+#endif

@@ -7,11 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A943349E17FA7889EFEE41F /* Pods_Tsurukame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC80AAF9736A570E3C4CC09E /* Pods_Tsurukame.framework */; };
 		480B243123D6830300FC2A82 /* Rexy in Frameworks */ = {isa = PBXBuildFile; productRef = 480B243023D6830300FC2A82 /* Rexy */; };
 		481B2FED23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */; };
 		4820306724D849E100B40FDD /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
 		483EBFDC261DD7190043C804 /* FontScreenshotterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */; };
+		4882565328A45AB9002E6511 /* MarkupFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564828A45AB9002E6511 /* MarkupFormatter.swift */; };
+		4882565428A45AB9002E6511 /* NSRegularExpression+Matches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564928A45AB9002E6511 /* NSRegularExpression+Matches.swift */; };
+		4882565528A45AB9002E6511 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564A28A45AB9002E6511 /* APIClient.swift */; };
+		4882565628A45AB9002E6511 /* old-mnemonics.json in Resources */ = {isa = PBXBuildFile; fileRef = 4882564C28A45AB9002E6511 /* old-mnemonics.json */; };
+		4882565728A45AB9002E6511 /* visually-similar-kanji.json in Resources */ = {isa = PBXBuildFile; fileRef = 4882564D28A45AB9002E6511 /* visually-similar-kanji.json */; };
+		4882565828A45AB9002E6511 /* ProtobufExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564E28A45AB9002E6511 /* ProtobufExtensions.swift */; };
+		4882565928A45AB9002E6511 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564F28A45AB9002E6511 /* Subject.swift */; };
+		4882565A28A45AB9002E6511 /* WebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565028A45AB9002E6511 /* WebClient.swift */; };
+		4882565B28A45AB9002E6511 /* URLRequest+SetBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565128A45AB9002E6511 /* URLRequest+SetBody.swift */; };
+		4882565C28A45AB9002E6511 /* wanikani_api.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565228A45AB9002E6511 /* wanikani_api.pb.swift */; };
+		4882565F28A45BEE002E6511 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4882565E28A45BEE002E6511 /* PMKFoundation */; };
+		4882566228A45C21002E6511 /* Hippolyte in Frameworks */ = {isa = PBXBuildFile; productRef = 4882566128A45C21002E6511 /* Hippolyte */; };
+		48BF197428A546A00094188D /* wanikani_api.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565228A45AB9002E6511 /* wanikani_api.pb.swift */; };
+		48BF197528A546AB0094188D /* URLRequest+SetBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565128A45AB9002E6511 /* URLRequest+SetBody.swift */; };
+		48BF197628A546B00094188D /* WebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565028A45AB9002E6511 /* WebClient.swift */; };
+		48BF197728A546B60094188D /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564F28A45AB9002E6511 /* Subject.swift */; };
+		48BF197828A546BB0094188D /* ProtobufExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564E28A45AB9002E6511 /* ProtobufExtensions.swift */; };
+		48BF197928A546C20094188D /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564A28A45AB9002E6511 /* APIClient.swift */; };
+		48BF197A28A546CA0094188D /* old-mnemonics.json in Resources */ = {isa = PBXBuildFile; fileRef = 4882564C28A45AB9002E6511 /* old-mnemonics.json */; };
+		48BF197C28A546EE0094188D /* visually-similar-kanji.json in Resources */ = {isa = PBXBuildFile; fileRef = 4882564D28A45AB9002E6511 /* visually-similar-kanji.json */; };
+		48BF197D28A546FA0094188D /* NSRegularExpression+Matches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564928A45AB9002E6511 /* NSRegularExpression+Matches.swift */; };
+		48BF197E28A547000094188D /* MarkupFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882564828A45AB9002E6511 /* MarkupFormatter.swift */; };
+		48BF197F28A553C00094188D /* Pods_Tsurukame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC80AAF9736A570E3C4CC09E /* Pods_Tsurukame.framework */; };
+		48BF198028A553C00094188D /* Pods_Tsurukame.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FC80AAF9736A570E3C4CC09E /* Pods_Tsurukame.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		48F4B1DC268CB9850033860E /* UpcomingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */; };
 		5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33812F134DC80E5D981C40E /* Pods_FontScreenshotter.framework */; };
 		630EB10A25C561A900783E54 /* NSMutableAttributedString+Replacements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */; };
@@ -62,7 +85,6 @@
 		637CA11525D7E48A0082580E /* LessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA11425D7E48A0082580E /* LessonsViewController.swift */; };
 		637CA12C25D7EDFF0082580E /* ReviewSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA12B25D7EDFE0082580E /* ReviewSummaryViewController.swift */; };
 		637CA18725D7F5A10082580E /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 637CA18625D7F5A10082580E /* SwiftProtobuf */; };
-		637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6364A10A242DFB6F000ABF32 /* Intents.framework */; };
 		638A5C4E25A471F9001A7AEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A5C4D25A471F9001A7AEE /* AppDelegate.swift */; };
 		638A5C6C25ADBB86001A7AEE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A5C6B25ADBB86001A7AEE /* main.swift */; };
 		638D197525C6AA4B00B80544 /* MarkupModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638D197425C6AA4B00B80544 /* MarkupModelItem.swift */; };
@@ -99,7 +121,6 @@
 		63C74C9F25C9858D004F6C99 /* SubjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C74C9E25C9858D004F6C99 /* SubjectDetailsViewController.swift */; };
 		63CAAB091FD2C66100E09DA1 /* NSString+LevenshteinDistance.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CAAB081FD2C66100E09DA1 /* NSString+LevenshteinDistance.m */; };
 		63CAAB0B1FD2CBD900E09DA1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63CAAB0A1FD2CBD900E09DA1 /* LaunchScreen.storyboard */; };
-		63CAAB111FD7FACD00E09DA1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63CAAB101FD7FAC600E09DA1 /* SystemConfiguration.framework */; };
 		63CAB3FB2604A1450057E1C2 /* URLRequest+SetBodyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CAB3FA2604A1450057E1C2 /* URLRequest+SetBodyTest.swift */; };
 		63CAB5012605FB1B0057E1C2 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 63CAB5002605FB1B0057E1C2 /* PromiseKit */; };
 		63CBFF2227730ED10086BA5F /* DownloadModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CBFF2127730ED00086BA5F /* DownloadModelItem.swift */; };
@@ -120,7 +141,6 @@
 		63E9A8D421108FB400418CE1 /* UIView+SafeAreaInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E9A8D321108FB400418CE1 /* UIView+SafeAreaInsets.m */; };
 		63ED9A0F2725037200937944 /* EditableTextModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ED9A0E2725037200937944 /* EditableTextModelItem.swift */; };
 		63EEFEC11FC45C440070C05F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63EEFEBC1FC45C440070C05F /* Assets.xcassets */; };
-		63EF56DE26060B980038551A /* WaniKaniAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 63EF56DD26060B980038551A /* WaniKaniAPI */; };
 		63EF56E226060BA70038551A /* WaniKaniAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 63EF56E126060BA70038551A /* WaniKaniAPI */; };
 		63EF5752260617E30038551A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF5751260617E30038551A /* LoginViewController.swift */; };
 		63F7F51F23D3F335006A31FB /* ReadingModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F7F51E23D3F335006A31FB /* ReadingModelItem.swift */; };
@@ -191,6 +211,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		48BF198128A553C00094188D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				48BF198028A553C00094188D /* Pods_Tsurukame.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C90846C9237F1C790068A272 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -227,6 +258,16 @@
 		481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLevelReviewTimeItem.swift; sourceTree = "<group>"; };
 		4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontScreenshotterUITests.swift; sourceTree = "<group>"; };
 		4874562E261DD28E00F33AA3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4882564828A45AB9002E6511 /* MarkupFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkupFormatter.swift; sourceTree = "<group>"; };
+		4882564928A45AB9002E6511 /* NSRegularExpression+Matches.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Matches.swift"; sourceTree = "<group>"; };
+		4882564A28A45AB9002E6511 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		4882564C28A45AB9002E6511 /* old-mnemonics.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "old-mnemonics.json"; sourceTree = "<group>"; };
+		4882564D28A45AB9002E6511 /* visually-similar-kanji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "visually-similar-kanji.json"; sourceTree = "<group>"; };
+		4882564E28A45AB9002E6511 /* ProtobufExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtobufExtensions.swift; sourceTree = "<group>"; };
+		4882564F28A45AB9002E6511 /* Subject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
+		4882565028A45AB9002E6511 /* WebClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebClient.swift; sourceTree = "<group>"; };
+		4882565128A45AB9002E6511 /* URLRequest+SetBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URLRequest+SetBody.swift"; sourceTree = "<group>"; };
+		4882565228A45AB9002E6511 /* wanikani_api.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = wanikani_api.pb.swift; sourceTree = "<group>"; };
 		489894D423670CB000A20AF8 /* Tsurukame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tsurukame.entitlements; sourceTree = "<group>"; };
 		48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsViewController.swift; sourceTree = "<group>"; };
 		4B8236EC341CF1BA18D16857 /* Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; sourceTree = "<group>"; };
@@ -315,7 +356,6 @@
 		63CAAB0A1FD2CBD900E09DA1 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		63CAAB101FD7FAC600E09DA1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		63CAB3FA2604A1450057E1C2 /* URLRequest+SetBodyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+SetBodyTest.swift"; sourceTree = "<group>"; };
-		63CAB4F72605F9AF0057E1C2 /* WaniKaniAPI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WaniKaniAPI; sourceTree = "<group>"; };
 		63CBFF2127730ED00086BA5F /* DownloadModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadModelItem.swift; sourceTree = "<group>"; };
 		63CBFF2527731B8B0086BA5F /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = SOURCE_ROOT; };
 		63CBFF28277327920086BA5F /* FontsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsViewController.swift; sourceTree = "<group>"; };
@@ -382,13 +422,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63EF56DE26060B980038551A /* WaniKaniAPI in Frameworks */,
-				637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */,
 				63CAB5012605FB1B0057E1C2 /* PromiseKit in Frameworks */,
-				63CAAB111FD7FACD00E09DA1 /* SystemConfiguration.framework in Frameworks */,
+				4882565F28A45BEE002E6511 /* PMKFoundation in Frameworks */,
+				48BF197F28A553C00094188D /* Pods_Tsurukame.framework in Frameworks */,
 				480B243123D6830300FC2A82 /* Rexy in Frameworks */,
 				637CA18725D7F5A10082580E /* SwiftProtobuf in Frameworks */,
-				0A943349E17FA7889EFEE41F /* Pods_Tsurukame.framework in Frameworks */,
+				4882566228A45C21002E6511 /* Hippolyte in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +525,32 @@
 			path = FontScreenshotterUITests;
 			sourceTree = "<group>";
 		};
+		4882564728A45AB8002E6511 /* WaniKaniAPI */ = {
+			isa = PBXGroup;
+			children = (
+				4882564828A45AB9002E6511 /* MarkupFormatter.swift */,
+				4882564928A45AB9002E6511 /* NSRegularExpression+Matches.swift */,
+				4882564A28A45AB9002E6511 /* APIClient.swift */,
+				4882564B28A45AB9002E6511 /* Resources */,
+				4882564E28A45AB9002E6511 /* ProtobufExtensions.swift */,
+				4882564F28A45AB9002E6511 /* Subject.swift */,
+				4882565028A45AB9002E6511 /* WebClient.swift */,
+				4882565128A45AB9002E6511 /* URLRequest+SetBody.swift */,
+				4882565228A45AB9002E6511 /* wanikani_api.pb.swift */,
+			);
+			name = WaniKaniAPI;
+			path = WaniKaniAPI/Sources/WaniKaniAPI;
+			sourceTree = "<group>";
+		};
+		4882564B28A45AB9002E6511 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4882564C28A45AB9002E6511 /* old-mnemonics.json */,
+				4882564D28A45AB9002E6511 /* visually-similar-kanji.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		630FD60A1FC45BDF00D21C1F = {
 			isa = PBXGroup;
 			children = (
@@ -568,8 +633,8 @@
 				93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */,
 				48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */,
 				633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */,
-				63CAB4F72605F9AF0057E1C2 /* WaniKaniAPI */,
 				C92AB96E237F280300F79904 /* WatchHelper.swift */,
+				4882564728A45AB8002E6511 /* WaniKaniAPI */,
 			);
 			sourceTree = "<group>";
 		};
@@ -716,11 +781,11 @@
 				630FD6111FC45BDF00D21C1F /* Resources */,
 				C90846C9237F1C790068A272 /* Embed Watch Content */,
 				0C9C13E732A68C21AE8F0AA3 /* [CP] Embed Pods Frameworks */,
+				48BF198128A553C00094188D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				63EF56FD26060BE50038551A /* PBXTargetDependency */,
 				C90846C7237F1C790068A272 /* PBXTargetDependency */,
 			);
 			name = Tsurukame;
@@ -728,7 +793,8 @@
 				480B243023D6830300FC2A82 /* Rexy */,
 				637CA18625D7F5A10082580E /* SwiftProtobuf */,
 				63CAB5002605FB1B0057E1C2 /* PromiseKit */,
-				63EF56DD26060B980038551A /* WaniKaniAPI */,
+				4882565E28A45BEE002E6511 /* PMKFoundation */,
+				4882566128A45C21002E6511 /* Hippolyte */,
 			);
 			productName = wk;
 			productReference = 6319C9B520441DE200C31F87 /* Tsurukame.app */;
@@ -910,6 +976,8 @@
 				480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */,
 				637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */,
 				63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				4882565D28A45BEE002E6511 /* XCRemoteSwiftPackageReference "Foundation" */,
+				4882566028A45C21002E6511 /* XCRemoteSwiftPackageReference "Hippolyte" */,
 			);
 			productRefGroup = 630FD60A1FC45BDF00D21C1F;
 			projectDirPath = "";
@@ -934,8 +1002,10 @@
 				636A63E4238A5D6B00902269 /* MainHeaderView.xib in Resources */,
 				63A5598727E5947300E7BBCB /* FullRefreshOverlayView.xib in Resources */,
 				6392DBA420D130FB003019EB /* SubjectModelItem.xib in Resources */,
+				4882565728A45AB9002E6511 /* visually-similar-kanji.json in Resources */,
 				63CAAB0B1FD2CBD900E09DA1 /* LaunchScreen.storyboard in Resources */,
 				63E9A8CE21106E0900418CE1 /* TKMListSeparatorItem.xib in Resources */,
+				4882565628A45AB9002E6511 /* old-mnemonics.json in Resources */,
 				6365041625D7DDB700801C2D /* Reviews.storyboard in Resources */,
 				63E903C61FE643BF00D73C3A /* Main.storyboard in Resources */,
 				63EEFEC11FC45C440070C05F /* Assets.xcassets in Resources */,
@@ -977,6 +1047,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48BF197C28A546EE0094188D /* visually-similar-kanji.json in Resources */,
+				48BF197A28A546CA0094188D /* old-mnemonics.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1005,12 +1077,23 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tsurukame/Pods-Tsurukame-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tsurukame/Pods-Tsurukame-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Haneke/Haneke.framework",
+				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
+				"${BUILT_PRODUCTS_DIR}/OAStackView/OAStackView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tsurukame/Pods-Tsurukame-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Haneke.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OAStackView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1044,12 +1127,13 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests/Pods-Tests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Hippolyte/Hippolyte.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests/Pods-Tests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hippolyte.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1100,12 +1184,15 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Haneke/Haneke.framework",
+				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Haneke.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1161,12 +1248,15 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Haneke/Haneke.framework",
+				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Haneke.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1180,6 +1270,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4882565828A45AB9002E6511 /* ProtobufExtensions.swift in Sources */,
 				638D197525C6AA4B00B80544 /* MarkupModelItem.swift in Sources */,
 				63D746E227746C0E00DDC822 /* ReviewMenuViewController.swift in Sources */,
 				63E9A8D12110859800418CE1 /* TKMListSeparatorItem.m in Sources */,
@@ -1196,6 +1287,7 @@
 				C92AB96F237F280300F79904 /* WatchHelper.swift in Sources */,
 				63D2DAEE275C5D4100D5F6FF /* UIControl+addAction.swift in Sources */,
 				63F7F51F23D3F335006A31FB /* ReadingModelItem.swift in Sources */,
+				4882565A28A45AB9002E6511 /* WebClient.swift in Sources */,
 				63D746E127746C0800DDC822 /* ReviewContainerViewController.swift in Sources */,
 				633AFAE62352B6F2004F732F /* VocabularyHighlighter.swift in Sources */,
 				631CAD63234AD5FC008CEA73 /* AnswerChecker.swift in Sources */,
@@ -1233,6 +1325,7 @@
 				637CA11525D7E48A0082580E /* LessonsViewController.swift in Sources */,
 				639528ED25CC0688009845ED /* SettingsViewController.swift in Sources */,
 				631CAD72234B4A96008CEA73 /* ReviewViewController.swift in Sources */,
+				4882565328A45AB9002E6511 /* MarkupFormatter.swift in Sources */,
 				63C74C8F25C970DA004F6C99 /* SubjectsByLevelViewController.swift in Sources */,
 				63391B5F2779BF56005CDA72 /* LessonSettingsViewController.swift in Sources */,
 				63F7F52923D42C6E006A31FB /* MainViewController.swift in Sources */,
@@ -1240,8 +1333,11 @@
 				481B2FED23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift in Sources */,
 				63BEBF9725C57D4000123147 /* SearchResultViewController.swift in Sources */,
 				63A237611FE9264300C48657 /* UIColor+HexString.m in Sources */,
+				4882565528A45AB9002E6511 /* APIClient.swift in Sources */,
+				4882565428A45AB9002E6511 /* NSRegularExpression+Matches.swift in Sources */,
 				639528FD25CC2F4F009845ED /* LessonOrderViewController.swift in Sources */,
 				63E1386827E59F4100AC4706 /* FullRefreshOverlayView.swift in Sources */,
+				4882565928A45AB9002E6511 /* Subject.swift in Sources */,
 				633252882727E8A700ABBA04 /* SubjectCatalogueViewController.swift in Sources */,
 				63F7F52C23D43DF6006A31FB /* Services.swift in Sources */,
 				630EB12125C5652400783E54 /* LessonsPageControl.swift in Sources */,
@@ -1249,6 +1345,8 @@
 				63B63FF727733ABC0098DAAD /* NotificationDispatcher.swift in Sources */,
 				63358E9C273664D40013A2AC /* SwitchModelItem.swift in Sources */,
 				63F7F52123D3F36E006A31FB /* AttributedModelItem.swift in Sources */,
+				4882565C28A45AB9002E6511 /* wanikani_api.pb.swift in Sources */,
+				4882565B28A45AB9002E6511 /* URLRequest+SetBody.swift in Sources */,
 				631CAD6F234B3B8D008CEA73 /* LevelTimeRemainingItem.swift in Sources */,
 				633DE95D20C5635A00AC25F4 /* TKMKanaInput.m in Sources */,
 				63CBFF29277327920086BA5F /* FontsViewController.swift in Sources */,
@@ -1301,18 +1399,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48BF197D28A546FA0094188D /* NSRegularExpression+Matches.swift in Sources */,
 				63DB065B25A055D70071DC1C /* TestingAppDelegate.swift in Sources */,
 				63F7F52823D42BDD006A31FB /* String+MD5Test.swift in Sources */,
+				48BF197428A546A00094188D /* wanikani_api.pb.swift in Sources */,
 				BB0F6B0C216698F800CB1306 /* TKMKanaInputTest.m in Sources */,
 				631CAD67234AF962008CEA73 /* AnswerCheckerTest.swift in Sources */,
 				638D198C25C6B5C600B80544 /* ReviewItem.swift in Sources */,
 				63996B3C2594389500149414 /* LocalCachingClient.swift in Sources */,
+				48BF197E28A547000094188D /* MarkupFormatter.swift in Sources */,
 				63CAB3FB2604A1450057E1C2 /* URLRequest+SetBodyTest.swift in Sources */,
+				48BF197728A546B60094188D /* Subject.swift in Sources */,
+				48BF197628A546B00094188D /* WebClient.swift in Sources */,
+				48BF197828A546BB0094188D /* ProtobufExtensions.swift in Sources */,
+				48BF197528A546AB0094188D /* URLRequest+SetBody.swift in Sources */,
 				633611DF2352B93900DD72A3 /* VocabularyHighlighter.swift in Sources */,
 				4820306724D849E100B40FDD /* Settings.swift in Sources */,
 				63996B15259435DF00149414 /* String+MD5.swift in Sources */,
 				631CAD68234AFAA5008CEA73 /* AnswerChecker.swift in Sources */,
 				63996B44259438C400149414 /* FMDatabase+Assert.swift in Sources */,
+				48BF197928A546C20094188D /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1345,9 +1451,6 @@
 			isa = PBXTargetDependency;
 			target = 630FD6121FC45BDF00D21C1F /* Tsurukame */;
 			targetProxy = 63E9A8E721199C8500418CE1 /* PBXContainerItemProxy */;
-		};
-		63EF56FD26060BE50038551A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
 		};
 		63EF57A826061C540038551A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1440,7 +1543,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = .;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lcompression";
@@ -1498,7 +1601,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = .;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-lcompression";
 				SDKROOT = iphoneos;
@@ -1515,24 +1618,25 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Resources/Tsurukame.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 907;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = "910+1";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.davidsansome.wanikani";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -1549,24 +1653,25 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Resources/Tsurukame.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 907;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = "910+1";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d5cd9a5d-213c-42f1-b72b-185d1259a0f2";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.davidsansome.wanikani";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -1581,8 +1686,9 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = AppStoreScreenshots/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1590,7 +1696,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.AppStoreScreenshots;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.AppStoreScreenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1606,15 +1712,16 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = AppStoreScreenshots/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.AppStoreScreenshots;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.AppStoreScreenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -1631,15 +1738,17 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "910+1";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.FontScreenshotter;
 				PRODUCT_MODULE_NAME = Tsurukame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1657,14 +1766,16 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = "910+1";
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.FontScreenshotter;
 				PRODUCT_MODULE_NAME = Tsurukame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -1681,7 +1792,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1690,7 +1801,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotterUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.FontScreenshotterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1707,7 +1818,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = FontScreenshotterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1715,7 +1826,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotterUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.FontScreenshotterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1733,14 +1844,14 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.Tests;
 				PRODUCT_MODULE_NAME = Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -1761,14 +1872,14 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.Tests;
 				PRODUCT_MODULE_NAME = Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -1785,18 +1896,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 907;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = "910+1";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.watchapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.davidsansome.wanikani.watchapp";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1814,18 +1925,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 907;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = "910+1";
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.watchapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "df06fa1e-0be6-4ca1-8d8d-352da185fec6";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.davidsansome.wanikani.watchapp";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1841,22 +1952,22 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 907;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = "910+1";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp.c;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.watchapp.c;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.davidsansome.wanikani.watchapp.c";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1873,22 +1984,22 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 907;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = "910+1";
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp.c;
+				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.watchapp.c;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "a1f9acf7-3902-4937-a701-fd4e488ec576";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.davidsansome.wanikani.watchapp.c";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1984,6 +2095,22 @@
 				version = 1.0.1;
 			};
 		};
+		4882565D28A45BEE002E6511 /* XCRemoteSwiftPackageReference "Foundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PromiseKit/Foundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.4;
+			};
+		};
+		4882566028A45C21002E6511 /* XCRemoteSwiftPackageReference "Hippolyte" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JanGorman/Hippolyte";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-protobuf";
@@ -2008,6 +2135,16 @@
 			package = 480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */;
 			productName = Rexy;
 		};
+		4882565E28A45BEE002E6511 /* PMKFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4882565D28A45BEE002E6511 /* XCRemoteSwiftPackageReference "Foundation" */;
+			productName = PMKFoundation;
+		};
+		4882566128A45C21002E6511 /* Hippolyte */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4882566028A45C21002E6511 /* XCRemoteSwiftPackageReference "Hippolyte" */;
+			productName = Hippolyte;
+		};
 		637CA18625D7F5A10082580E /* SwiftProtobuf */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */;
@@ -2017,10 +2154,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
-		};
-		63EF56DD26060B980038551A /* WaniKaniAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = WaniKaniAPI;
 		};
 		63EF56E126060BA70038551A /* WaniKaniAPI */ = {
 			isa = XCSwiftPackageProductDependency;

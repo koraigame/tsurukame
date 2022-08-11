@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 import Accelerate
 import Foundation
-import WaniKaniAPI
 
 private let kBlurKernelSize: UInt32 = 19
 private let kBlurAlpha: CGFloat = 0.75
@@ -51,7 +50,8 @@ class ContextSentenceModelItem: AttributedModelItem {
     english.append(attr(sentence.english))
     englishText = english.replaceFontSize(fontSize)
 
-    japaneseText = NSMutableAttributedString(attributedString: japanese).replaceFontSize(fontSize)
+    japaneseText = NSMutableAttributedString(attributedString: japanese)
+      .replaceFontSize(fontSize)
 
     super.init(text: text)
   }
@@ -90,7 +90,8 @@ private class ContextSentenceModelCell: AttributedModelCell {
       TKMStyle.Color.cellBackground.setFill()
       UIRectFill(rect)
       englishCtx.setAlpha(kBlurAlpha)
-      item.englishText.draw(with: textView.frame, options: .usesLineFragmentOrigin, context: nil)
+      item.englishText.draw(with: textView.frame, options: .usesLineFragmentOrigin,
+                            context: nil)
     }
 
     // Blur the english text.
@@ -99,7 +100,8 @@ private class ContextSentenceModelCell: AttributedModelCell {
 
     // Render the Japanese text on top of the result.
     blurredCtx.with {
-      item.japaneseText.draw(with: textView.frame, options: .usesLineFragmentOrigin, context: nil)
+      item.japaneseText.draw(with: textView.frame, options: .usesLineFragmentOrigin,
+                             context: nil)
     }
 
     // Position the overlay and set its contents to the image we just rendered.

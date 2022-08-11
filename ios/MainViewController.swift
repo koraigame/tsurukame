@@ -14,7 +14,6 @@
 
 import Foundation
 import PromiseKit
-import WaniKaniAPI
 
 private let kDefaultProfileImageURL =
   "https://cdn.wanikani.com/default-avatar-300x300-20121121.png"
@@ -119,7 +118,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
 
     nd.add(name: .lccAvailableItemsChanged) { [weak self] _ in self?.availableItemsChanged() }
     nd.add(name: .lccUserInfoChanged) { [weak self] _ in self?.userInfoChanged() }
-    nd.add(name: .lccSRSCategoryCountsChanged) { [weak self] _ in self?.srsLevelCountsChanged() }
+    nd
+      .add(name: .lccSRSCategoryCountsChanged) { [weak self] _ in
+        self?.srsLevelCountsChanged()
+      }
     nd.add(name: .lccUnauthorized) { [weak self] _ in self?.clientIsUnauthorized() }
     nd
       .add(name: UIApplication.didEnterBackgroundNotification) { [weak self] _ in
@@ -138,7 +140,9 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     updatingTableModel = true
 
     DispatchQueue.main.async {
-      WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      if #available(iOS 9.3, *) {
+        WatchHelper.sharedInstance.updatedData(client: self.services.localCachingClient)
+      }
       self.updatingTableModel = false
       self.recreateTableModel()
     }
@@ -150,7 +154,8 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let lessons = services.localCachingClient.availableLessonCount
     let reviews = services.localCachingClient.availableReviewCount
     let upcomingReviews = services.localCachingClient.upcomingReviews
-    let currentLevelAssignments = services.localCachingClient.getAssignmentsAtUsersCurrentLevel()
+    let currentLevelAssignments = services.localCachingClient
+      .getAssignmentsAtUsersCurrentLevel()
 
     let model = MutableTableModel(tableView: tableView)
 
@@ -179,8 +184,10 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       model.add(reviewsItem)
 
       model.add(section: "Upcoming reviews")
-      model.add(UpcomingReviewsChartItem(upcomingReviews, currentReviewCount: reviews, at: Date(),
-                                         target: self, action: #selector(showTableForecast)))
+      model
+        .add(UpcomingReviewsChartItem(upcomingReviews, currentReviewCount: reviews,
+                                      at: Date(),
+                                      target: self, action: #selector(showTableForecast)))
       model
         .add(createCurrentLevelReviewTimeItem(services: services,
                                               currentLevelAssignments: currentLevelAssignments))
@@ -337,12 +344,20 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     let date = calendar
       .nextDate(after: Date(), matching: .minute, value: 0, options: .matchNextTime)!
 
-    hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
-                                              repeats: false,
-                                              block: { [weak self] _ in
-                                                guard let self = self else { return }
-                                                self.hourlyTimerExpired()
-                                              })
+    if #available(iOS 10.0, *) {
+      hourlyRefreshTimer = Timer.scheduledTimer(withTimeInterval: date.timeIntervalSinceNow,
+                                                repeats: false,
+                                                block: { [weak self] _ in
+                                                  guard let self = self else { return }
+                                                  self.hourlyTimerExpired()
+                                                })
+    } else {
+      hourlyRefreshTimer = Timer.scheduledTimer(timeInterval: date.timeIntervalSinceNow,
+                                                target: self,
+                                                selector: #selector(hourlyTimerExpired),
+                                                userInfo: nil,
+                                                repeats: false)
+    }
   }
 
   func cancelHourlyTimer() {
@@ -350,7 +365,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     hourlyRefreshTimer = Timer()
   }
 
-  func hourlyTimerExpired() {
+  @objc func hourlyTimerExpired() {
     services.localCachingClient.currentHourChanged()
     refresh(quick: true)
     updateHourlyTimer()
@@ -416,7 +431,8 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     headerView.layoutIfNeeded()
 
     // Make the header view as short as possible.
-    let height = headerView.sizeThatFits(CGSize(width: view.bounds.size.width, height: 0)).height
+    let height = headerView.sizeThatFits(CGSize(width: view.bounds.size.width, height: 0))
+      .height
     var frame = headerView.frame
     frame.size.height = height
     headerView.frame = frame
@@ -450,7 +466,8 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
       return
     }
 
-    let vc = storyboard?.instantiateViewController(withIdentifier: "login") as! LoginViewController
+    let vc = storyboard?
+      .instantiateViewController(withIdentifier: "login") as! LoginViewController
     vc.delegate = self
     vc.forcedUsername = user.username
     navigationController?.pushViewController(vc, animated: true)
@@ -472,7 +489,8 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
   func searchResultSelected(subject: TKMSubject) {
     let vc = storyboard?
       .instantiateViewController(withIdentifier: "subjectDetailsViewController") as! SubjectDetailsViewController
-    vc.setup(services: services, subject: subject, showHints: true, hideBackButton: false, index: 0)
+    vc.setup(services: services, subject: subject, showHints: true, hideBackButton: false,
+             index: 0)
     searchController.dismiss(animated: true) {
       self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -507,29 +525,25 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     if hasLessons, !hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Continue lessons"))
+                              action: #selector(startLessons)))
     } else if hasReviews {
       ret.append(UIKeyCommand(input: "\r",
                               modifierFlags: [],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Continue reviews"))
+                              action: #selector(startReviews)))
     }
 
     // Command L to start lessons, if any
     if hasLessons {
       ret.append(UIKeyCommand(input: "l",
                               modifierFlags: [.command],
-                              action: #selector(startLessons),
-                              discoverabilityTitle: "Start lessons"))
+                              action: #selector(startLessons)))
     }
 
     // Command R to start reviews, if any
     if hasReviews {
       ret.append(UIKeyCommand(input: "r",
                               modifierFlags: [.command],
-                              action: #selector(startReviews),
-                              discoverabilityTitle: "Start reviews"))
+                              action: #selector(startReviews)))
     }
 
     return ret

@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 enum TaskType {
   case reading
@@ -47,7 +46,7 @@ class ReviewItem: NSObject {
   class func readyForReview(assignments: [TKMAssignment],
                             localCachingClient: LocalCachingClient) -> [ReviewItem] {
     filterReadyItems(assignments: assignments,
-                     localCachingClient: localCachingClient) { (assignment) -> Bool in
+                     localCachingClient: localCachingClient) { assignment -> Bool in
       assignment.isReviewStage && assignment.availableAtDate.timeIntervalSinceNow < 0
     }
   }
@@ -55,7 +54,7 @@ class ReviewItem: NSObject {
   class func readyForLessons(assignments: [TKMAssignment],
                              localCachingClient: LocalCachingClient) -> [ReviewItem] {
     filterReadyItems(assignments: assignments,
-                     localCachingClient: localCachingClient) { (assignment) -> Bool in
+                     localCachingClient: localCachingClient) { assignment -> Bool in
       assignment.isLessonStage
     }
   }

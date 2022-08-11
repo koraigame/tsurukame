@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class SuccessAnimation {
   private static func randFloat(min: CGFloat, max: CGFloat) -> CGFloat {
@@ -23,7 +22,8 @@ class SuccessAnimation {
   private static func createSpark(superview: UIView, origin: CGPoint, size: CGFloat,
                                   distance: CGFloat,
                                   radians: CGFloat, color: UIColor, duration: TimeInterval) {
-    let frame = CGRect(x: origin.x - size / 2, y: origin.y - size / 2, width: size, height: size)
+    let frame = CGRect(x: origin.x - size / 2, y: origin.y - size / 2, width: size,
+                       height: size)
     let view = UIView(frame: frame)
     view.backgroundColor = color
     view.layer.anchorPoint = CGPoint(x: 1.0, y: 1.0)
@@ -89,7 +89,7 @@ class SuccessAnimation {
     superview.layoutIfNeeded()
 
     // Fade in.
-    UIView.animate(withDuration: duration * 0.1,
+    UIView.animate(withDuration: Double(duration) * 0.1,
                    delay: 0,
                    options: .curveLinear,
                    animations: {
@@ -97,7 +97,7 @@ class SuccessAnimation {
                    })
 
     // Get bigger.
-    UIView.animate(withDuration: duration * 0.2,
+    UIView.animate(withDuration: Double(duration) * 0.2,
                    delay: 0,
                    usingSpringWithDamping: 0.5,
                    initialSpringVelocity: 1,
@@ -107,8 +107,8 @@ class SuccessAnimation {
                    })
 
     // Move to destination and get smaller
-    UIView.animate(withDuration: duration * 0.3,
-                   delay: duration * 0.7,
+    UIView.animate(withDuration: Double(duration) * 0.3,
+                   delay: Double(duration) * 0.7,
                    options: .curveLinear,
                    animations: {
                      view.center = toView.center
@@ -136,7 +136,8 @@ class SuccessAnimation {
 
     var hue: CGFloat = 0.0, saturation: CGFloat = 0.0, alpha: CGFloat = 0.0
     backgroundColor.getHue(&hue, saturation: &saturation, brightness: nil, alpha: &alpha)
-    let borderColor = UIColor(hue: hue, saturation: saturation / 2, brightness: 1.0, alpha: alpha)
+    let borderColor = UIColor(hue: hue, saturation: saturation / 2, brightness: 1.0,
+                              alpha: alpha)
 
     let label = UILabel(frame: .zero)
     label.text = text
@@ -166,7 +167,7 @@ class SuccessAnimation {
     superview.layoutIfNeeded()
 
     // Fade in.
-    UIView.animate(withDuration: duration * 0.15,
+    UIView.animate(withDuration: Double(duration) * 0.15,
                    delay: 0,
                    options: .curveLinear,
                    animations: {
@@ -174,7 +175,7 @@ class SuccessAnimation {
                    })
 
     // Spring to target position.
-    UIView.animate(withDuration: duration * 0.3,
+    UIView.animate(withDuration: Double(duration) * 0.3,
                    delay: 0.0,
                    usingSpringWithDamping: 0.5,
                    initialSpringVelocity: 1,
@@ -187,8 +188,8 @@ class SuccessAnimation {
                    })
 
     // Get smaller and fade out.
-    UIView.animate(withDuration: duration * 0.1,
-                   delay: duration * 0.85,
+    UIView.animate(withDuration: Double(duration) * 0.1,
+                   delay: Double(duration) * 0.85,
                    options: .curveEaseInOut,
                    animations: {
                      container.transform = container.transform.scaledBy(x: 0.001, y: 0.001)
@@ -212,12 +213,13 @@ class SuccessAnimation {
       let offset = randFloat(min: -1.0, max: 1.0)
       let angle = -(.pi * 0.3) * offset
       let originCenterOffset = 0.25 * offset
-      let color = (arc4random_uniform(2) != 0) ? TKMStyle.explosionColor1 : TKMStyle.explosionColor2
+      let color = (arc4random_uniform(2) != 0) ? TKMStyle.explosionColor1 : TKMStyle
+        .explosionColor2
       let origin = CGPoint(x: view.center.x + originCenterOffset * view.bounds.size.width,
                            y: view.center.y)
 
       createSpark(superview: superview, origin: origin, size: size, distance: distance,
-                  radians: angle, color: color, duration: duration)
+                  radians: angle, color: color, duration: TimeInterval(duration))
     }
   }
 
@@ -240,11 +242,13 @@ class SuccessAnimation {
       let duration = randFloat(min: 0.5, max: 0.7)
       let offset = randFloat(min: -1.0, max: 1.0)
       let angle = -(.pi * 0.3) * offset
-      let origin = CGPoint(x: label.frame.origin.x + (CGFloat(i) * letterWidth), y: label.center.y)
+      let origin = CGPoint(x: label.frame.origin.x + (CGFloat(i) * letterWidth),
+                           y: label.center.y)
 
-      if let color = text.attribute(.foregroundColor, at: i, effectiveRange: nil) as? UIColor {
+      if let color = text
+        .attribute(.foregroundColor, at: i, effectiveRange: nil) as? UIColor {
         createSpark(superview: superview, origin: origin, size: size, distance: distance,
-                    radians: angle, color: color, duration: duration)
+                    radians: angle, color: color, duration: TimeInterval(duration))
       }
     }
   }

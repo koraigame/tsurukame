@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@ import WatchConnectivity
   import ClockKit
 #endif
 
-typealias ClientDelegateCallback = (([String: Any]) -> Void)
+typealias ClientDelegateCallback = ([String: Any]) -> Void
 typealias EpochTimeInt = Int64
 
+@available(iOS 9.3, *)
 class WatchConnectionServerDelegate: NSObject, WCSessionDelegate {
   func session(_: WCSession, activationDidCompleteWith _: WCSessionActivationState,
                error _: Error?) {}
@@ -34,6 +35,7 @@ class WatchConnectionServerDelegate: NSObject, WCSessionDelegate {
   #endif
 }
 
+@available(iOS 9.3, *)
 class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
   let callback: ClientDelegateCallback
 
@@ -41,8 +43,15 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
     self.callback = callback
   }
 
-  func session(_: WCSession, activationDidCompleteWith _: WCSessionActivationState, error: Error?) {
-    os_log("watch activationDidCompleteWith err=%{public}@", error?.localizedDescription ?? "none")
+  func session(_: WCSession, activationDidCompleteWith _: WCSessionActivationState,
+               error: Error?) {
+    if #available(iOS 10.0, *) {
+      os_log("watch activationDidCompleteWith err=%{public}@",
+             error?.localizedDescription ?? "none")
+    } else {
+      NSLog("watch activationDidCompleteWith err=%{public}@",
+            error?.localizedDescription ?? "none")
+    }
   }
 
   func session(_: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
@@ -64,6 +73,7 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
   #endif
 }
 
+@available(iOS 9.3, *)
 @objc class WatchHelper: NSObject {
   public static let keyReviewCount = "reviewCount"
   public static let keyReviewNextHourCount = "reviewHrCount"
@@ -101,7 +111,7 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
     @objc func updatedData(client: LocalCachingClient) {
       var halfLevel = false
       var assignmentsAtCurrentLevel = client.getAssignmentsAtUsersCurrentLevel()
-      var learnedCount = assignmentsAtCurrentLevel.filter { (assignment) -> Bool in
+      var learnedCount = assignmentsAtCurrentLevel.filter { assignment -> Bool in
         assignment.srsStage >= .guru1
       }.count
 
@@ -112,7 +122,7 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
          assignment.level > 0 {
         halfLevel = true
         assignmentsAtCurrentLevel = client.getAssignments(level: Int(assignment.level) - 1)
-        learnedCount = assignmentsAtCurrentLevel.filter { (assignment) -> Bool in
+        learnedCount = assignmentsAtCurrentLevel.filter { assignment -> Bool in
           assignment.srsStage >= .guru1
         }.count
       }
@@ -147,7 +157,8 @@ class WatchConnectionClientDelegate: NSObject, WCSessionDelegate {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + deadline) {
-          let timestamp = [WatchHelper.keySentAt: EpochTimeInt(Date().timeIntervalSince1970)]
+          let timestamp =
+            [WatchHelper.keySentAt: EpochTimeInt(Date().timeIntervalSince1970)]
           session
             .transferCurrentComplicationUserInfo(packet
               .merging(timestamp, uniquingKeysWith: { current, _ in current }))

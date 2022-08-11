@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
+import OAStackView
 
 @objc(TKMSubjectModelItem)
 @objcMembers
@@ -54,7 +54,7 @@ class SubjectModelView: TKMModelCell {
   @IBOutlet var subjectLabel: UILabel!
   @IBOutlet var readingLabel: UILabel!
   @IBOutlet var meaningLabel: UILabel!
-  @IBOutlet var answerStack: UIStackView!
+  @IBOutlet var answerStack: OAStackView!
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
@@ -89,15 +89,17 @@ class SubjectModelView: TKMModelCell {
     if item.showRemaining {
       if let assignment = item.assignment, assignment.isReviewStage {
         readingLabel.isHidden = false
-        readingLabel.text = formattedInterval(until: assignment.reviewDate!, label: "Review")
+        readingLabel.text = formattedInterval(until: assignment.reviewDate!,
+                                              label: "Review")
         meaningLabel.isHidden = false
         meaningLabel
           .text = formattedInterval(until: assignment.guruDate(subject: item.subject)!,
                                     label: "Guru")
       } else if let assignment = item.assignment, assignment.isLessonStage {
         readingLabel.isHidden = false
-        readingLabel.text = formattedInterval(until: assignment.guruDate(subject: item.subject)!,
-                                              label: "Guru")
+        readingLabel
+          .text = formattedInterval(until: assignment.guruDate(subject: item.subject)!,
+                                    label: "Guru")
         meaningLabel.isHidden = true
       } else {
         readingLabel.isHidden = true
@@ -129,7 +131,7 @@ class SubjectModelView: TKMModelCell {
 
     readingLabel.font = item.readingWrong ? TKMStyle.japaneseFontBold(size: kFontSize)
       : TKMStyle.japaneseFont(size: kFontSize)
-    meaningLabel.font = item.meaningWrong ? UIFont.systemFont(ofSize: kFontSize, weight: .bold)
+    meaningLabel.font = item.meaningWrong ? UIFont.boldSystemFont(ofSize: kFontSize)
       : UIFont.systemFont(ofSize: kFontSize)
   }
 
@@ -173,10 +175,10 @@ class SubjectModelView: TKMModelCell {
     answerStack.frame = value ? hiddenFrame : visibleFrame
     answerStack.alpha = value ? 0.0 : 1.0
 
-    UIView.animate(withDuration: 0.5) {
+    UIView.animate(withDuration: 0.5, animations: {
       self.answerStack.frame = value ? visibleFrame : hiddenFrame
       self.answerStack.alpha = value ? 1.0 : 0.0
-    } completion: { _ in
+    }) { _ in
       self.answerStack.isHidden = !value
     }
   }

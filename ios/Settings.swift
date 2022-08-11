@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 typealias SettingEnum = RawRepresentable & Codable & CaseIterable & CustomStringConvertible
 
@@ -58,7 +57,8 @@ typealias SettingEnum = RawRepresentable & Codable & CaseIterable & CustomString
 private func setArchiveData<T: Codable>(_ object: T, key: String) {
   var data: Data!
   if #available(iOS 11.0, *) {
-    data = try! NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: true)
+    data = try! NSKeyedArchiver.archivedData(withRootObject: object,
+                                             requiringSecureCoding: true)
   } else {
     data = NSKeyedArchiver.archivedData(withRootObject: object)
   }
@@ -76,7 +76,12 @@ private func getArchiveData<T: Codable>(_ defaultValue: T, key: String) -> T {
     setArchiveData(defaultValue, key: key)
     return defaultValue
   }
-  return (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T) ?? defaultValue
+
+  if #available(iOS 11.0, *) {
+    return (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T) ?? defaultValue
+  } else {
+    return (NSKeyedUnarchiver.unarchiveObject(with: data) as? T) ?? defaultValue
+  }
 }
 
 protocol SettingProtocol {

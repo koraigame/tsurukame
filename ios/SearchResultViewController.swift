@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 protocol SearchResultViewControllerDelegate: NSObject {
   func searchResultSelected(subject: TKMSubject)
@@ -68,7 +67,8 @@ class SearchResultViewController: UITableViewController, UISearchResultsUpdating
   }
 
   override func viewDidLoad() {
-    queue = DispatchQueue(label: "tsurukame.search-results", qos: .userInitiated, attributes: [],
+    queue = DispatchQueue(label: "tsurukame.search-results", qos: .userInitiated,
+                          attributes: [],
                           autoreleaseFrequency: .inherit,
                           target: DispatchQueue.global(qos: .userInitiated))
 
@@ -126,7 +126,7 @@ class SearchResultViewController: UITableViewController, UISearchResultsUpdating
         }
       }
 
-      results.sort { (a, b) -> Bool in
+      results.sort { a, b -> Bool in
         let aMatchesExactly = subjectMatchesQueryExactly(subject: a, query: query,
                                                          kanaQuery: kanaQuery)
         let bMatchesExactly = subjectMatchesQueryExactly(subject: b, query: query,

@@ -33,9 +33,9 @@ class FullRefreshOverlayView: UIView {
   }
 
   func hide() {
-    UIView.animate(withDuration: 0.3) {
+    UIView.animate(withDuration: 0.3, animations: {
       self.alpha = 0.0
-    } completion: { _ in
+    }) { _ in
       self.removeFromSuperview()
     }
   }

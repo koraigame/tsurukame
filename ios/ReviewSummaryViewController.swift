@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
   private var services: TKMServices!
@@ -47,7 +46,7 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
     model.add(BasicModelItem(style: .value1, title: "Correct answers", subtitle: summaryText))
 
     // Add a section for each level.
-    let incorrectItemLevels = incorrectItemsByLevel.keys.sorted { (a, b) -> Bool in
+    let incorrectItemLevels = incorrectItemsByLevel.keys.sorted { a, b -> Bool in
       b < a
     }
     for level in incorrectItemLevels {
@@ -58,7 +57,8 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
       }
 
       for item in incorrectItemsByLevel[level]! {
-        if let subject = services.localCachingClient.getSubject(id: item.assignment.subjectID) {
+        if let subject = services.localCachingClient
+          .getSubject(id: item.assignment.subjectID) {
           model.add(SubjectModelItem(subject: subject, delegate: self, assignment: nil,
                                      readingWrong: item.answer.readingWrong,
                                      meaningWrong: item.answer.meaningWrong))

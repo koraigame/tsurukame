@@ -108,7 +108,8 @@ class MainHeaderView: UIView {
     let width = size.width
     vacationDetail.preferredMaxLayoutWidth = width - kVacationMargin * 2
 
-    var height = userContainer.sizeThatFits(CGSize(width: width, height: 0)).height + kUserMargin
+    var height = userContainer.sizeThatFits(CGSize(width: width, height: 0))
+      .height + kUserMargin
 
     if isOnVacation {
       height += vacationContainer.sizeThatFits(CGSize(width: width, height: 0)).height
@@ -135,7 +136,8 @@ class MainHeaderView: UIView {
     // Position the vacation container below it.
     var vacationContainerSize = CGSize(width: 0, height: 0)
     if isOnVacation {
-      let vacationContainerHeight = vacationContainer.sizeThatFits(CGSize(width: width, height: 0))
+      let vacationContainerHeight = vacationContainer
+        .sizeThatFits(CGSize(width: width, height: 0))
         .height
       vacationContainerSize = CGSize(width: width, height: vacationContainerHeight)
     }
@@ -189,7 +191,11 @@ class MainHeaderView: UIView {
     UIView.animate(withDuration: 0.2) {
       self.progressView.alpha = 1.0
     }
-    progressView.observedProgress = progress
+    if #available(iOS 9.0, *) {
+      progressView.observedProgress = progress
+    } else {
+      progressView.setProgress(Float(progress.fractionCompleted), animated: false)
+    }
   }
 
   @IBAction func didTapSearchButton(_: Any) {

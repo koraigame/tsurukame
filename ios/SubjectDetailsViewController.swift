@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import WaniKaniAPI
 
 class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewController {
   private var services: TKMServices!
@@ -123,12 +122,10 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
     [
       UIKeyCommand(input: " ",
                    modifierFlags: [],
-                   action: #selector(playAudio),
-                   discoverabilityTitle: "Play reading"),
+                   action: #selector(playAudio)),
       UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
                    modifierFlags: [],
-                   action: #selector(backButtonPressed),
-                   discoverabilityTitle: "Back"),
+                   action: #selector(backButtonPressed)),
     ]
   }
 
