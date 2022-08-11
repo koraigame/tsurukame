@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,9 +52,9 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     pageControl.setSubjects(subjects)
 
     // Add it as a child view controller, below the back button.
-    addChildViewController(pageController)
+    addChild(pageController)
     view.insertSubview(pageController.view, belowSubview: backButton)
-    pageController.didMove(toParentViewController: self)
+    pageController.didMove(toParent: self)
 
     // Hook up the page control.
     pageControl.addTarget(self, action: #selector(pageChanged), for: .valueChanged)
@@ -74,7 +74,7 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    let safeArea = UIEdgeInsetsInsetRect(view.frame, view.tkm_safeAreaInsets)
+    let safeArea = view.frame.inset(by: view.tkm_safeAreaInsets)
     let pageControlSize = pageControl.sizeThatFits(CGSize(width: view.frame.size.width, height: 0))
     let pageControlFrame = CGRect(x: safeArea.minX, y: safeArea.maxY - pageControlSize.height,
                                   width: safeArea.size.width,
@@ -200,10 +200,10 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
     }
 
     return [
-      UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [],
+      UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [],
                    action: #selector(prevPage)),
       UIKeyCommand(input: "a", modifierFlags: [], action: #selector(prevPage)),
-      UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [],
+      UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [],
                    action: #selector(nextPage)),
       UIKeyCommand(input: "d", modifierFlags: [], action: #selector(nextPage)),
       UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(nextPage)),

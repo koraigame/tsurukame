@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ enum PieSlice: Int {
 
 func unsetAllLabels(view: ChartViewBase) {
   let dataSet = view.data!.dataSets[0] as! PieChartDataSet
-  for other in dataSet.values as! [PieChartDataEntry] {
+  for other in dataSet.entries as! [PieChartDataEntry] {
     other.label = nil
   }
 }
@@ -145,7 +145,7 @@ class CurrentLevelChartCell: TKMModelCell {
     insets.bottom = 0
     insets.top = 0
 
-    let frame = UIEdgeInsetsInsetRect(contentView.bounds, insets)
+    let frame = contentView.bounds.inset(by: insets)
     let width = frame.width / 3
     var x = frame.minX
     for chart in [radicalChart!, kanjiChart!, vocabularyChart!] {
@@ -197,7 +197,7 @@ class CurrentLevelChartCell: TKMModelCell {
       colors.append(PieSlice(rawValue: i)!.color(baseColor: baseColor))
     }
 
-    let dataSet = PieChartDataSet(values: values, label: nil)
+    let dataSet = PieChartDataSet(entries: values, label: nil)
     dataSet.valueTextColor = TKMStyle.Color.label
     dataSet.entryLabelColor = TKMStyle.Color.grey33
     dataSet.valueFont = UIFont.systemFont(ofSize: 10.0)

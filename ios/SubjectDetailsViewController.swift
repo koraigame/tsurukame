@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,9 +60,9 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
 
     let nc = NotificationCenter.default
     nc.addObserver(self, selector: #selector(keyboardWillShow),
-                   name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+                   name: UIResponder.keyboardWillShowNotification, object: nil)
     nc.addObserver(self, selector: #selector(keyboardWillHide),
-                   name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+                   name: UIResponder.keyboardWillHideNotification, object: nil)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -95,7 +95,7 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
 
   @objc private func keyboardWillShow(notification: NSNotification) {
     guard let keyboardSize = notification
-      .userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+      .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
       return
     }
     subjectDetailsView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height,
@@ -123,7 +123,7 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
       UIKeyCommand(input: " ",
                    modifierFlags: [],
                    action: #selector(playAudio)),
-      UIKeyCommand(input: UIKeyInputLeftArrow,
+      UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
                    modifierFlags: [],
                    action: #selector(backButtonPressed)),
     ]

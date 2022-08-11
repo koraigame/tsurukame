@@ -1,7 +1,7 @@
 PODS:
-  - Charts (3.1.1):
-    - Charts/Core (= 3.1.1)
-  - Charts/Core (3.1.1)
+  - Charts (3.5.0):
+    - Charts/Core (= 3.5.0)
+  - Charts/Core (3.5.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -21,24 +21,24 @@ PODS:
   - MMDrawerController/Subclass (0.6.0):
     - MMDrawerController/Core
   - OAStackView (1.0.1)
-  - PromiseKit/CorePromise (6.8.2)
-  - PromiseKit/Foundation (6.8.2):
+  - PromiseKit/CorePromise (6.13.1)
+  - PromiseKit/Foundation (6.13.1):
     - PromiseKit/CorePromise
   - Reachability (3.2)
-  - SwiftProtobuf (1.10.0)
+  - SwiftProtobuf (1.12.0)
 
 DEPENDENCIES:
-  - Charts (~> 3.1.0)
+  - Charts (~> 3.5.0)
   - FMDB (~> 2.7.5)
   - Haneke (~> 1.0.2)
   - Hippolyte (~> 0.4.0)
   - Light-Untar (~> 0.3.0)
   - MMDrawerController (~> 0.6.0)
   - OAStackView (~> 1.0.1)
-  - PromiseKit/CorePromise (= 6.8.2)
-  - PromiseKit/Foundation (= 6.8.2)
+  - PromiseKit/CorePromise (~> 6.13.0)
+  - PromiseKit/Foundation (~> 6.13.0)
   - Reachability (~> 3.2)
-  - SwiftProtobuf (= 1.10.0)
+  - SwiftProtobuf (~> 1.12.0)
 
 SPEC REPOS:
   trunk:
@@ -54,17 +54,17 @@ SPEC REPOS:
     - SwiftProtobuf
 
 SPEC CHECKSUMS:
-  Charts: 90a4d61da0f6e06684c591e3bcab11940fe61736
+  Charts: 40a08591df1f8ad5c223ddedfb1a06da92f24f7c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   Haneke: 01454a67322faa0dd9d81fc0f447885044e71521
   Hippolyte: b1c306140f7063d6608929d0a8b3bcee47d2d6df
   Light-Untar: e901c312974d36f3910aec73436296a5a3faf799
   MMDrawerController: e3a54a5570388463ad3b36975251575b50c4e1a0
   OAStackView: 95e7cb79cbea25c2342f496a44bdbe8bd4c8d510
-  PromiseKit: 8200c4555a5b433ac26f5143093cb792ee2c3426
+  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SwiftProtobuf: bfafffa9e26d1561c3bd0045e188c4fab5f527ae
+  SwiftProtobuf: 4ef85479c18ca85b5482b343df9c319c62bda699
 
-PODFILE CHECKSUM: 706ad78dc77465ed11b31bcb260cdaaee12312a9
+PODFILE CHECKSUM: bbec967c9a5359fd447aecb7d6a8d19778ffc917
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.3

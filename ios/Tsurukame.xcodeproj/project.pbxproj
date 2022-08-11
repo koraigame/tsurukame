@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		4820306724D849E100B40FDD /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
 		482D7C0F261CC29900104F69 /* ApprenticeLimitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482D7C0E261CC29900104F69 /* ApprenticeLimitViewController.swift */; };
 		483EBFDC261DD7190043C804 /* FontScreenshotterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */; };
+		485B560228A5878C00DB2486 /* WaniKaniAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 63EF56E126060BA70038551A /* WaniKaniAPI */; };
 		488536CF2663D7C000DEE9D1 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CA2663D7C000DEE9D1 /* Error.swift */; };
 		488536D02663D7C000DEE9D1 /* CFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CB2663D7C000DEE9D1 /* CFlags.swift */; };
 		488536D12663D7C000DEE9D1 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488536CC2663D7C000DEE9D1 /* Regex.swift */; };
@@ -445,6 +446,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				485B560228A5878C00DB2486 /* WaniKaniAPI in Frameworks */,
 				5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */,
 				63EF56E226060BA70038551A /* (null) in Frameworks */,
 			);
@@ -1716,6 +1718,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1749,6 +1752,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1774,7 +1778,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Tsurukame;
 			};
@@ -1798,7 +1802,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.AppStoreScreenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Tsurukame;
 			};
@@ -1828,6 +1832,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1854,6 +1859,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1879,6 +1885,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = FontScreenshotter;
 			};
@@ -1903,6 +1910,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.matthewbenedict.wanikani.FontScreenshotterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = FontScreenshotter;
 			};
@@ -1931,6 +1939,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Tsurukame-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tsurukame.app/Tsurukame";
 			};
@@ -1958,6 +1967,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Tsurukame-Swift.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tsurukame.app/Tsurukame";
 			};
@@ -1986,9 +1996,9 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Debug;
 		};
@@ -2013,9 +2023,9 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Release;
 		};
@@ -2045,9 +2055,9 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Debug;
 		};
@@ -2075,9 +2085,9 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 5.3;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Release;
 		};

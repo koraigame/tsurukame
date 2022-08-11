@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ class AttributedModelCell: TKMModelCell {
   }
 
   override func sizeThatFits(_ size: CGSize) -> CGSize {
-    var availableRect = UIEdgeInsetsInsetRect(CGRect(origin: .zero, size: size), kEdgeInsets)
+    var availableRect = CGRect(origin: .zero, size: size).inset(by: kEdgeInsets)
     var exclusionPaths = [UIBezierPath]()
     if let rightButtonFrame = rightButtonFrame(availableRect) {
       exclusionPaths.append(UIBezierPath(rect: rightButtonFrame))
@@ -87,7 +87,7 @@ class AttributedModelCell: TKMModelCell {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    var availableRect = UIEdgeInsetsInsetRect(bounds, kEdgeInsets)
+    var availableRect = bounds.inset(by: kEdgeInsets)
     var exclusionPaths = [UIBezierPath]()
     if let rightButton = rightButton, let rightButtonFrame = rightButtonFrame(availableRect) {
       rightButton.frame = rightButtonFrame

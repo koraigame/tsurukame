@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -339,10 +339,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     previousSubjectButton.layer.addSublayer(previousSubjectGradient)
 
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
-                                           name: NSNotification.Name.UIKeyboardWillShow,
+                                           name: UIResponder.keyboardWillShowNotification,
                                            object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
-                                           name: NSNotification.Name.UIKeyboardWillHide,
+                                           name: UIResponder.keyboardWillHideNotification,
                                            object: nil)
 
     subjectDetailsView.setup(services: services, delegate: self)
@@ -435,11 +435,11 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
   @objc private func keyboardWillShow(notification: NSNotification) {
     guard let keyboardFrame = notification
-      .userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
+      .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
       let animationDuration = notification
-      .userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double,
+      .userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
       let animationCurve = notification
-      .userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int
+      .userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int
     else {
       return
     }
@@ -1397,10 +1397,10 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       keyCommands.append(UIKeyCommand(input: "\t",
                                       modifierFlags: [],
                                       action: #selector(toggleFont)))
-      keyCommands.append(UIKeyCommand(input: UIKeyInputRightArrow,
+      keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputRightArrow,
                                       modifierFlags: [],
                                       action: #selector(showNextCustomFont)))
-      keyCommands.append(UIKeyCommand(input: UIKeyInputLeftArrow,
+      keyCommands.append(UIKeyCommand(input: UIKeyCommand.inputLeftArrow,
                                       modifierFlags: [],
                                       action: #selector(showPreviousCustomFont)))
     }

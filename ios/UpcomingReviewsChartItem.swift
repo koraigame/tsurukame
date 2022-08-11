@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@ class UpcomingReviewsChartCell: TKMModelCell {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    view.frame = UIEdgeInsetsInsetRect(contentView.bounds, layoutMargins)
+    view.frame = contentView.bounds.inset(by: layoutMargins)
   }
 
   override func update(with baseItem: TKMModelItem!) {
@@ -125,14 +125,14 @@ class UpcomingReviewsChartCell: TKMModelCell {
       }
     }
 
-    let lineDataSet = LineChartDataSet(values: cumulativeData, label: nil)
+    let lineDataSet = LineChartDataSet(entries: cumulativeData, label: nil)
     lineDataSet.drawValuesEnabled = false
     lineDataSet.drawCircleHoleEnabled = false
     lineDataSet.circleRadius = 1.5
     lineDataSet.colors = [TKMStyle.vocabularyColor2]
     lineDataSet.circleColors = [TKMStyle.vocabularyColor2]
 
-    let barDataSet = BarChartDataSet(values: hourlyData, label: nil)
+    let barDataSet = BarChartDataSet(entries: hourlyData, label: nil)
     barDataSet.axisDependency = YAxis.AxisDependency.right
     barDataSet.colors = [TKMStyle.radicalColor2]
     barDataSet.valueFormatter = DefaultValueFormatter(decimals: 0)

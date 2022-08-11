@@ -1,4 +1,4 @@
-// Copyright 2021 David Sansome
+// Copyright 2022 David Sansome
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -146,11 +146,11 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationDidEnterBackground),
-                   name: NSNotification.Name.UIApplicationDidEnterBackground,
+                   name: UIApplication.didEnterBackgroundNotification,
                    object: nil)
     nc.addObserver(self,
                    selector: #selector(applicationWillEnterForeground),
-                   name: NSNotification.Name.UIApplicationWillEnterForeground,
+                   name: UIApplication.willEnterForegroundNotification,
                    object: nil)
   }
 
@@ -269,7 +269,7 @@ class MainViewController: UITableViewController, LoginViewControllerDelegate,
     super.viewWillLayoutSubviews()
 
     // Bring the refresh control above the gradient.
-    refreshControl?.superview?.bringSubview(toFront: refreshControl!)
+    refreshControl?.superview?.bringSubviewToFront(refreshControl!)
 
     let headerSize = headerView.sizeThatFits(CGSize(width: view.bounds.size.width, height: 0))
     headerView.frame = CGRect(origin: headerView.frame.origin, size: headerSize)
