@@ -25,10 +25,11 @@ target 'Tsurukame' do
   pod 'Charts', '~> 3.5.0', :inhibit_warnings => true
   pod 'FMDB', '~> 2.7.5'
   pod 'Haneke', '~> 1.0.2', :inhibit_warnings => true
+  pod 'Light-Untar', '~> 0.3.0'
   pod 'MMDrawerController', '~> 0.6.0', :inhibit_warnings => true
   pod 'OAStackView', '~> 1.0.1'
-  pod 'PromiseKit', '~> 6.13.0'
-  pod 'PromiseKit/Foundation', '~> 6.0'
+  pod 'PromiseKit/CorePromise', '~> 6.13.0'
+  pod 'PromiseKit/Foundation', '~> 6.13.0'
   pod 'Reachability', '~> 3.2'
   pod 'SwiftProtobuf', '~> 1.12.0'
 
