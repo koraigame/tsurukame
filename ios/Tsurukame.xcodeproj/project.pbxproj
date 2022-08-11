@@ -21,8 +21,6 @@
 		4882565A28A45AB9002E6511 /* WebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565028A45AB9002E6511 /* WebClient.swift */; };
 		4882565B28A45AB9002E6511 /* URLRequest+SetBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565128A45AB9002E6511 /* URLRequest+SetBody.swift */; };
 		4882565C28A45AB9002E6511 /* wanikani_api.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565228A45AB9002E6511 /* wanikani_api.pb.swift */; };
-		4882565F28A45BEE002E6511 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4882565E28A45BEE002E6511 /* PMKFoundation */; };
-		4882566228A45C21002E6511 /* Hippolyte in Frameworks */ = {isa = PBXBuildFile; productRef = 4882566128A45C21002E6511 /* Hippolyte */; };
 		48BF197428A546A00094188D /* wanikani_api.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565228A45AB9002E6511 /* wanikani_api.pb.swift */; };
 		48BF197528A546AB0094188D /* URLRequest+SetBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565128A45AB9002E6511 /* URLRequest+SetBody.swift */; };
 		48BF197628A546B00094188D /* WebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4882565028A45AB9002E6511 /* WebClient.swift */; };
@@ -84,7 +82,6 @@
 		636A63E7238A607A00902269 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636A63E6238A607A00902269 /* MainHeaderView.swift */; };
 		637CA11525D7E48A0082580E /* LessonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA11425D7E48A0082580E /* LessonsViewController.swift */; };
 		637CA12C25D7EDFF0082580E /* ReviewSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637CA12B25D7EDFE0082580E /* ReviewSummaryViewController.swift */; };
-		637CA18725D7F5A10082580E /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 637CA18625D7F5A10082580E /* SwiftProtobuf */; };
 		638A5C4E25A471F9001A7AEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A5C4D25A471F9001A7AEE /* AppDelegate.swift */; };
 		638A5C6C25ADBB86001A7AEE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A5C6B25ADBB86001A7AEE /* main.swift */; };
 		638D197525C6AA4B00B80544 /* MarkupModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638D197425C6AA4B00B80544 /* MarkupModelItem.swift */; };
@@ -122,7 +119,6 @@
 		63CAAB091FD2C66100E09DA1 /* NSString+LevenshteinDistance.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CAAB081FD2C66100E09DA1 /* NSString+LevenshteinDistance.m */; };
 		63CAAB0B1FD2CBD900E09DA1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63CAAB0A1FD2CBD900E09DA1 /* LaunchScreen.storyboard */; };
 		63CAB3FB2604A1450057E1C2 /* URLRequest+SetBodyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CAB3FA2604A1450057E1C2 /* URLRequest+SetBodyTest.swift */; };
-		63CAB5012605FB1B0057E1C2 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 63CAB5002605FB1B0057E1C2 /* PromiseKit */; };
 		63CBFF2227730ED10086BA5F /* DownloadModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CBFF2127730ED00086BA5F /* DownloadModelItem.swift */; };
 		63CBFF24277315C80086BA5F /* DownloadModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CBFF2127730ED00086BA5F /* DownloadModelItem.swift */; };
 		63CBFF2627731B8B0086BA5F /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CBFF2527731B8B0086BA5F /* DownloadViewController.swift */; };
@@ -422,12 +418,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63CAB5012605FB1B0057E1C2 /* PromiseKit in Frameworks */,
-				4882565F28A45BEE002E6511 /* PMKFoundation in Frameworks */,
 				48BF197F28A553C00094188D /* Pods_Tsurukame.framework in Frameworks */,
 				480B243123D6830300FC2A82 /* Rexy in Frameworks */,
-				637CA18725D7F5A10082580E /* SwiftProtobuf in Frameworks */,
-				4882566228A45C21002E6511 /* Hippolyte in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,10 +783,6 @@
 			name = Tsurukame;
 			packageProductDependencies = (
 				480B243023D6830300FC2A82 /* Rexy */,
-				637CA18625D7F5A10082580E /* SwiftProtobuf */,
-				63CAB5002605FB1B0057E1C2 /* PromiseKit */,
-				4882565E28A45BEE002E6511 /* PMKFoundation */,
-				4882566128A45C21002E6511 /* Hippolyte */,
 			);
 			productName = wk;
 			productReference = 6319C9B520441DE200C31F87 /* Tsurukame.app */;
@@ -974,10 +962,6 @@
 			mainGroup = 630FD60A1FC45BDF00D21C1F;
 			packageReferences = (
 				480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */,
-				637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */,
-				63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */,
-				4882565D28A45BEE002E6511 /* XCRemoteSwiftPackageReference "Foundation" */,
-				4882566028A45C21002E6511 /* XCRemoteSwiftPackageReference "Hippolyte" */,
 			);
 			productRefGroup = 630FD60A1FC45BDF00D21C1F;
 			projectDirPath = "";
@@ -1085,6 +1069,8 @@
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
 				"${BUILT_PRODUCTS_DIR}/OAStackView/OAStackView.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1094,6 +1080,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OAStackView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2095,38 +2083,6 @@
 				version = 1.0.1;
 			};
 		};
-		4882565D28A45BEE002E6511 /* XCRemoteSwiftPackageReference "Foundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/PromiseKit/Foundation.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.3.4;
-			};
-		};
-		4882566028A45C21002E6511 /* XCRemoteSwiftPackageReference "Hippolyte" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JanGorman/Hippolyte";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
-			};
-		};
-		637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-protobuf";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.15.0;
-			};
-		};
-		63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mxcl/PromiseKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.13.3;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2134,26 +2090,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */;
 			productName = Rexy;
-		};
-		4882565E28A45BEE002E6511 /* PMKFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4882565D28A45BEE002E6511 /* XCRemoteSwiftPackageReference "Foundation" */;
-			productName = PMKFoundation;
-		};
-		4882566128A45C21002E6511 /* Hippolyte */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4882566028A45C21002E6511 /* XCRemoteSwiftPackageReference "Hippolyte" */;
-			productName = Hippolyte;
-		};
-		637CA18625D7F5A10082580E /* SwiftProtobuf */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */;
-			productName = SwiftProtobuf;
-		};
-		63CAB5002605FB1B0057E1C2 /* PromiseKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */;
-			productName = PromiseKit;
 		};
 		63EF56E126060BA70038551A /* WaniKaniAPI */ = {
 			isa = XCSwiftPackageProductDependency;
