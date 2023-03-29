@@ -319,7 +319,7 @@
 		D75CDAF80E48D8EAA34192AF2F9A4525 /* URLSessionHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF566059F9F340B92D451BA940A5E05B /* URLSessionHook.swift */; };
 		D80A9F0DF1621D88A25AEDF8E35C3B19 /* RadarChartDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E89DEAA3877ECA07430144D6CDA4E /* RadarChartDataSet.swift */; };
 		DA76D0FBC608E660D83E06861AEDC546 /* UnknownStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDA39032F446C5430C458299D95E667 /* UnknownStorage.swift */; };
-		DAD6A5FFCD886B8BEFD07C76B6F05760 /* OAStackView-OAStackView in Resources */ = {isa = PBXBuildFile; fileRef = 318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView-OAStackView */; };
+		DAD6A5FFCD886B8BEFD07C76B6F05760 /* OAStackView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView.bundle */; };
 		DAE6445D2D0AD17AAA5BFB4BAEF42030 /* SwiftProtobuf-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D86A7DB78131DAE75A2A1967BB3E636B /* SwiftProtobuf-dummy.m */; };
 		DB5A7E8EAF170A65CDB518FA6913B7A4 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9796D67BC4D8970ADA3F27B8112CB06F /* PieChartView.swift */; };
 		DC3B58DF509A236380EFCD5034B3E3B1 /* ChartHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A26243E9F352227A3B31CE631469142 /* ChartHighlighter.swift */; };
@@ -575,7 +575,7 @@
 		315687415E03306FBE3B0B0BED1871A3 /* ViewPortJob.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ViewPortJob.swift; path = Source/Charts/Jobs/ViewPortJob.swift; sourceTree = "<group>"; };
 		31568A203DFCD15F5F1BE82EA618D193 /* NSNotificationCenter+Promise.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSNotificationCenter+Promise.swift"; path = "Extensions/Foundation/Sources/NSNotificationCenter+Promise.swift"; sourceTree = "<group>"; };
 		3164B79FDE6928F8B4436F3DEAC46590 /* ResourceBundle-OAStackView-OAStackView-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-OAStackView-OAStackView-Info.plist"; sourceTree = "<group>"; };
-		318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView-OAStackView */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "OAStackView-OAStackView"; path = OAStackView.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OAStackView.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		31A4506D915425CC52C850819AAF3EBF /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
 		32266DAB7EB5CC44CCBDDC2C15FDA51C /* HNKDiskFetcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = HNKDiskFetcher.h; path = Haneke/HNKDiskFetcher.h; sourceTree = "<group>"; };
 		331A22123189E936F015C9C62B965CE0 /* MMDrawerController+Subclass.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MMDrawerController+Subclass.h"; path = "MMDrawerController/MMDrawerController+Subclass.h"; sourceTree = "<group>"; };
@@ -781,7 +781,7 @@
 		9C5715CD4D8F30440DC835EC54133A14 /* Pods-Tsurukame-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Tsurukame-acknowledgements.markdown"; sourceTree = "<group>"; };
 		9C8283845E559B600D35FA92B5C63978 /* SelectiveVisitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SelectiveVisitor.swift; path = Sources/SwiftProtobuf/SelectiveVisitor.swift; sourceTree = "<group>"; };
 		9CC8C3848A69FF8F61FC6E927EC5C6BF /* Thenable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Thenable.swift; path = Sources/Thenable.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9D95425C7ED5217A3704195FC986DF69 /* PieRadarHighlighter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PieRadarHighlighter.swift; path = Source/Charts/Highlight/PieRadarHighlighter.swift; sourceTree = "<group>"; };
 		9DC8F2A739FC0B40F8EE52C392802D1A /* CrossShapeRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CrossShapeRenderer.swift; path = Source/Charts/Renderers/Scatter/CrossShapeRenderer.swift; sourceTree = "<group>"; };
 		9DFB8680B47CF1C31E89CF84C7CE2837 /* ScatterChartDataProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScatterChartDataProvider.swift; path = Source/Charts/Interfaces/ScatterChartDataProvider.swift; sourceTree = "<group>"; };
@@ -1136,7 +1136,6 @@
 				31253D06DB8B11E51A64C10016EBEB22 /* OATransformLayer.m */,
 				1456B1021DC3BE280A496B7D07CB671A /* Support Files */,
 			);
-			name = OAStackView;
 			path = OAStackView;
 			sourceTree = "<group>";
 		};
@@ -1178,7 +1177,6 @@
 				522A1E39B16CCDCA19EC49D5DD9F624C /* Reachability.m */,
 				379400A86390C1764BE9C51D522EC606 /* Support Files */,
 			);
-			name = Reachability;
 			path = Reachability;
 			sourceTree = "<group>";
 		};
@@ -1204,7 +1202,6 @@
 				0092664A50EAA226DD7A30FB961A9D53 /* UIView+Haneke.m */,
 				3C881A10A62788C87EB5565B8CE01AE1 /* Support Files */,
 			);
-			name = Haneke;
 			path = Haneke;
 			sourceTree = "<group>";
 		};
@@ -1250,7 +1247,6 @@
 				6A8FA69C1468DE6A4B34C761B510209A /* Foundation */,
 				6308482425E00D61689EFC0A6846DEEC /* Support Files */,
 			);
-			name = PromiseKit;
 			path = PromiseKit;
 			sourceTree = "<group>";
 		};
@@ -1288,7 +1284,6 @@
 				EF566059F9F340B92D451BA940A5E05B /* URLSessionHook.swift */,
 				53D38A8291CAA50E7C23161F184AF405 /* Support Files */,
 			);
-			name = Hippolyte;
 			path = Hippolyte;
 			sourceTree = "<group>";
 		};
@@ -1314,7 +1309,6 @@
 				D9B62F58E5AE936AFEB803FA88B300CF /* NSFileManager+Tar.m */,
 				1C217784D9E3FEB924D3BA820279AFA2 /* Support Files */,
 			);
-			name = "Light-Untar";
 			path = "Light-Untar";
 			sourceTree = "<group>";
 		};
@@ -1324,7 +1318,6 @@
 				6B6FF5BED9E548C5E1005B874D98A78F /* standard */,
 				C0EB491BDE88F6A390925F4583B1CD22 /* Support Files */,
 			);
-			name = FMDB;
 			path = FMDB;
 			sourceTree = "<group>";
 		};
@@ -1400,7 +1393,7 @@
 				251218E963BFFCCF97FAE604A7CAA91D /* Light-Untar */,
 				6C74481CBCB87684F62CB0E10BA4B66E /* MMDrawerController */,
 				22054A2A0B867C532F65844D757F39C8 /* OAStackView */,
-				318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView-OAStackView */,
+				318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView.bundle */,
 				22D32E52710D9BF845ABADD72838ECF0 /* Pods-FontScreenshotter */,
 				FA313AD00C1AD184C716411B4FD06D7D /* Pods-FontScreenshotter-FontScreenshotterUITests */,
 				FC95D668E217CFBB25845AA15162348B /* Pods-Tests */,
@@ -1472,7 +1465,6 @@
 				D4819E5F5632112151A84FED3517928C /* Core */,
 				407999051F64B73EE558D9F546F27045 /* Support Files */,
 			);
-			name = Charts;
 			path = Charts;
 			sourceTree = "<group>";
 		};
@@ -1677,7 +1669,6 @@
 				C132AF462D67EB3D7BDF2BBDD27C4464 /* ZigZag.swift */,
 				D7E76B7FA733941C627A50FEDDC6BD36 /* Support Files */,
 			);
-			name = SwiftProtobuf;
 			path = SwiftProtobuf;
 			sourceTree = "<group>";
 		};
@@ -1880,7 +1871,6 @@
 				B7150DD8AE7C8FBB4FDEAF5F063D179B /* Subclass */,
 				5A82515CFEB486681BCC1EAF15305B2E /* Support Files */,
 			);
-			name = MMDrawerController;
 			path = MMDrawerController;
 			sourceTree = "<group>";
 		};
@@ -2117,7 +2107,7 @@
 			);
 			name = "OAStackView-OAStackView";
 			productName = OAStackView;
-			productReference = 318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView-OAStackView */;
+			productReference = 318AA7F0D7EBCA83FDDE23D8DD536C57 /* OAStackView.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		778F5CF2E3BA7069832615893C915B6D /* OAStackView */ = {
@@ -2413,7 +2403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAD6A5FFCD886B8BEFD07C76B6F05760 /* OAStackView-OAStackView in Resources */,
+				DAD6A5FFCD886B8BEFD07C76B6F05760 /* OAStackView.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3135,6 +3125,7 @@
 			baseConfigurationReference = 3F01A81548AFE2847796907757133B7F /* OAStackView.debug.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/OAStackView";
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = OAStackView;
 				INFOPLIST_FILE = "Target Support Files/OAStackView/ResourceBundle-OAStackView-OAStackView-Info.plist";
 				PRODUCT_NAME = OAStackView;
@@ -3757,6 +3748,7 @@
 			baseConfigurationReference = 4C9B908251E3306A8E5A8C896FAEABE3 /* OAStackView.release.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/OAStackView";
+				DEVELOPMENT_TEAM = SJ87WGCZM7;
 				IBSC_MODULE = OAStackView;
 				INFOPLIST_FILE = "Target Support Files/OAStackView/ResourceBundle-OAStackView-OAStackView-Info.plist";
 				PRODUCT_NAME = OAStackView;
